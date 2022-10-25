@@ -16,9 +16,9 @@ public class FluxMonoFactoryTest {
     public void createFluxFromIterable() {
 
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
-        Flux<String> stringFlux = Flux.fromIterable(nameList);
+        Flux<String> nameFlux = Flux.fromIterable(nameList);
 
-        StepVerifier.create(stringFlux.log())
+        StepVerifier.create(nameFlux.log())
                 .expectNext("Adam", "Anna", "Jack", "Jenny")
                 .verifyComplete();
     }
