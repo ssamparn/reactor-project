@@ -13,7 +13,7 @@ public class FluxGeneratorServiceTest {
 
     @Test
     void createNamesFluxTest() {
-        fluxGeneratorService.createNamesFlux()
+        fluxGeneratorService.createNamesFlux().log()
                 .subscribe(name -> System.out.println("Names: " + name));
     }
 }

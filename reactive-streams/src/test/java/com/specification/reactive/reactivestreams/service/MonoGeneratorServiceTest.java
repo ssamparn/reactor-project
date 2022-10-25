@@ -1,6 +1,5 @@
-package com.specification.reactive.reactivestreams.factorytest;
+package com.specification.reactive.reactivestreams.service;
 
-import com.specification.reactive.reactivestreams.service.MonoGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,7 @@ public class MonoGeneratorServiceTest {
 
     @Test
     void createNameMonoTest() {
-        monoGeneratorService.createNameMono()
+        monoGeneratorService.createNameMono().log()
                 .subscribe(name -> System.out.println("Names: " + name));
     }
 }
