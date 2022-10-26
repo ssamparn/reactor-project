@@ -14,13 +14,13 @@ public class ReactiveController {
     @GetMapping("/flux")
     public Flux<Integer> getFlux() {
         return Flux.just(1, 2, 3, 4, 5, 6)
-                .delayElements(Duration.ofSeconds(1))
+                .delayElements(Duration.ofMillis(100))
                 .log();
     }
 
     @GetMapping(value = "/fluxstream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<Long> getStreamFlux() {
-        return Flux.interval(Duration.ofSeconds(1))
+        return Flux.interval(Duration.ofMillis(120))
                 .log();
     }
 
