@@ -9,7 +9,7 @@ import java.time.Duration;
 public class HotColdReactiveStreamTest {
 
     @Test
-    public void coldPublisherTest() throws InterruptedException {
+    public void flux_coldPublisher_test() throws InterruptedException {
         Flux<String> stringFlux = Flux.just("A", "B", "C", "D", "E", "F")
                 .delayElements(Duration.ofSeconds(1));
 
@@ -21,7 +21,7 @@ public class HotColdReactiveStreamTest {
     }
 
     @Test
-    public void hotPublisherTest() throws InterruptedException {
+    public void flux_hotPublisher_test() throws InterruptedException {
 
         Flux<String> stringFlux = Flux.just("A", "B", "C", "D", "E", "F")
                 .delayElements(Duration.ofSeconds(1));

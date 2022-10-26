@@ -12,7 +12,7 @@ public class MonoGeneratorServiceTest {
     private MonoGeneratorService monoGeneratorService;
 
     @Test
-    void createNameMonoTest() {
+    void create_name_mono_test() {
         monoGeneratorService.createNameMono().log()
                 .subscribe(name -> System.out.println("Names: " + name));
     }

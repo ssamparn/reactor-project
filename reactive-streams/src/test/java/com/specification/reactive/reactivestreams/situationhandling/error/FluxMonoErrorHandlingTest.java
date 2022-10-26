@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.errorhandling;
+package com.specification.reactive.reactivestreams.situationhandling.error;
 
 import com.specification.reactive.reactivestreams.exception.CustomException;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import java.time.Duration;
 public class FluxMonoErrorHandlingTest {
 
     @Test
-    public void fluxErrorTest() {
+    public void flux_publisher_returns_error_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"));
@@ -26,7 +26,7 @@ public class FluxMonoErrorHandlingTest {
     }
 
     @Test
-    public void fluxErrorHandlingTest_WithOnErrorResume() {
+    public void flux_publisher_returns_error_with_OnErrorResume_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
@@ -45,7 +45,7 @@ public class FluxMonoErrorHandlingTest {
     }
 
     @Test
-    public void fluxErrorHandlingTest_WithOnErrorReturn() {
+    public void flux_publisher_returns_error_with_OnErrorReturn_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
@@ -61,11 +61,11 @@ public class FluxMonoErrorHandlingTest {
     }
 
     @Test
-    public void fluxErrorHandlingTest_WithOnErrorMap() {
+    public void flux_publisher_returns_error_with_OnErrorMap_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
-                .onErrorMap( e -> new CustomException(e));
+                .onErrorMap(CustomException::new);
 
         StepVerifier.create(stringFlux.log())
                 .expectSubscription()
@@ -77,11 +77,11 @@ public class FluxMonoErrorHandlingTest {
     }
 
     @Test
-    public void fluxErrorHandling_WithRetry() {
+    public void flux_publisher_returns_error_with_retry_OnErrorMap_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
-                .onErrorMap( e -> new CustomException(e))
+                .onErrorMap(CustomException::new)
                 .retry(2);
 
         StepVerifier.create(stringFlux.log())
@@ -100,11 +100,11 @@ public class FluxMonoErrorHandlingTest {
     }
 
     @Test
-    public void fluxErrorHandling_WithRetryBackOff() {
+    public void flux_publisher_returns_error_with_retryWhen_OnErrorMap_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
-                .onErrorMap( e -> new CustomException(e))
+                .onErrorMap(CustomException::new)
                 .retryWhen(Retry.backoff(2, Duration.ofSeconds(2)));
 
 

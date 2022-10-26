@@ -10,27 +10,47 @@ import java.util.List;
 public class FluxMonoFilterTest {
 
     @Test
-    public void filterTest() {
+    public void flux_filter_test() {
         List<String> stringList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<String> stringFluxFromIterable = Flux.fromIterable(stringList)
-                .filter(name -> name.startsWith("A")).log();
+                .filter(name -> name.startsWith("A"))
+                .map(name -> name.length() + "-" + name)
+                .log();
 
         StepVerifier.create(stringFluxFromIterable)
-                .expectNext("Adam")
-                .expectNext("Anna")
+                .expectNext("4-Adam")
+                .expectNext("4-Anna")
                 .verifyComplete();
     }
 
     @Test
-    public void filterTest_Length() {
+    public void flux_filter_length_test() {
         List<String> stringList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<String> stringFluxFromIterable = Flux.fromIterable(stringList)
-                .filter(name -> name.length() > 4).log();
+                .filter(name -> name.length() > 4)
+                .map(String::toUpperCase)
+                .log();
 
         StepVerifier.create(stringFluxFromIterable)
-                .expectNext("Jenny")
+                .expectNext("JENNY")
+                .verifyComplete();
+    }
+
+    @Test
+    public void flux_filter_add_length_test() {
+        List<String> stringList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
+
+        Flux<String> stringFluxFromIterable = Flux.fromIterable(stringList)
+                .filter(name -> name.length() == 4)
+                .map(name -> name.length() + "-" + name)
+                .log();
+
+        StepVerifier.create(stringFluxFromIterable)
+                .expectNext("4-Adam")
+                .expectNext("4-Anna")
+                .expectNext("4-Jack")
                 .verifyComplete();
     }
 }

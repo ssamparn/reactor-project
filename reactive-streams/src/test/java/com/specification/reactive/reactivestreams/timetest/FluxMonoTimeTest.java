@@ -15,7 +15,7 @@ public class FluxMonoTimeTest {
                 .log();
 
         intervalLongFlux
-                .subscribe((element) -> System.out.println(element));
+                .subscribe(System.out::println);
 
         Thread.sleep(3000);
     }
@@ -35,7 +35,7 @@ public class FluxMonoTimeTest {
     @Test
     public void infiniteSequenceTest_WithMap() {
         Flux<Integer> finiteFlux = Flux.interval(Duration.ofMillis(100))
-                .map(element -> element.intValue())
+                .map(Long::intValue)
                 .take(4)
                 .log();
 
@@ -49,7 +49,7 @@ public class FluxMonoTimeTest {
     public void infiniteSequenceTest_WithMapDelay() {
         Flux<Integer> finiteFlux = Flux.interval(Duration.ofMillis(100))
                 .delayElements(Duration.ofMillis(100))
-                .map(element -> element.intValue())
+                .map(Long::intValue)
                 .take(4)
                 .log();
 
@@ -58,6 +58,4 @@ public class FluxMonoTimeTest {
                 .expectNext(0, 1, 2, 3)
                 .verifyComplete();
     }
-
-
 }

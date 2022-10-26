@@ -8,7 +8,7 @@ import reactor.test.StepVerifier;
 public class FluxMonoBackPressureTest {
 
     @Test
-    public void backPressureTest() {
+    public void flux_backPressure_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
         StepVerifier.create(finiteFlux)
@@ -24,7 +24,7 @@ public class FluxMonoBackPressureTest {
     }
 
     @Test
-    public void backPressure_Implementation() {
+    public void flux_backPressure_implementation_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
         finiteFlux.subscribe((element) -> System.out.println("Element is: " + element),
@@ -34,7 +34,7 @@ public class FluxMonoBackPressureTest {
     }
 
     @Test
-    public void backPressure_CancelImplementation() {
+    public void backPressure_cancelImplementation_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
         finiteFlux.subscribe((element) -> System.out.println("Element is: " + element),
@@ -44,7 +44,7 @@ public class FluxMonoBackPressureTest {
     }
 
     @Test
-    public void customized_backPressure() {
+    public void customized_backPressure_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 200).log();
         finiteFlux.subscribe(new BaseSubscriber<>() {
             @Override

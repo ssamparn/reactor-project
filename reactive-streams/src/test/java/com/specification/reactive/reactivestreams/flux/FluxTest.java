@@ -7,9 +7,12 @@ import reactor.test.StepVerifier;
 public class FluxTest {
 
     @Test
-    public void flux_Test() {
+    public void flux_simple_test() {
 
-        Flux<String> springFlux = Flux.just("Spring Framework", "Spring Boot", "Spring Reactive")
+        Flux<String> springFlux = Flux.just(
+                        "Spring Framework",
+                        "Spring Boot",
+                        "Spring Reactive")
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
                 .concatWith(Flux.just("Test to see if Flux emits")) // Note: After an error is emitted from Flux, it will not emit anymore data. So this line will not be included in the onComplete() event.
                 .log();
@@ -18,9 +21,13 @@ public class FluxTest {
     }
 
     @Test
-    public void fluxElementsTest_WithoutError() {
+    public void flux_elements_without_error_test() {
 
-        Flux<String> stringElementsFlux = Flux.just("Spring", "Spring Boot", "Spring Framework", "Spring Reactive")
+        Flux<String> stringElementsFlux = Flux.just(
+                        "Spring",
+                        "Spring Boot",
+                        "Spring Framework",
+                        "Spring Reactive")
                 .log();
 
         StepVerifier.create(stringElementsFlux)
@@ -32,9 +39,12 @@ public class FluxTest {
     }
 
     @Test
-    public void testElements_WithError() {
+    public void flux_elements_with_error_test() {
 
-        Flux<String> stringElementsFlux = Flux.just("Spring Boot", "Spring Framework", "Spring Reactive")
+        Flux<String> stringElementsFlux = Flux.just(
+                        "Spring Boot",
+                        "Spring Framework",
+                        "Spring Reactive")
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
                 .log();
 
@@ -47,9 +57,12 @@ public class FluxTest {
     }
 
     @Test
-    public void testElements_WithError_AnotherWay() {
+    public void flux_elements_with_error_test2() {
 
-        Flux<String> stringElementsFlux = Flux.just("Spring Boot", "Spring Framework", "Spring Reactive")
+        Flux<String> stringElementsFlux = Flux.just(
+                "Spring Boot",
+                "Spring Framework",
+                "Spring Reactive")
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
                 .log();
 
@@ -60,9 +73,12 @@ public class FluxTest {
     }
 
     @Test
-    public void testElements_WithErrorMessage() {
+    public void flux_elements_with_error_message_test() {
 
-        Flux<String> stringElementsFlux = Flux.just("Spring Boot", "Spring Framework", "Spring Reactive")
+        Flux<String> stringElementsFlux = Flux.just(
+                "Spring Boot",
+                "Spring Framework",
+                "Spring Reactive")
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
                 .log();
 
@@ -75,9 +91,12 @@ public class FluxTest {
     }
 
     @Test
-    public void testNumberOfFluxElements() {
+    public void flux_elements_events_count_test() {
 
-        Flux<String> stringElementsFlux = Flux.just("Spring Boot", "Spring Framework", "Spring Reactive")
+        Flux<String> stringElementsFlux = Flux.just(
+                "Spring Boot",
+                "Spring Framework",
+                "Spring Reactive")
                 .log();
 
         StepVerifier.create(stringElementsFlux)
@@ -86,9 +105,12 @@ public class FluxTest {
     }
 
     @Test
-    public void testNumberOfFluxElementsCount_WithError() {
+    public void flux_elements_events_count_with_error_message_test() {
 
-        Flux<String> stringFlux = Flux.just("Spring", "Spring Boot", "Spring Reactive")
+        Flux<String> stringFlux = Flux.just(
+                "Spring",
+                "Spring Boot",
+                "Spring Reactive")
                 .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
                 .log();
 
@@ -97,5 +119,4 @@ public class FluxTest {
                 .expectErrorMessage("Exception Occurred")
                 .verify();
     }
-
 }

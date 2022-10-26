@@ -7,7 +7,7 @@ import reactor.test.StepVerifier;
 public class MonoTest {
 
     @Test
-    public void monoTest() {
+    public void mono_simple_test() {
         Mono<String> stringMono = Mono.just("Spring")
                 .log();
 
@@ -17,11 +17,10 @@ public class MonoTest {
     }
 
     @Test
-    public void monoTest_Error() {
+    public void mono_error_test() {
         StepVerifier.create(Mono.error(new RuntimeException("Exception Occurred"))
                 .log())
                 .expectError(RuntimeException.class)
                 .verify();
-
     }
 }

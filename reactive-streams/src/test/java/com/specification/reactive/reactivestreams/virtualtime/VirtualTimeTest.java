@@ -10,7 +10,7 @@ import java.time.Duration;
 public class VirtualTimeTest {
 
     @Test
-    void testWithout_VirtualTime() {
+    void flux_publisher_virtualTime_test() {
         Flux<Long> longFlux = Flux.interval(Duration.ofSeconds(1)).take(3);
 
         StepVerifier.create(longFlux.log())
@@ -20,12 +20,12 @@ public class VirtualTimeTest {
     }
 
     @Test
-    void testWith_VirtualTime() {
-
+    void flux_publisher_with_virtualTime_test() {
         VirtualTimeScheduler.getOrSet();
+
         Flux<Long> longFlux = Flux.interval(Duration.ofSeconds(1)).take(3);
 
-        StepVerifier.withVirtualTime(() -> longFlux.log())
+        StepVerifier.withVirtualTime(longFlux::log)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(3))
                 .expectNext(0L, 1L, 2L)
