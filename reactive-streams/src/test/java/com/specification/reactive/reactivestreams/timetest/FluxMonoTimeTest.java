@@ -10,7 +10,6 @@ public class FluxMonoTimeTest {
 
     @Test
     public void infiniteSequenceTest_WithThread() throws InterruptedException {
-
         Flux<Long> intervalLongFlux = Flux.interval(Duration.ofMillis(100))
                 .log();
 
@@ -48,7 +47,7 @@ public class FluxMonoTimeTest {
     @Test
     public void infiniteSequenceTest_WithMapDelay() {
         Flux<Integer> finiteFlux = Flux.interval(Duration.ofMillis(100))
-                .delayElements(Duration.ofMillis(100))
+                .delayElements(Duration.ofMillis(10))
                 .map(Long::intValue)
                 .take(4)
                 .log();
