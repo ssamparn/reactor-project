@@ -18,6 +18,7 @@
 
     <modules>
         <module>reactive-streams</module>
+        <module>reactive-specification</module>
     </modules>
 
 </project>
