@@ -1,6 +1,8 @@
 package com.specification.reactive.util;
 
 import com.github.javafaker.Faker;
+import com.specification.reactive.service.DefaultSubscriber;
+import org.reactivestreams.Subscriber;
 
 import java.util.function.Consumer;
 
@@ -30,5 +32,13 @@ public class ReactiveSpecificationUtil {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static Subscriber<Object> subscriber() {
+        return new DefaultSubscriber();
+    }
+
+    public static Subscriber<Object> subscriber(String name) {
+        return new DefaultSubscriber(name);
     }
 }
