@@ -4,10 +4,10 @@ import com.specification.reactive.service.FileService;
 import com.specification.reactive.util.ReactiveSpecificationUtil;
 import org.junit.jupiter.api.Test;
 
-public class AssignmentDemo {
+public class MonoAssignmentDemo {
 
     @Test
-    public void assignment() {
+    public void monoAssignment() {
         FileService.read("file01.txt")
                 .subscribe(
                         ReactiveSpecificationUtil.onNext(),
