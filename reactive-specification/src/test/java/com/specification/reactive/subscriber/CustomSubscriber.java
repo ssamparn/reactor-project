@@ -1,4 +1,4 @@
-package com.specification.reactive.flux;
+package com.specification.reactive.subscriber;
 
 import com.specification.reactive.util.ReactiveSpecificationUtil;
 import org.junit.jupiter.api.Test;

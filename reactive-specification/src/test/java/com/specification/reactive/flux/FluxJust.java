@@ -3,6 +3,7 @@ package com.specification.reactive.flux;
 import com.specification.reactive.util.ReactiveSpecificationUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 public class FluxJust {
 
@@ -15,6 +16,12 @@ public class FluxJust {
                 ReactiveSpecificationUtil.onError(),
                 ReactiveSpecificationUtil.onComplete()
         );
+
+        StepVerifier.create(nameFlux)
+                .expectNext("Sam")
+                .expectNext("Harry")
+                .expectNext("Bapun")
+                .verifyComplete();
     }
 
     @Test
@@ -37,5 +44,16 @@ public class FluxJust {
                 ReactiveSpecificationUtil.onError(),
                 ReactiveSpecificationUtil.onComplete()
         );
+    }
+
+    @Test
+    public void fluxFooTest() {
+        Flux<String> fluxSequence = Flux.just("foo", "bar", "foobar");
+
+        StepVerifier.create(fluxSequence)
+                .expectNext("foo")
+                .expectNext("bar")
+                .expectNext("foobar")
+                .verifyComplete();
     }
 }
