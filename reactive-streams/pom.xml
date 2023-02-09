@@ -12,7 +12,7 @@
 	<groupId>com.specification.reactive</groupId>
 	<artifactId>reactive-streams</artifactId>
 	<version>1.0.0</version>
-	<name>reactive-streams</name>
+	<name>Reactive Streams</name>
 	<packaging>jar</packaging>
 	<description>Reactive Streams</description>
 
@@ -39,6 +39,11 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 
