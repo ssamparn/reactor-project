@@ -2,6 +2,7 @@ package com.specification.reactive.reactivestreams.tranformtest;
 
 import com.specification.reactive.reactivestreams.model.Document;
 import com.specification.reactive.reactivestreams.model.Employee;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -9,6 +10,7 @@ import reactor.test.StepVerifier;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class FluxOneTypeToFluxAnotherType {
 
     @Test
@@ -46,6 +48,6 @@ public class FluxOneTypeToFluxAnotherType {
                 .map(this::toEmployee)
                 .toList();
 
-        System.out.println(employeeList.size());
+        log.info("employeeList : {}", employeeList.size());
     }
 }

@@ -2,24 +2,26 @@ package com.specification.reactive.reactivestreams.util;
 
 import com.github.javafaker.Faker;
 import com.specification.reactive.reactivestreams.service.DefaultSubscriber;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 
 import java.util.function.Consumer;
 
+@Slf4j
 public class RsUtil {
 
     private static final Faker FAKER = Faker.instance();
 
     public static Consumer<Object> onNext() {
-        return obj -> System.out.println("Received: " + obj);
+        return obj -> log.info("Received: {}", obj);
     }
 
     public static Consumer<Throwable> onError() {
-        return err -> System.out.println("Error: " + err.getMessage());
+        return err -> log.info("Error: {}", err.getMessage());
     }
 
     public static Runnable onComplete() {
-        return () -> System.out.println("Completed");
+        return () -> log.info("Completed");
     }
 
     public static Faker faker() {

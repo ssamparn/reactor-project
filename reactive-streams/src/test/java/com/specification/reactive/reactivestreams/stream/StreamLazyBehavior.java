@@ -17,7 +17,6 @@ public class StreamLazyBehavior {
                     }
                     return integer * 2;
                 });
-//        System.out.println(integerStream);
         integerStream.forEach(System.out::println);
     }
 }

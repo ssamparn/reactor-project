@@ -1,5 +1,6 @@
 package com.specification.reactive.reactivestreams.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 public class FluxGeneratorServiceTest {
 
@@ -16,7 +18,7 @@ public class FluxGeneratorServiceTest {
     @Test
     void createNames_flux_events_test() {
         fluxGeneratorService.createNamesFlux().log()
-                .subscribe(name -> System.out.println("Names: " + name));
+                .subscribe(name -> log.info("Names: {}", name));
     }
 
     @Test

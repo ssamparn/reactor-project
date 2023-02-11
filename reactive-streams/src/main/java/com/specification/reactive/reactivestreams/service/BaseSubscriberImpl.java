@@ -1,24 +1,26 @@
 package com.specification.reactive.reactivestreams.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
+@Slf4j
 public class BaseSubscriberImpl<T> extends BaseSubscriber<T> {
 
     @Override
     public void hookOnSubscribe(Subscription subscription) {
-        System.out.println("Subscribed");
+        log.info("Subscribed");
         request(1);
     }
 
     @Override
     public void hookOnNext(T value) {
-        System.out.println(value);
+        log.info((String) value);
         request(1);
     }
 
     @Override
     public void hookOnComplete() {
-        System.out.println("Completed");
+        log.info("Completed");
     }
 }

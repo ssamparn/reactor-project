@@ -1,8 +1,10 @@
 package com.specification.reactive.reactivestreams.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+@Slf4j
 public class DefaultSubscriber implements Subscriber<Object> {
 
     private String name = "";
@@ -21,16 +23,16 @@ public class DefaultSubscriber implements Subscriber<Object> {
 
     @Override
     public void onNext(Object o) {
-        System.out.println(name + "Received : " + o);
+        log.info("{} Received : {}", name, o);
     }
 
     @Override
     public void onError(Throwable throwable) {
-        System.out.println(name + "Error : " + throwable.getMessage());
+        log.info("{} Error : {}", name, throwable.getMessage());
     }
 
     @Override
     public void onComplete() {
-        System.out.println(name + "Completed ");
+        log.info("{} Completed ", name);
     }
 }

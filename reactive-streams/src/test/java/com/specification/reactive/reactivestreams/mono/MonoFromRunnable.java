@@ -1,9 +1,11 @@
 package com.specification.reactive.reactivestreams.mono;
 
 import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 public class MonoFromRunnable {
 
     @Test
@@ -17,7 +19,7 @@ public class MonoFromRunnable {
     private static Runnable timeConsumingProcess() {
         return () -> {
             RsUtil.sleepSeconds(3);
-            System.out.println("Operation Complete!");
+            log.info("Operation Complete!");
         };
     }
 }

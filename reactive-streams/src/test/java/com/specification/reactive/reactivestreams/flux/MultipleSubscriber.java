@@ -1,9 +1,11 @@
 package com.specification.reactive.reactivestreams.flux;
 
 import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 public class MultipleSubscriber {
 
     @Test
@@ -13,13 +15,13 @@ public class MultipleSubscriber {
         Flux<String> sNameFlux = nameFlux.filter(name -> name.startsWith("S"));
 
         nameFlux.subscribe(
-                name -> System.out.println("All names: Subscriber: 1 : " + name),
+                name -> log.info("All names: Subscriber: 1 : {}", name),
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );
 
         sNameFlux.subscribe(
-                name -> System.out.println("Names starts with S: Subscriber: 2 : " + name),
+                name -> log.info("Names starts with S: Subscriber: 2 : {}", name),
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );

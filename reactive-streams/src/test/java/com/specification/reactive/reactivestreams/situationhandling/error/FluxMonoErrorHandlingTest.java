@@ -1,6 +1,7 @@
 package com.specification.reactive.reactivestreams.situationhandling.error;
 
 import com.specification.reactive.reactivestreams.exception.CustomException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -8,6 +9,7 @@ import reactor.util.retry.Retry;
 
 import java.time.Duration;
 
+@Slf4j
 public class FluxMonoErrorHandlingTest {
 
     @Test
@@ -31,7 +33,7 @@ public class FluxMonoErrorHandlingTest {
                 .concatWith(Flux.error(new RuntimeException("Exception Occured")))
                 .concatWith(Flux.just("D"))
                 .onErrorResume(e -> {
-                    System.out.println("Exception is: " + e);
+                    log.info("Exception is: {}", e.getMessage());
                     return Flux.just("Default Return value");
                 });
 
