@@ -28,6 +28,6 @@ public class TransformOperatorTest {
         return personFlux -> personFlux
                 .filter(person -> person.getAge() > 20)
                 .doOnNext(person -> person.setName(person.getName().toUpperCase(Locale.ROOT)))
-                .doOnDiscard(Person.class, personDiscarded -> log.info("Discarded Object : {}", personDiscarded));
+                .doOnDiscard(Person.class, personDiscarded -> log.info("Discarded persons : {}", personDiscarded));
     }
 }
