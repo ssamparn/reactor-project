@@ -19,7 +19,7 @@ import static reactor.core.scheduler.Schedulers.parallel;
 public class FluxMonoTransformTest {
 
     @Test
-    public void monoTransformUsingFlatMap_EventsTest() {
+    public void mono_transform_using_flatMap_events_test() {
 
         Mono<List<String>> stringMonoList = Mono.just("Alex")
                 .map(String::toUpperCase)
@@ -32,7 +32,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void monoTransformUsingFlatMapMany_EventsTest() {
+    public void mono_transform_using_flatMapMany_events_test() {
 
         Flux<String> stringFlux = Mono.just("Alex")
                 .map(String::toUpperCase)
@@ -45,7 +45,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingMap() {
+    public void transform_using_map_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -58,7 +58,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingMap_GetLength() {
+    public void transform_using_map_get_length_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<Integer> stringFlux = Flux.fromIterable(nameList)
@@ -71,7 +71,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingMap_GetLength_Repeat() {
+    public void transform_using_map_getLength_repeat_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<Integer> stringFlux = Flux.fromIterable(nameList)
@@ -85,7 +85,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingMap_GetLength_Filter_Map() {
+    public void transform_using_map_getLength_filter_map_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -101,7 +101,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void namesFluxImmutabilityTest() {
+    public void names_flux_immutability_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList);
@@ -115,7 +115,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_EventsTest() {
+    public void transform_using_flatMap_events_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max", "Krish");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -139,7 +139,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_EventsCountTest() {
+    public void transform_using_flatMap_eventsCount_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max", "Krish");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -152,7 +152,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_AsyncTest() {
+    public void transform_using_flatMap_async_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -167,7 +167,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingConcatMap_Test() {
+    public void transform_using_concatMap_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -180,7 +180,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_UsingParallel() {
+    public void transform_using_flatMap_using_parallel_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max", "Krish");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -195,7 +195,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_UsingParallel_MaintainOrder_UsingConcatMap() {
+    public void transform_using_flatMap_usingParallel_maintainOrder_using_concatMap_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max", "Krish");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -210,7 +210,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformUsingFlatMap_UsingParallel_MaintainOrder_UsingFaltMapSequential() {
+    public void transform_using_flatMap_using_parallel_maintainOrder_using_flatMap_sequential_test() {
         List<String> nameList = Arrays.asList("Adam", "Anna", "Jack", "Jenny", "Max", "Krish");
 
         Flux<String> stringFlux = Flux.fromIterable(nameList)
@@ -225,7 +225,7 @@ public class FluxMonoTransformTest {
     }
 
     @Test
-    public void transformPublisherUsingTransform_EventsTest() {
+    public void transform_publisher_using_transform_events_test() {
 
         Function<Flux<String>, Flux<String>> filterMap = name -> name.map(String::toUpperCase)
                 .filter(element -> element.length() > 4 && element.startsWith("K"))

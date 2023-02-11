@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.service;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import reactor.core.publisher.FluxSink;
 
 import java.util.function.Consumer;
@@ -15,7 +15,7 @@ public class NameProducer implements Consumer<FluxSink<String>> {
     }
 
     public void produce() {
-        String name = ReactiveSpecificationUtil.faker().name().fullName();
+        String name = RsUtil.faker().name().fullName();
         String thread = Thread.currentThread().getName();
         this.fluxSink.next(thread + " : " + name);
     }

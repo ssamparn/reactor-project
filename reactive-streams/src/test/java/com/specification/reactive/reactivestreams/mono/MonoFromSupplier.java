@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.mono;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public class MonoFromSupplier {
 
     @Test
-    public void monoFromSupplierTest() {
+    public void mono_from_supplier_test() {
         // Use Mono.just() only when you know publisher already have the data.
         // Mono.just(getName());
 
@@ -19,12 +19,12 @@ public class MonoFromSupplier {
 
         Mono<String> stringMono = Mono.fromSupplier(stringSupplier);
          stringMono.subscribe(
-                 ReactiveSpecificationUtil.onNext()
+                 RsUtil.onNext()
          );
     }
 
     private static String getName() {
         System.out.println("Generating Name: ");
-        return ReactiveSpecificationUtil.faker().name().fullName();
+        return RsUtil.faker().name().fullName();
     }
 }

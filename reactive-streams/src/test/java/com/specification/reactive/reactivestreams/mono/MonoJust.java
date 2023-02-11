@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 public class MonoJust {
 
     @Test
-    public void monoJustTest() {
+    public void mono_just_test() {
         // Publisher
         Mono<Integer> integerMono = Mono.just(1);
 

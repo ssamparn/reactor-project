@@ -1,5 +1,6 @@
 package com.specification.reactive.reactivestreams.factorytest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+@Slf4j
 public class FluxMonoCreationFactoryTest {
 
     @Test
@@ -58,18 +60,18 @@ public class FluxMonoCreationFactoryTest {
     public void createMono_using_justOrEmpty_test() {
         Mono<Object> objectMono = Mono.justOrEmpty(null);
 
-        StepVerifier.create(objectMono.log())
+        StepVerifier.create(objectMono)
                 .verifyComplete();
     }
 
     @Test
     public void createMono_using_Supplier_test() {
         Supplier<String> stringSupplier = () -> "Adam";
-        System.out.println("Invoking Functional method from Supplier: " + stringSupplier.get());
+        log.info("Invoking Functional method from Supplier: {}", stringSupplier.get());
 
         Mono<String> stringMonoFromSupplier = Mono.fromSupplier(stringSupplier);
 
-        StepVerifier.create(stringMonoFromSupplier.log())
+        StepVerifier.create(stringMonoFromSupplier)
                 .expectNext("Adam")
                 .verifyComplete();
     }

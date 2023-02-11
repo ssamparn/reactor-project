@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.filtertest;
+package com.specification.reactive.reactivestreams.operator;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -7,7 +7,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
-public class FluxMonoFilterTest {
+public class FilterOperatorTest {
 
     @Test
     public void flux_filter_test() {

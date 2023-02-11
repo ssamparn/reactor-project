@@ -1,32 +1,32 @@
 package com.specification.reactive.reactivestreams.assignment;
 
-import com.specification.reactive.reactivestreams.service.FileService;
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.service.FileReaderService;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 
 public class MonoAssignmentDemo {
 
     @Test
-    public void monoAssignment() {
-        FileService.read("file01.txt")
+    public void mono_assignment() {
+        FileReaderService.read("file01.txt")
                 .subscribe(
-                        ReactiveSpecificationUtil.onNext(),
-                        ReactiveSpecificationUtil.onError(),
-                        ReactiveSpecificationUtil.onComplete()
+                        RsUtil.onNext(),
+                        RsUtil.onError(),
+                        RsUtil.onComplete()
                 );
 
-        FileService.write("file03.txt", "This is file03")
+        FileReaderService.write("file03.txt", "This is file03")
                 .subscribe(
-                        ReactiveSpecificationUtil.onNext(),
-                        ReactiveSpecificationUtil.onError(),
-                        ReactiveSpecificationUtil.onComplete()
+                        RsUtil.onNext(),
+                        RsUtil.onError(),
+                        RsUtil.onComplete()
                 );
 
-        FileService.delete("file03.txt")
+        FileReaderService.delete("file03.txt")
                 .subscribe(
-                        ReactiveSpecificationUtil.onNext(),
-                        ReactiveSpecificationUtil.onError(),
-                        ReactiveSpecificationUtil.onComplete()
+                        RsUtil.onNext(),
+                        RsUtil.onError(),
+                        RsUtil.onComplete()
                 );
     }
 }

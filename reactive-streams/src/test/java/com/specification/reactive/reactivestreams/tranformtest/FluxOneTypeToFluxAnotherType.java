@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class FluxOneTypeToFluxAnotherType {
 
     @Test
-    public void fluxOfOneTypeToFluxOfAnotherType() {
+    public void flux_ofOneType_ToFlux_ofAnotherType_test() {
         Document document1 = Document.create("1500", "1", "10", "Approved");
         Document document2 = Document.create("2500", "2", "10", "Approved");
 
@@ -36,7 +36,7 @@ public class FluxOneTypeToFluxAnotherType {
     }
 
     @Test
-    public void listOfOneTypeToListOfAnotherType() {
+    public void list_ofOneType_ToList_ofAnotherType_test() {
         Document document1 = Document.create("1500", "1", "10", "Approved");
         Document document2 = Document.create("2500", "2", "10", "Approved");
 
@@ -44,7 +44,7 @@ public class FluxOneTypeToFluxAnotherType {
 
         List<Employee> employeeList = documentList.stream()
                 .map(this::toEmployee)
-                .collect(Collectors.toList());
+                .toList();
 
         System.out.println(employeeList.size());
     }

@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.flux;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -9,10 +9,10 @@ import java.time.Duration;
 public class FluxInterval {
 
     @Test
-    public void fluxIntervalTest() {
+    public void flux_interval_test() {
         Flux.interval(Duration.ofSeconds(1))
-                .subscribe(ReactiveSpecificationUtil.onNext());
-        ReactiveSpecificationUtil.sleepSeconds(5);
+                .subscribe(RsUtil.onNext());
+        RsUtil.sleepSeconds(5);
     }
 
 }

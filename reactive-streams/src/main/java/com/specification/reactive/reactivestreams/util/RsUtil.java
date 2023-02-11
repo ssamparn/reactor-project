@@ -6,7 +6,7 @@ import org.reactivestreams.Subscriber;
 
 import java.util.function.Consumer;
 
-public class ReactiveSpecificationUtil {
+public class RsUtil {
 
     private static final Faker FAKER = Faker.instance();
 

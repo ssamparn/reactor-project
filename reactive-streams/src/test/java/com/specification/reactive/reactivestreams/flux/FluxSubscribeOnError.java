@@ -1,13 +1,13 @@
 package com.specification.reactive.reactivestreams.flux;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 public class FluxSubscribeOnError {
 
     @Test
-    public void fluxSubscribeOnErrorTest() {
+    public void flux_subscribeOnError_test() {
         // publisher
         Flux<Integer> integerFlux = Flux.range(1,5)
                 .map(integer -> {
@@ -17,9 +17,9 @@ public class FluxSubscribeOnError {
 
         // 2: Subscribe with Consumer Implementations
         integerFlux.subscribe(
-                ReactiveSpecificationUtil.onNext(),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                RsUtil.onNext(),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 }

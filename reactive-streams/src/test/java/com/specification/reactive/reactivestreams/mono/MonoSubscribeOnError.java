@@ -1,13 +1,13 @@
 package com.specification.reactive.reactivestreams.mono;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public class MonoSubscribeOnError {
 
     @Test
-    public void monoSubscribeOnErrorTest() {
+    public void mono_subscribeOnError_test() {
         // publisher
         Mono<Integer> stringMono = Mono.just("ball")
                 .map(String::length)
@@ -18,9 +18,9 @@ public class MonoSubscribeOnError {
 
         // 2: Subscribe with Consumer Implementations
         stringMono.subscribe(
-                ReactiveSpecificationUtil.onNext(),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                RsUtil.onNext(),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 }

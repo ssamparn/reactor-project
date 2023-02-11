@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.flux;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -8,21 +8,21 @@ import reactor.core.publisher.Mono;
 public class FluxFromMonoPublisher {
 
     @Test
-    public void fluxFromMonoPublisherTest() {
+    public void flux_from_monoPublisher_test() {
         Mono<String> stringMono = Mono.just("a");
 
         Flux<String> stringFlux = Flux.from(stringMono);
 
-        stringFlux.subscribe(ReactiveSpecificationUtil.onNext());
+        stringFlux.subscribe(RsUtil.onNext());
     }
 
     @Test
-    public void fluxToMonoPublisherTest() {
+    public void flux_to_monoPublisher_test() {
         Flux<Integer> integerFlux = Flux.range(1, 10);
         integerFlux
                 .filter(item -> item > 3)
                 .next()
-                .subscribe(ReactiveSpecificationUtil.onNext());
+                .subscribe(RsUtil.onNext());
     }
 
 

@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.mono;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -8,31 +8,31 @@ import reactor.core.scheduler.Schedulers;
 public class MonoSupplierRefactoring {
 
     @Test
-    public void MonoSupplierRefactoringTest() {
+    public void Mono_Supplier_refactoring_test() {
 
         // Blocking
         getName();
         getName()
-                .subscribe(ReactiveSpecificationUtil.onNext());
+                .subscribe(RsUtil.onNext());
         getName();
 
         // Asynchronous
         getName();
         getName()
                 .subscribeOn(Schedulers.boundedElastic())
-                .subscribe(ReactiveSpecificationUtil.onNext());
+                .subscribe(RsUtil.onNext());
         getName();
 
         // To get the name block the main thread
-        ReactiveSpecificationUtil.sleepSeconds(4);
+        RsUtil.sleepSeconds(4);
     }
 
     private static Mono<String> getName() {
         System.out.println("Entered getName method: ");
         return Mono.fromSupplier(() -> {
             System.out.println("Generating Name...");
-            ReactiveSpecificationUtil.sleepSeconds(2);
-            return ReactiveSpecificationUtil.faker().name().fullName();
+            RsUtil.sleepSeconds(2);
+            return RsUtil.faker().name().fullName();
         }).map(String::toUpperCase);
     }
 }

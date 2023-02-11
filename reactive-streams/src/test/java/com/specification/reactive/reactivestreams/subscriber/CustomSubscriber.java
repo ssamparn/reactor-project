@@ -1,6 +1,7 @@
 package com.specification.reactive.reactivestreams.subscriber;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -8,42 +9,43 @@ import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 public class CustomSubscriber {
 
     @Test
-    public void customSubscribeTest() {
+    public void custom_subscribe_test() {
         AtomicReference<Subscription> atomicReference = new AtomicReference<>();
         Flux.range(1, 20)
                 .log()
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onSubscribe(Subscription subscription) {
-                        System.out.println("Received Sub : " + subscription);
+                        log.info("Received Sub : {}", subscription);
                         atomicReference.set(subscription);
                     }
 
                     @Override
                     public void onNext(Integer integer) {
-                        System.out.println("onNext : " + integer);
+                        log.info("onNext : {}", integer);
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        System.out.println("onError : " + throwable.getMessage());
+                        log.info("onError : {}", throwable.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        System.out.println("onComplete");
+                        log.info("onComplete");
                     }
                 });
-        ReactiveSpecificationUtil.sleepSeconds(2);
+        RsUtil.sleepSeconds(2);
         atomicReference.get().request(3);
-        ReactiveSpecificationUtil.sleepSeconds(2);
+        RsUtil.sleepSeconds(2);
         atomicReference.get().request(3);
-        ReactiveSpecificationUtil.sleepSeconds(1);
+        RsUtil.sleepSeconds(1);
 
-        System.out.println("Going to cancel");
+        log.info("Going to cancel");
         atomicReference.get().cancel();
     }
 }

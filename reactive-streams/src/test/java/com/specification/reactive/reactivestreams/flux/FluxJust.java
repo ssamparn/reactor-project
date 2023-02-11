@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.flux;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -8,13 +8,13 @@ import reactor.test.StepVerifier;
 public class FluxJust {
 
     @Test
-    public void fluxJustTest() {
+    public void flux_just_test() {
         Flux<String> nameFlux = Flux.just("Sam", "Harry", "Bapun");
 
         nameFlux.subscribe(
-                ReactiveSpecificationUtil.onNext(),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                RsUtil.onNext(),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
 
         StepVerifier.create(nameFlux)
@@ -25,29 +25,29 @@ public class FluxJust {
     }
 
     @Test
-    public void emptyFluxTest() {
+    public void empty_flux_test() {
         Flux<String> emptyFlux = Flux.empty();
 
         emptyFlux.subscribe(
-                ReactiveSpecificationUtil.onNext(),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                RsUtil.onNext(),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 
     @Test
-    public void objectFluxTest() {
-        Flux<Object> objectFlux = Flux.just(1, 2, "Sam", "Harry", 3, "Bapun", "a", ReactiveSpecificationUtil.faker().name().fullName());
+    public void object_flux_test() {
+        Flux<Object> objectFlux = Flux.just(1, 2, "Sam", "Harry", 3, "Bapun", "a", RsUtil.faker().name().fullName());
 
         objectFlux.subscribe(
-                ReactiveSpecificationUtil.onNext(),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                RsUtil.onNext(),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 
     @Test
-    public void fluxFooTest() {
+    public void flux_foo_test() {
         Flux<String> fluxSequence = Flux.just("foo", "bar", "foobar");
 
         StepVerifier.create(fluxSequence)

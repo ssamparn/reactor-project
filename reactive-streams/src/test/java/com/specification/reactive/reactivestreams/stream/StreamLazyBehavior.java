@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 public class StreamLazyBehavior {
 
     @Test
-    public void streamLazyBehaviorTest() {
+    public void stream_LazyBehavior_test() {
         Stream<Integer> integerStream = Stream.of(1)
                 .map(integer -> {
                     try {

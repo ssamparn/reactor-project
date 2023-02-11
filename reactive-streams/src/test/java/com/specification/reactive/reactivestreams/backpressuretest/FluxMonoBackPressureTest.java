@@ -1,10 +1,12 @@
 package com.specification.reactive.reactivestreams.backpressuretest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+@Slf4j
 public class FluxMonoBackPressureTest {
 
     @Test
@@ -27,19 +29,19 @@ public class FluxMonoBackPressureTest {
     public void flux_backPressure_implementation_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
-        finiteFlux.subscribe((element) -> System.out.println("Element is: " + element),
-                (e) -> System.err.println("Exception is: " + e),
-                () -> System.out.println("On Completed"),
+        finiteFlux.subscribe((element) -> log.info("Element is: {}", element),
+                e -> log.info("Exception is: {}", e),
+                () -> log.info("On Completed"),
                 subscription -> subscription.request(2));
     }
 
     @Test
-    public void backPressure_cancelImplementation_test() {
+    public void backPressure_cancel_implementation_test() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
-        finiteFlux.subscribe((element) -> System.out.println("Element is: " + element),
-                (e) -> System.err.println("Exception is: " + e),
-                () -> System.out.println("On Completed"),
+        finiteFlux.subscribe((element) -> log.info("Element is: {}", element),
+                (e) -> log.info("Exception is: {}", e),
+                () -> log.info("On Completed"),
                 subscription -> subscription.cancel());
     }
 
@@ -50,7 +52,7 @@ public class FluxMonoBackPressureTest {
             @Override
             protected void hookOnNext(Integer value) {
                 request(1);
-                System.out.println("Value received: " + value);
+                log.info("Value received: {}", value);
                 if (value.equals(101)) {
                     cancel();
                 }

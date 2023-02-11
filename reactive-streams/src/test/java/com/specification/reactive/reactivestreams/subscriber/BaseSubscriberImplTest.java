@@ -1,11 +1,13 @@
 package com.specification.reactive.reactivestreams.subscriber;
 
 import com.specification.reactive.reactivestreams.service.BaseSubscriberImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 public class BaseSubscriberImplTest {
 
     @Test
@@ -22,19 +24,19 @@ public class BaseSubscriberImplTest {
             .subscribe(new BaseSubscriber<Integer>() {
                 @Override
                 protected void hookOnSubscribe(Subscription subscription) {
-                    System.out.println("Subscribed");
+                    log.info("Subscribed");
                     request(1);
                 }
 
                 @Override
                 protected void hookOnNext(Integer value) {
-                    System.out.println(value);
+                    log.info(String.valueOf(value));
                     request(1);
                 }
 
                 @Override
                 protected void hookOnComplete() {
-                    System.out.println("Completed");
+                    log.info("Completed");
                 }
             });
     }

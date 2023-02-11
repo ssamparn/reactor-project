@@ -44,7 +44,7 @@ public class ReactiveControllerTest {
     }
 
     @Test
-    final void get_simple_flux_2_test() {
+    final void get_simple_flux_test_2() {
 
         EntityExchangeResult<List<Integer>> entityExchangeResult = webTestClient.get()
                 .uri("/flux")
@@ -57,7 +57,7 @@ public class ReactiveControllerTest {
     }
 
     @Test
-    final void get_simple_flux_3_test() {
+    final void get_simple_flux_test_3() {
 
         webTestClient.get()
                 .uri("/flux")

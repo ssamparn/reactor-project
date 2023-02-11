@@ -21,8 +21,8 @@ public class NameGeneratorUtil {
     }
 
     private static String getName() {
-        ReactiveSpecificationUtil.sleepSeconds(1);
-        return ReactiveSpecificationUtil.faker().name().fullName();
+        RsUtil.sleepSeconds(1);
+        return RsUtil.faker().name().fullName();
     }
 
 }

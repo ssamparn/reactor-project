@@ -1,62 +1,64 @@
 package com.specification.reactive.reactivestreams.flux;
 
-import com.specification.reactive.reactivestreams.util.ReactiveSpecificationUtil;
+import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+@Slf4j
 public class FluxFromStream {
 
     @Test
-    public void fluxFromStreamTest() {
+    public void flux_from_stream_test() {
         Stream<String> nameStream = Stream.of("Sam", "Harry", "Bapun", "Sashank");
 
         Flux.fromStream(nameStream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
 
         Flux.fromStream(nameStream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 
     @Test
-    public void fluxFromStreamSupplierTest() {
+    public void flux_from_stream_supplier_test() {
         Stream<String> nameStream = Stream.of("Sam", "Harry", "Bapun", "Sashank");
 
         Flux.fromStream(() -> nameStream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
 
         Flux.fromStream(() -> nameStream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 
     @Test
-    public void fluxFromStreamSupplierFromListTest() {
+    public void flux_from_stream_supplier_fromList_test() {
         List<String> nameList = List.of("Sam", "Harry", "Bapun", "Sashank");
 
         Flux.fromStream(nameList::stream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
 
         Flux.fromStream(nameList::stream).subscribe(
-                name -> System.out.println("Stream Subscriber : " + name),
-                ReactiveSpecificationUtil.onError(),
-                ReactiveSpecificationUtil.onComplete()
+                name -> log.info("Stream Subscriber : {}", name),
+                RsUtil.onError(),
+                RsUtil.onComplete()
         );
     }
 }
