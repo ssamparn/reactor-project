@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "create")
 public class Employee {
     private String empId;
-    private String salary;
+    private String name;
+    private int salary;
     private String departmentId;
     private String status;
 }

@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.tranformtest;
 
-import com.specification.reactive.reactivestreams.model.Document;
+import com.specification.reactive.reactivestreams.model.Person;
 import com.specification.reactive.reactivestreams.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -8,43 +8,43 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class FluxOneTypeToFluxAnotherType {
 
     @Test
     public void flux_ofOneType_ToFlux_ofAnotherType_test() {
-        Document document1 = Document.create("1500", "1", "10", "Approved");
-        Document document2 = Document.create("2500", "2", "10", "Approved");
+        Person person1 = Person.create("1500", "Harry", 23, 1000, "10", "Approved");
+        Person person2 = Person.create("2500", "Suzanne", 32, 2000, "11", "Approved");
 
-        Flux<Document> documentFlux = Flux.just(document1, document2);
+        Flux<Person> personFlux = Flux.just(person1, person2);
 
-        Flux<Employee> employeeFlux = documentFlux.map(this::toEmployee);
+        Flux<Employee> employeeFlux = personFlux.map(this::toEmployee);
 
         StepVerifier.create(employeeFlux)
                 .expectNextCount(2)
                 .verifyComplete();
     }
 
-    private Employee toEmployee(Document document) {
+    private Employee toEmployee(Person person) {
         Employee employee = new Employee();
-        employee.setEmpId(document.getEmpId());
-        employee.setSalary(document.getSalary());
-        employee.setDepartmentId(document.getDepartmentId());
-        employee.setStatus(document.getStatus());
+        employee.setEmpId(person.getEmpId());
+        employee.setName(person.getName());
+        employee.setSalary(person.getSalary());
+        employee.setDepartmentId(person.getDepartmentId());
+        employee.setStatus(person.getStatus());
 
         return employee;
     }
 
     @Test
     public void list_ofOneType_ToList_ofAnotherType_test() {
-        Document document1 = Document.create("1500", "1", "10", "Approved");
-        Document document2 = Document.create("2500", "2", "10", "Approved");
+        Person person1 = Person.create("1500", "Harry",23,1000, "10", "Approved");
+        Person person2 = Person.create("2500", "Suzanne", 32, 2000, "10", "Approved");
 
-        List<Document> documentList = List.of(document1, document2);
+        List<Person> personList = List.of(person1, person2);
 
-        List<Employee> employeeList = documentList.stream()
+        List<Employee> employeeList = personList.stream()
                 .map(this::toEmployee)
                 .toList();
 
