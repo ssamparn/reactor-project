@@ -241,8 +241,4 @@ public class FluxMonoTransformTest {
                 .expectNext("K", "R", "I", "S", "S", "Y")
                 .verifyComplete();
     }
-
-
-
-
 }

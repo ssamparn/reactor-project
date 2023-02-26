@@ -1,36 +1,26 @@
 package com.specification.reactive.reactivestreams.service;
 
-import com.specification.reactive.reactivestreams.model.PurchaseOrder;
+import com.specification.reactive.reactivestreams.model.Order;
 import reactor.core.publisher.Flux;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.util.Objects;
 
 public class OrderService {
 
-    private static Map<Integer, List<PurchaseOrder>> mockDb = new HashMap<>();
+    private Flux<Order> orderFlux;
 
-    static {
-        List<PurchaseOrder> purchaseOrders1 = List.of(
-                new PurchaseOrder(1),
-                new PurchaseOrder(1),
-                new PurchaseOrder(1)
-        );
-
-        List<PurchaseOrder> purchaseOrders2 = List.of(
-                new PurchaseOrder(2),
-                new PurchaseOrder(2)
-        );
-
-        mockDb.put(1, purchaseOrders1);
-        mockDb.put(2, purchaseOrders2);
+    public Flux<Order> getOrderStream() {
+        if (Objects.isNull(orderFlux)) {
+            orderFlux = createOrderStream();
+        }
+        return orderFlux;
     }
 
-    public static Flux<PurchaseOrder> getOrders(int userId) {
-        return Flux.create(purchaseOrderSynchronousSink -> {
-            mockDb.get(userId).forEach(purchaseOrderSynchronousSink::next);
-            purchaseOrderSynchronousSink.complete();
-        });
+    private Flux<Order> createOrderStream() {
+        return Flux.interval(Duration.ofMillis(100))
+                .map(i -> new Order())
+                .publish()
+                .refCount(2);
     }
 }
