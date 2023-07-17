@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.tranformtest;
+package com.specification.reactive.reactivestreams.combine.publishers;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
