@@ -13,7 +13,7 @@ public class DefaultSubscriber implements Subscriber<Object> {
     }
 
     public DefaultSubscriber(String name) {
-        this.name = name + " - ";
+        this.name = "Subscribed by " + name + " - ";
     }
 
     @Override
@@ -23,12 +23,12 @@ public class DefaultSubscriber implements Subscriber<Object> {
 
     @Override
     public void onNext(Object o) {
-        log.info("{} Received : {}", name, o);
+        log.info("{} Object received : {}", name, o);
     }
 
     @Override
     public void onError(Throwable throwable) {
-        log.info("{} Error : {}", name, throwable.getMessage());
+        log.info("{} Error Thrown : {}", name, throwable.getMessage());
     }
 
     @Override

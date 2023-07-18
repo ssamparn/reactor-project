@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.sink;
+package com.specification.reactive.reactivestreams.sinks;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
