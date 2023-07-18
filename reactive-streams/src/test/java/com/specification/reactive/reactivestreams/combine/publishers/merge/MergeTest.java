@@ -13,7 +13,7 @@ import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 
-public class CombinePublisherMergeTest {
+public class MergeTest {
 
     // The merge function executes the merging of the data from Publisher sequences
     // contained in an array into an interleaved merged sequence:
@@ -153,13 +153,44 @@ public class CombinePublisherMergeTest {
         Flux<String> nameFlux = Flux.just("Adam", "Jenny", "Mona")
                 .delayElements(Duration.ofSeconds(1));
 
-        Flux<String> mergedFlux = Flux.concat(alphabetFlux, nameFlux);
+        Flux<String> mergedFlux = Flux.merge(alphabetFlux, nameFlux);
 
         StepVerifier.withVirtualTime(mergedFlux::log)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(6))
                 .expectNextCount(6)
                 .verifyComplete();
+    }
+
+//    The mergeDelayError() merges data from Publisher sequences contained in an array into an interleaved merged sequence.
+//    This is similar to concatDelayError(), only sources are subscribed to eagerly.
+//    This variant of the static merge method will delay any error until after the rest of the merge backlog has been processed.
+
+    @Test
+    public void flux_publisher_mergeDelayError_test() {
+        Flux<String> alphabetFlux = Flux.just("A", "B", "C")
+                .delayElements(Duration.ofMillis(80));
+
+        Flux<String> errorFlux = Flux.error(new RuntimeException("Runtime Exception"));
+
+        Flux<String> nameFlux = Flux.just("Adam", "Jenny", "Mona")
+                .delayElements(Duration.ofMillis(60));
+
+        Flux<String> mergedFlux = Flux.mergeDelayError(1, alphabetFlux, errorFlux, nameFlux);
+
+        // Here delaying the emitted events does not have any effect on the sequence.
+        // Only the subscription is eager.
+
+        StepVerifier.create(mergedFlux.log())
+                .expectSubscription()
+                .expectNext("Adam")
+                .expectNext("A")
+                .expectNext("Jenny")
+                .expectNext("B")
+                .expectNext("Mona")
+                .expectNext("C")
+                .expectError()
+                .verify();
     }
 
 }

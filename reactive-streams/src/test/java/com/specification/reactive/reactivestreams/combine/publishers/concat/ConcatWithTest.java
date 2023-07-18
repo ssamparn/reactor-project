@@ -8,7 +8,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-public class CombinePublisherConcatWithTest {
+public class ConcatWithTest {
 
 //    concat and concatWith() are lazy subscription
 //    The concatenation is achieved by sequentially subscribing to the first source then waiting for it to complete before subscribing to the next,

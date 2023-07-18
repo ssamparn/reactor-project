@@ -4,7 +4,7 @@ import com.specification.reactive.reactivestreams.service.NameProducer;
 import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 
-public class CombinePublisherStartWithTest {
+public class StartWithTest {
 
     @Test
     public void combinePublisherStartWithTest() {
