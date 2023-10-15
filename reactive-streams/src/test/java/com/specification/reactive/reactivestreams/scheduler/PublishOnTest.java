@@ -9,9 +9,30 @@ import reactor.test.StepVerifier;
 
 public class PublishOnTest {
 
-    // Like other operators in general, publishOn() is applied in the middle of a chain.
+    // Like other operators in general, publishOn() is applied in the middle of the subscriber chain.
+    // It takes signals from upstream and replays them downstream while executing the callback on a worker from the associated Scheduler.
     // It affects subsequent operators after publishOn().
     // After publishOn() they will be executed on a thread picked from publishOn() scheduler.
+
+    @Test
+    public void publishOn_simple_scheduler_test() {
+        Scheduler scheduler = Schedulers.newParallel("parallel-scheduler", 4); // 1. Creates a new Scheduler backed by four Thread instances.
+
+        final Flux<String> flux = Flux
+                .range(1, 2)
+                .map(i -> {
+                    System.out.println(String.format("First Map - (%s), Thread: %s", i, Thread.currentThread().getName()));
+                    return 10 + i; // 2. Creates a new Scheduler backed by four Thread instances.
+                })
+                .publishOn(scheduler) // 3. The publishOn switches the whole sequence on a Thread picked from <1>.
+                .map(i -> {
+                    System.out.println(String.format("First Map - (%s), Thread: %s", i, Thread.currentThread().getName()));
+                    return "value " + i; // 4. The second map runs on the Thread from <1>.
+                });
+
+        new Thread(() -> flux.subscribe(System.out::println)).run(); // 5. This anonymous Thread is the one where the subscription happens.
+        // The print happens on the latest execution context, which is the one from publishOn.
+    }
 
     @Test
     public void publishOn_single_scheduler_test() {
