@@ -7,6 +7,19 @@ import reactor.test.StepVerifier;
 
 public class FluxJust {
 
+    /**
+     * Flux is a standard Publisher that represents 0 to N asynchronous sequence values.
+     * This means that it can emit 0 to many values, possibly infinite values for onNext() requests, and then terminates with either a completion or an error signal.
+     * */
+
+    /**
+     * Mono vs. Flux:
+     *   Mono and Flux are both implementations of the Publisher interface.
+     *   In simple terms, we can say that when we’re doing something like a computation or making a request to a database or an external service, and expecting a maximum of one result, then we should use Mono.
+     *   When we’re expecting multiple results from our computation, database, or external service call, then we should use Flux.
+     *   Mono is more relatable to the Optional class in Java since it contains 0 or 1 value.
+     *   Flux is more relatable to List / Stream since it can have N number of values.
+     * */
     @Test
     public void flux_just_test() {
         Flux<String> nameFlux = Flux.just("Sam", "Harry", "Bapun");

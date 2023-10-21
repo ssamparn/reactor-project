@@ -3,9 +3,27 @@ package com.specification.reactive.reactivestreams.mono;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @Slf4j
 public class MonoJust {
+
+    /**
+     * Mono is a special type of Publisher.
+     * A Mono object represents a single or empty value.
+     * This means it can only emit one value at most for the onNext() request and then terminates with the onComplete() signal.
+     * In case of failure, it only emits a single onError() signal.
+     * */
+
+    @Test
+    public void given_mono_publisher_when_subscribe_then_return_single_value() {
+        Mono<String> helloMono = Mono.just("Hello");
+
+        StepVerifier.create(helloMono)
+                .expectNext("Hello")
+                .expectComplete()
+                .verify();
+    }
 
     @Test
     public void mono_just_test() {
@@ -18,4 +36,6 @@ public class MonoJust {
         // Subscribe to the publisher
         integerMono.subscribe(integer -> log.info("Received: {}", integer));
     }
+
+
 }

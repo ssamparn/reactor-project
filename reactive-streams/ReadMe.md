@@ -1,6 +1,14 @@
 ### References:
 
-Project Reactor Essentials - A Welcome to Reactive Programmin: https://www.youtube.com/playlist?list=PL0Un1HNdB4jFCsHsQg2HOfO03XfECuMiw
+Project Reactor Essentials - A Welcome to Reactive Programming: 
+
+https://www.baeldung.com/reactor-core
+
+https://www.baeldung.com/java-reactor-flux-vs-mono
+
+https://www.baeldung.com/java-string-from-mono
+
+https://www.youtube.com/playlist?list=PL0Un1HNdB4jFCsHsQg2HOfO03XfECuMiw
 
 https://zoltanaltfatter.com/2018/08/26/subscribeOn-publishOn-in-Reactor/
 
