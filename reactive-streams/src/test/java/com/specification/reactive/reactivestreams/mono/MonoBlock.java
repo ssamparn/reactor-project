@@ -13,9 +13,10 @@ public class MonoBlock {
     public void mono_block_test() {
 
         getName();
-        getName()
+        String name = getName()
                 .subscribeOn(Schedulers.boundedElastic())
                 .block();
+        System.out.println(name);
         getName();
 
         RsUtil.sleepSeconds(4);

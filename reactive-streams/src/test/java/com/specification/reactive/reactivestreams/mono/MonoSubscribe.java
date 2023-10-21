@@ -11,11 +11,12 @@ public class MonoSubscribe {
         // publisher
         Mono<String> stringMono = Mono.just("ball");
 
-        // 1: Subscribe
+        // 1. Subscribe without consumer implementations
         stringMono.subscribe();
 
-        // 2: Subscribe with Consumer Implementations
-        stringMono.subscribe(RsUtil.onNext(),
+        // 2. Subscribe with consumer implementations
+        stringMono.subscribe(
+                RsUtil.onNext(),
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );

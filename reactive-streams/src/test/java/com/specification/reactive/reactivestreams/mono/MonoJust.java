@@ -30,10 +30,12 @@ public class MonoJust {
         // Publisher
         Mono<Integer> integerMono = Mono.just(1);
 
-        // Nothing happens until unless you subscribe to the publisher
+        // Nothing happens until unless you subscribe to the publisher.
+        // This works in a similar way like the terminal operation while evaluating streams. Stream will not be evaluated until unless the terminal operation is invoked.
         System.out.println(integerMono);
 
-        // Subscribe to the publisher
+        // Subscribe to the publisher in order to access data from a publisher.
+        // Once you subscribe, then only the publisher will emit events / data.
         integerMono.subscribe(integer -> log.info("Received: {}", integer));
     }
 

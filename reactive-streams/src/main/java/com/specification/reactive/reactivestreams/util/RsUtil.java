@@ -28,6 +28,14 @@ public class RsUtil {
         return FAKER;
     }
 
+    public static void sleepMilliSeconds(int milliSeconds) {
+        try {
+            Thread.sleep(milliSeconds);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void sleepSeconds(int seconds) {
         try {
             Thread.sleep(seconds * 1000);

@@ -10,30 +10,42 @@ import reactor.core.scheduler.Schedulers;
 public class MonoSupplierRefactoring {
 
     @Test
-    public void Mono_Supplier_refactoring_test() {
+    public void mono_supplier_blocking_test() {
 
-        // Blocking
+        // Blocking code. We are just invoking the publisher but not subscribing to it.
         getName();
-        getName()
-                .subscribe(RsUtil.onNext());
+        getName();
         getName();
 
-        // Asynchronous
+        // subscribing to the publisher in a blocking manner
+        getName().subscribe(RsUtil.onNext());
+
+        // To get the name from the method, we have to block the main thread
+        RsUtil.sleepSeconds(4);
+    }
+
+    @Test
+    public void mono_supplier_async_test() {
+
         getName();
+        getName();
+        getName();
+
+        // subscribing to the publisher in an asynchronous manner
         getName()
                 .subscribeOn(Schedulers.boundedElastic())
                 .subscribe(RsUtil.onNext());
-        getName();
 
-        // To get the name block the main thread
+        // To get the name from the method, we have to block the main thread
         RsUtil.sleepSeconds(4);
     }
+
 
     private static Mono<String> getName() {
         log.info("Entered getName method: ");
         return Mono.fromSupplier(() -> {
-            log.info("Generating Name...");
-            RsUtil.sleepSeconds(2);
+            log.info("Publishing Names...");
+            RsUtil.sleepMilliSeconds(2000);
             return RsUtil.faker().name().fullName();
         }).map(String::toUpperCase);
     }

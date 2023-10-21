@@ -13,7 +13,9 @@ public class MonoFromRunnable {
         Mono.fromRunnable(timeConsumingProcess())
                 .subscribe(RsUtil.onNext(),
                         RsUtil.onError(),
-                        RsUtil.onComplete());
+                        () -> {
+                            System.out.println("Process is done. Sending eMails....");
+                        }); // subscribe() accepts a Runnable. this Runnable depends on the timeConsumingProcess Runnable.
     }
 
     private static Runnable timeConsumingProcess() {

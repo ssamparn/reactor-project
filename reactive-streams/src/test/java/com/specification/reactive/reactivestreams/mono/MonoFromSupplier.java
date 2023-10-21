@@ -10,13 +10,15 @@ import java.util.function.Supplier;
 @Slf4j
 public class MonoFromSupplier {
 
+    /* *
+     * Difference between Mono.just() and Mono.fromSupplier():
+     * Use Mono.just() only when you know publisher already have the data.
+     * Use Mono.fromSupplier() when you want to invoke publisher lazily.
+     * */
     @Test
     public void mono_from_supplier_test() {
-        // Use Mono.just() only when you know publisher already have the data.
-        // Mono.just(getName());
-
-        // Use Mono.fromSupplier() when you want to invoke publisher lazily.
-
+        // Mono.fromSupplier() create a Mono, producing its value using the provided Supplier.
+        // If the Supplier resolves to null, the resulting Mono completes empty.
         Supplier<String> stringSupplier = () -> getName();
 
         Mono<String> stringMono = Mono.fromSupplier(stringSupplier);
@@ -26,7 +28,8 @@ public class MonoFromSupplier {
     }
 
     private static String getName() {
-        log.info("Generating Name: ");
+        log.info("Publishing Names: "); // Imagine this is a time consuming operation
+        RsUtil.sleepMilliSeconds(500);
         return RsUtil.faker().name().fullName();
     }
 }

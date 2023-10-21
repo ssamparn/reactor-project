@@ -12,7 +12,6 @@ public class MonoFromCallable {
 
     @Test
     public void mono_from_Callable_test() {
-
         Callable<String> stringCallable = () -> getName();
 
         Mono<String> stringMono = Mono.fromCallable(stringCallable);
