@@ -1,7 +1,7 @@
 package com.specification.reactive.reactivestreams.util;
 
 import com.github.javafaker.Faker;
-import com.specification.reactive.reactivestreams.service.DefaultSubscriber;
+import com.specification.reactive.reactivestreams.subscriber.DefaultSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 

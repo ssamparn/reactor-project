@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.service;
+package com.specification.reactive.reactivestreams.subscriber;
 
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscription;

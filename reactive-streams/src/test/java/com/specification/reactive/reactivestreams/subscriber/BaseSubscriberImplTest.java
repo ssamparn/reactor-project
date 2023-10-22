@@ -1,6 +1,5 @@
 package com.specification.reactive.reactivestreams.subscriber;
 
-import com.specification.reactive.reactivestreams.service.BaseSubscriberImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
