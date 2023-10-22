@@ -15,7 +15,9 @@ public class DelayOperatorTest {
                 .delayElements(Duration.ofSeconds(1L))
                 .subscribe(RsUtil.subscriber());
 
-        // RsUtil.sleepSeconds(60);
-        // Uncomment thread sleep to test
+        // Uncomment thread.sleep() to test the delay emission of elements behavior,
+        // as delayed elements are scheduled to be emitted in a separate thread pool.
+
+//         RsUtil.sleepSeconds(60);
     }
 }

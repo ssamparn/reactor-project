@@ -8,6 +8,21 @@ import reactor.core.publisher.Flux;
 @Slf4j
 public class DoOnCallbackOperatorsTest {
 
+    /* *
+     * Callback precedence:
+     * ---------------------
+     * ---------------------
+     * The request flows from subscriber to publisher.
+     * The subscription object passed from publisher to subscriber.
+     * doFirst() always gets executed first (bottom to top). ALWAYS. Even before doOnSubscribe().
+     * After doFirst(), doOnSubscribe() (top to bottom) gets executed.
+     * After subscription, request is made. So after doOnSubscribe(), doOnRequest() gets executed. Then doOnNext() or doOnError() (In case of any error)
+     * In case there is no error, doOnComplete() gets executed upon completion signal.
+     * doOnTerminate() gets executed before doFinally(). doOnTerminate() gets executed when the subscription gets terminated i.e: before completion or error signal gets received.
+     * But doOnTerminate() does not get executed if we cancel the subscription e.g: with a take() operator.
+     * doFinally() always gets executed at the end.
+     * */
+
     @Test
     public void do_callback_operator_complete_test() {
         Flux.create(fluxSink -> {
@@ -16,8 +31,9 @@ public class DoOnCallbackOperatorsTest {
                 fluxSink.next(i);
             }
             fluxSink.complete();
-            log.info("--flux completed");
+            log.info("Flux completed");
         })
+        .doFinally(finalSignal -> log.info("doFinally : {}", finalSignal))
         .doOnComplete(() -> log.info("doOnComplete"))
         .doFirst(() -> log.info("doFirst: 1"))
         .doOnNext(obj -> log.info("doOnNext : {}", obj))
@@ -27,17 +43,13 @@ public class DoOnCallbackOperatorsTest {
         .doOnTerminate(() -> log.info("doOnTerminate"))
         .doFirst(() -> log.info("doFirst: 2"))
         .doOnCancel(() -> log.info("doOnCancel"))
-        .doFinally(finalSignal -> log.info("doFinally : {}", finalSignal))
-        .doFirst(() -> log.info("doFirst: 3"))
+        .doFirst(() -> log.info("doFirst: 3")) // 1
         .doOnDiscard(Object.class, obj -> log.info("doOnDiscard : {}", obj))
         .doOnSubscribe(obj -> log.info("doOnSubscribe 2: {}", obj))
         .subscribe(RsUtil.subscriber());
     }
 
 
-// The request flows from subscriber to publisher.
-// The subscription object passed from publisher to subscriber.
-// doOnTerminate and doFinally always gets executed.
 
     @Test
     public void do_callback_operator_error_test() {
