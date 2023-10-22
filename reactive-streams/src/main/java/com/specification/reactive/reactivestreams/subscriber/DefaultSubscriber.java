@@ -18,12 +18,12 @@ public class DefaultSubscriber implements Subscriber<Object> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        subscription.request(Long.MAX_VALUE);
+        subscription.request(Long.MAX_VALUE); // make unbounded request
     }
 
     @Override
     public void onNext(Object o) {
-        log.info("{} Object received : {}", name, o);
+        log.info("{} Received Object : {}", name, o);
     }
 
     @Override

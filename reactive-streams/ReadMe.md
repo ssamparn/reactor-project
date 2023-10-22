@@ -10,6 +10,8 @@ https://www.baeldung.com/java-string-from-mono
 
 https://codersee.com/mono-just-defer-fromsupplier-create-part-1/
 
+https://www.baeldung.com/java-flux-create-generate
+
 https://www.youtube.com/playlist?list=PL0Un1HNdB4jFCsHsQg2HOfO03XfECuMiw
 
 https://zoltanaltfatter.com/2018/08/26/subscribeOn-publishOn-in-Reactor/

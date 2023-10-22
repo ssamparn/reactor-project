@@ -48,7 +48,7 @@ public class RsUtil {
         return new DefaultSubscriber();
     }
 
-    public static Subscriber<Object> subscriber(String name) {
-        return new DefaultSubscriber(name);
+    public static Subscriber<Object> subscriber(String value) {
+        return new DefaultSubscriber(value);
     }
 }

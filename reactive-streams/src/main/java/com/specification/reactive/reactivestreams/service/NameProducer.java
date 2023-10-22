@@ -33,8 +33,8 @@ public class NameProducer implements Consumer<FluxSink<String>> {
             cache.add(name);
             stringSynchronousSink.next(name);
         })
-                .cast(String.class)
-                .startWith(getFromCache());
+        .cast(String.class)
+        .startWith(getFromCache());
     }
 
     private Flux<String> getFromCache() {
