@@ -6,6 +6,7 @@ import reactor.core.publisher.Flux;
 
 public class FluxRange {
 
+    // Flux.range(): range() of Flux acts like a simple for loop.
     @Test
     public void flux_range_integer_Test() {
         Flux<Integer> integerFlux = Flux.range(1, 10);
@@ -19,15 +20,10 @@ public class FluxRange {
 
     @Test
     public void flux_range_name_test() {
-        Flux<String> nameFlux = Flux.range(1, 10)
+        Flux.range(1, 10)
                 .log()
-                .map(integer -> integer + " : " + RsUtil.faker().name().fullName())
-                .log();
-
-        nameFlux.subscribe(
-                RsUtil.onNext(),
-                RsUtil.onError(),
-                RsUtil.onComplete()
-        );
+                .map(i -> i + " : " + RsUtil.faker().name().fullName()) // Subscriber 2
+                .log()
+                .subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete()); // Subscriber 1
     }
 }

@@ -20,7 +20,7 @@ public class CustomSubscriber {
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onSubscribe(Subscription subscription) {
-                        log.info("Received Sub : {}", subscription);
+                        log.info("Received Subscription : {}", subscription);
                         atomicReference.set(subscription);
                     }
 
@@ -39,13 +39,19 @@ public class CustomSubscriber {
                         log.info("onComplete");
                     }
                 });
+
         RsUtil.sleepSeconds(2);
-        atomicReference.get().request(3);
+        atomicReference.get().request(3); // 1, 2, 3
+
         RsUtil.sleepSeconds(2);
-        atomicReference.get().request(3);
+        atomicReference.get().request(5); // 4, 5, 6, 7, 8
+
         RsUtil.sleepSeconds(1);
 
         log.info("Going to cancel");
         atomicReference.get().cancel();
+
+        RsUtil.sleepSeconds(2);
+        atomicReference.get().request(4); // No event is going to be emitted after the subscription is cancelled.
     }
 }

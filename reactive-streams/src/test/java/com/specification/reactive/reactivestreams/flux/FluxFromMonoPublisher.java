@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 public class FluxFromMonoPublisher {
 
     @Test
-    public void flux_from_monoPublisher_test() {
+    public void flux_from_mono_publisher_test() {
         Mono<String> stringMono = Mono.just("a");
 
         Flux<String> stringFlux = Flux.from(stringMono);
@@ -17,13 +17,12 @@ public class FluxFromMonoPublisher {
     }
 
     @Test
-    public void flux_to_monoPublisher_test() {
+    public void flux_to_mono_publisher_test() {
         Flux<Integer> integerFlux = Flux.range(1, 10);
-        integerFlux
+        Mono<Integer> integerMono = integerFlux
                 .filter(item -> item > 3)
-                .next()
-                .subscribe(RsUtil.onNext());
+                .next();  // next() will return a Mono<Integer> from a FLux<Integer>
+
+        integerMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
     }
-
-
 }
