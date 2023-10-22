@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 @Slf4j
-public class MultipleSubscriber {
+public class FluxMultipleSubscriber {
 
+    // multiple subscribers can subscribe to a publisher (both flux and mono).
     @Test
-    public void multiple_subscriber_test() {
+    public void flux_multiple_subscriber_test() {
         Flux<String> nameFlux = Flux.just("Sam", "Harry", "Bapun", "Sashank");
 
         Flux<String> sNameFlux = nameFlux.filter(name -> name.startsWith("S"));

@@ -15,7 +15,8 @@ public class FluxFromArrayAndList {
     public void flux_from_list_test() {
         List<String> nameList = Arrays.asList("Sam", "Harry", "Bapun", "Sashank");
 
-        Flux.fromIterable(nameList).subscribe(
+        Flux.fromIterable(nameList)
+                .subscribe(
                     name -> log.info("List Subscriber : {}", name),
                     RsUtil.onError(),
                     RsUtil.onComplete()
