@@ -8,25 +8,28 @@ import reactor.core.publisher.Mono;
 public class OnErrorOperatorTest {
 
     @Test
-    public void on_error_operator_test_1() {
+    public void on_error_return_test() {
         Flux.range(1, 10)
                 .log()
                 .map(i -> 20 / (5 - i))
-                .onErrorReturn(20) // the pipeline stops after the error. A cancel() event gets emitted
+                .onErrorReturn(20) // the pipeline stops after the error and a cancel() event gets emitted.
                 .subscribe(RsUtil.subscriber());
     }
 
     @Test
-    public void on_error_operator_test_2() {
+    public void on_error_resume_test() {
         Flux.range(1, 10)
                 .log()
                 .map(i -> 20 / (5 - i))
-                .onErrorResume(e -> fallBack()) // the pipeline stops after the error. A cancel() event gets emitted
+                .onErrorResume(e -> fallBack()) // the pipeline stops after the error and a cancel() event gets emitted.
+                // Here we are not using the exception object e. We are simply ignoring it and return a value from fallback().
                 .subscribe(RsUtil.subscriber());
     }
 
+    // In both onErrorReturn() and onErrorResume() the pipeline stops after the error and a cancel() event gets emitted. But what if you want to continue the event emission.
+    // That's when we should use onErrorContinue()
     @Test
-    public void on_error_operator_test_3() {
+    public void on_error_continue_test() {
         Flux.range(1, 10)
                 .log()
                 .map(i -> 20 / (5 - i))

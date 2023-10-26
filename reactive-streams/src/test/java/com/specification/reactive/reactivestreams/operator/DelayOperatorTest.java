@@ -10,7 +10,7 @@ public class DelayOperatorTest {
 
     @Test
     public void delay_operator_test() {
-        Flux.range(1, 100)
+        Flux.range(1, 20)
                 .log()
                 .delayElements(Duration.ofSeconds(1L))
                 .subscribe(RsUtil.subscriber());
@@ -18,6 +18,6 @@ public class DelayOperatorTest {
         // Uncomment thread.sleep() to test the delay emission of elements behavior,
         // as delayed elements are scheduled to be emitted in a separate thread pool.
 
-//         RsUtil.sleepSeconds(60);
+        RsUtil.sleepSeconds(60);
     }
 }
