@@ -7,8 +7,12 @@ import reactor.core.publisher.Mono;
 
 public class SwitchIfEmptyOperatorTest {
 
+    /**
+     * switchIfEmpty(): and need to handle some logic based on emptiness.
+     * switchIfEmpty() operator help us to do so. It switch to an alternative publisher if this sequence is completed without any data.
+     * */
     @Test
-    public void switch_if_empty_operator_test_1() {
+    public void switch_if_empty_operator_test() {
         getOrderNumbers()
                 .filter(i -> i > 10)
                 .switchIfEmpty(fallBackMonoPublisher())
@@ -16,22 +20,25 @@ public class SwitchIfEmptyOperatorTest {
     }
 
     @Test
-    public void switch_if_empty_operator_test_2() {
+    public void switch_if_empty_operator_another_test() {
         getOrderNumbers()
                 .filter(i -> i > 10)
                 .switchIfEmpty(fallBackFluxPublisher())
                 .subscribe(RsUtil.subscriber());
     }
 
+    // cache
     private static Flux<Integer> getOrderNumbers() {
         return Flux.range(1, 10);
     }
 
+    // db
     private static Mono<Integer> fallBackMonoPublisher() {
         return Mono.fromSupplier(() -> 20);
     }
 
+    // db
     private static Flux<Integer> fallBackFluxPublisher() {
-        return Flux.just(8, 10, 12, 14);
+        return Flux.just(12, 14, 16, 18, 20);
     }
 }
