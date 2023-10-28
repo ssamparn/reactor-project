@@ -53,6 +53,35 @@ public class SwitchOnFirstOperator {
         // If not, then I get the default value of 100 as the switchOnFirst cancels the source emission and publishes empty to downstream.
     }
 
+    @Test
+    public void switch_on_operator_another_test() {
+        Flux<Integer> integerFlux = Flux.just(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // To trigger odd handler
+
+        //Flux<Integer> integerFlux = Flux.just(0, 2, 3, 4, 5, 6, 7, 8, 9, 10); // To trigger even handler
+
+        integerFlux
+                .switchOnFirst((signal, flux) ->
+                        signal.get() % 2 == 0 ? getEvenFlux(flux) : getOddFlux(flux)
+                ).subscribe(RsUtil.subscriber());
+    }
+
+    private Flux<Integer> getOddFlux(Flux<Integer> flux) {
+        return flux
+            .map(i -> {
+                System.out.println("Odd Handler: " + i);
+                return i;
+            });
+
+    }
+
+    private Flux<Integer> getEvenFlux(Flux<Integer> flux) {
+        return flux
+            .map(i -> {
+                System.out.println("Even Handler: " + i);
+                return i * 2;
+            })
+            .filter(i -> i <= 10);
+    }
 
     @Test
     public void switch_on_first_operator_test() {

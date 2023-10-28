@@ -24,6 +24,8 @@ https://medium.com/@bharathsanjai/transform-operator-in-web-flux-18a74c75cdb7
 
 https://medium.com/digitalfrontiers/reactive-programming-the-hitchhikers-guide-to-map-operators-7d8bbc1d8465
 
+https://www.vinsguru.com/reactive-programming-switchonfirst-usage/
+
 https://www.youtube.com/playlist?list=PL0Un1HNdB4jFCsHsQg2HOfO03XfECuMiw
 
 https://zoltanaltfatter.com/2018/08/26/subscribeOn-publishOn-in-Reactor/
