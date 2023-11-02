@@ -12,7 +12,7 @@ import java.time.Duration;
 public class HotColdReactiveStreamTest {
 
     @Test
-    public void flux_coldPublisher_test() throws InterruptedException {
+    public void flux_cold_publisher_test() throws InterruptedException {
         Flux<String> stringFlux = Flux.just("A", "B", "C", "D", "E", "F")
                 .delayElements(Duration.ofSeconds(1));
 
@@ -24,7 +24,7 @@ public class HotColdReactiveStreamTest {
     }
 
     @Test
-    public void flux_hotPublisher_test() throws InterruptedException {
+    public void flux_hot_publisher_test() throws InterruptedException {
 
         Flux<String> stringFlux = Flux.just("A", "B", "C", "D", "E", "F")
                 .delayElements(Duration.ofSeconds(1));
@@ -39,36 +39,49 @@ public class HotColdReactiveStreamTest {
 
     }
 
-    // Sample example of 2 users Sam and Mike wants to watch movie scenes in Netflix.
-    // The cold behavior is the default behavior of a publisher.
+    // Sample example of 2 users Sam and Mike wants to watch movies in Netflix.
+    // The cold behavior is the default behavior of a publisher i.e: nothing happens until a subscriber subscribes to a Publisher.
     @Test
     public void flux_cold_publisher_movie_test() {
         Flux<String> movieFlux = movieFlux().delayElements(Duration.ofMillis(1000));
 
-        movieFlux.subscribe(RsUtil.subscriber("sam"));
+        movieFlux.subscribe(RsUtil.subscriber("Sam"));
         RsUtil.sleepSeconds(6);
 
-        movieFlux.subscribe(RsUtil.subscriber("mike"));
-        RsUtil.sleepSeconds(10);
+        movieFlux.subscribe(RsUtil.subscriber("Mike"));
+        RsUtil.sleepSeconds(11);
+
+        // Sam will complete the movie before Mike does, as Sam started watching before Mike.
     }
 
-    // Sample example of 2 users Sam and Mike wants to watch movie scenes in a Theatre.
-    // Using share() we got the hot behavior of a publisher.
+
+    /**
+     * share(): Using share() we can get the hot behavior of a publisher.
+     * It is one of the way to convert a cold publisher to a hot publisher
+     * */
+
+    // Sample example of 2 users Sam and Mike wants to watch movies in a Theatre.
     @Test
     public void flux_hot_publisher_share_movie_test() {
         Flux<String> movieFlux = movieFlux()
             .delayElements(Duration.ofMillis(1000))
-            .share(); // share() is one of the way to convert a cold publisher to a hot publisher
+            .share();
 
-        movieFlux.subscribe(RsUtil.subscriber("sam"));
+        movieFlux.subscribe(RsUtil.subscriber("Sam"));
         RsUtil.sleepSeconds(6);
 
-        movieFlux.subscribe(RsUtil.subscriber("mike"));
-        RsUtil.sleepSeconds(10);
+        movieFlux.subscribe(RsUtil.subscriber("Mike"));
+        RsUtil.sleepSeconds(11);
+        // Both Sam and Mike will complete the movie at the same time
     }
 
+
+    /**
+     * share(): share() is the alias for publish() + refCount(1).
+     * With share() as we saw, we got the hot behavior of a publisher.
+     * */
+
     // Sample example of 2 users Sam and Mike wants to watch movie scenes in a Theatre.
-    // share() = publish() + refCount(1) we got the hot behavior of a publisher.
     @Test
     public void flux_hot_publisher_publish_refCount_movie_test() {
         Flux<String> movieFlux = movieFlux()
@@ -77,10 +90,10 @@ public class HotColdReactiveStreamTest {
             .refCount(1); // publish() + refCount(1) is another way to convert a cold publisher to a hot publisher
 
         movieFlux.subscribe(RsUtil.subscriber("sam"));
-        RsUtil.sleepSeconds(6);
+        RsUtil.sleepSeconds(11);
 
         movieFlux.subscribe(RsUtil.subscriber("mike"));
-        RsUtil.sleepSeconds(10);
+        RsUtil.sleepSeconds(11);
     }
 
     // Sample example of 2 users Sam and Mike wants to watch movie scenes in a Theatre.
@@ -92,12 +105,12 @@ public class HotColdReactiveStreamTest {
                 .publish()
                 .autoConnect(1); // publish() + autoConnect(1) is another way to convert a cold publisher to a hot publisher
 
-        movieFlux.subscribe(RsUtil.subscriber("sam"));
-        RsUtil.sleepSeconds(6);
+        movieFlux.subscribe(RsUtil.subscriber("Sam"));
+        RsUtil.sleepSeconds(11);
 
         log.info("Mike is about to watch the movie");
-        movieFlux.subscribe(RsUtil.subscriber("mike"));
-        RsUtil.sleepSeconds(10);
+        movieFlux.subscribe(RsUtil.subscriber("Mike"));
+        RsUtil.sleepSeconds(5);
     }
 
     // Sample example of 2 users Sam and Mike wants to watch movie scenes in a Theatre.
@@ -131,11 +144,11 @@ public class HotColdReactiveStreamTest {
         RsUtil.sleepSeconds(2);
         log.info("Sam start watching the movie 2 seconds late");
         movieFlux.subscribe(RsUtil.subscriber("sam"));
-        RsUtil.sleepSeconds(6);
+        RsUtil.sleepSeconds(10);
 
         log.info("Mike is about to watch the movie");
         movieFlux.subscribe(RsUtil.subscriber("mike"));
-        RsUtil.sleepSeconds(10);
+        RsUtil.sleepSeconds(4);
     }
 
     private Flux<String> movieFlux() {
@@ -143,18 +156,13 @@ public class HotColdReactiveStreamTest {
                 "1. The Pale Blue Eye",
                 "2. The Gray Man",
                 "3. White Noise",
-                "4. Luckiest Girl Alive",
-                "5. Bullet Train",
-                "6. After Ever Happy",
-                "7. Saaho",
-                "8. Pagglait",
-                "9. Godfather",
-                "10. The Terminal",
-                "11. Catch me if you can",
-                "12. True Spirit",
-                "13. Your place or mine",
-                "14. Oblivion",
-                "15. Your People"
+                "4. Bullet Train",
+                "5. After Ever Happy",
+                "6. Godfather",
+                "7. The Terminal",
+                "8. Catch me if you can",
+                "9. True Spirit",
+                "10. Oblivion"
         );
     }
 }
