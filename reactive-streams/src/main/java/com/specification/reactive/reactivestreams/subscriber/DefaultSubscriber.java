@@ -5,15 +5,15 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 @Slf4j
-public class DefaultSubscriber implements Subscriber<Object> {
+public class DefaultSubscriber<T> implements Subscriber<T> {
 
-    private String name = "";
+    private String subscriberName = "";
 
     public DefaultSubscriber() {
     }
 
-    public DefaultSubscriber(String name) {
-        this.name = "Subscribed by " + name + " - ";
+    public DefaultSubscriber(String subscriberName) {
+        this.subscriberName = "Subscribed by " + subscriberName + " : ";
     }
 
     @Override
@@ -22,17 +22,17 @@ public class DefaultSubscriber implements Subscriber<Object> {
     }
 
     @Override
-    public void onNext(Object o) {
-        log.info("{} Received Object : {}", name, o);
+    public void onNext(T item) {
+        log.info("{} Received Object : {}", this.subscriberName, item);
     }
 
     @Override
     public void onError(Throwable throwable) {
-        log.info("{} Error Thrown : {}", name, throwable.getMessage());
+        log.info("{} Error Thrown : {}", this.subscriberName, throwable.getMessage());
     }
 
     @Override
     public void onComplete() {
-        log.info("{} Completed ", name);
+        log.info("{} Completed ", this.subscriberName);
     }
 }

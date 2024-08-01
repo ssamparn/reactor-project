@@ -17,7 +17,7 @@ public class RsUtil {
     }
 
     public static Consumer<Throwable> onError() {
-        return err -> log.info("Error: {}", err.getMessage());
+        return err -> log.info("Error message: {}", err.getMessage());
     }
 
     public static Runnable onComplete() {
@@ -44,11 +44,11 @@ public class RsUtil {
         }
     }
 
-    public static Subscriber<Object> subscriber() {
-        return new DefaultSubscriber();
+    public static <T> Subscriber<T> subscriber() {
+        return new DefaultSubscriber<>();
     }
 
-    public static Subscriber<Object> subscriber(String value) {
-        return new DefaultSubscriber(value);
+    public static <T> Subscriber<T> subscriber(String subscriberName) {
+        return new DefaultSubscriber<>(subscriberName);
     }
 }

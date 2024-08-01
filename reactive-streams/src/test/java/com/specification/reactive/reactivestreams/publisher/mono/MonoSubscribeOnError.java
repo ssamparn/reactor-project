@@ -13,10 +13,7 @@ public class MonoSubscribeOnError {
                 .map(String::length)
                 .map(len -> len / 0);
 
-        // 1: Subscribe without consumer implementations
-        stringMono.subscribe();
-
-        // 2: Subscribe with Consumer Implementations
+        // subscribe with Consumer Implementations
         stringMono.subscribe(
                 RsUtil.onNext(),
                 RsUtil.onError(),

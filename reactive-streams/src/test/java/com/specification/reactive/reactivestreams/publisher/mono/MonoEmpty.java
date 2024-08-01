@@ -37,6 +37,9 @@ public class MonoEmpty {
                 .just("Testing Mono of Void")
                 .then();
 
-        thenVoidMono.subscribe(System.out::println);
+        StepVerifier.create(thenVoidMono)
+                .expectSubscription()
+                .expectComplete()
+                .verify();
     }
 }

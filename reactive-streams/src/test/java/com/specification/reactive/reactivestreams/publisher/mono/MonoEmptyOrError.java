@@ -6,9 +6,13 @@ import reactor.core.publisher.Mono;
 
 public class MonoEmptyOrError {
 
+    /* *
+     * Emitting empty() or error()
+     * */
+
     @Test
     public void mono_empty_or_error_test() {
-        int userId = 1;
+        int userId = 3;
         userRepository(userId)
                 .subscribe(
                         RsUtil.onNext(),
@@ -18,11 +22,20 @@ public class MonoEmptyOrError {
     }
 
     private static Mono<String> userRepository(int userId) {
-        if (userId == 1) {
-            return Mono.just(RsUtil.faker().name().firstName());
-        } else if (userId == 2) {
-            return Mono.empty(); // returning Mono.empty() is a better way of sending an empty signal than null.
-        } else
-            return Mono.error(new RuntimeException("Not in the allowed range"));
+        return switch (userId) {
+            case 1 -> Mono.just(RsUtil.faker().name().firstName());
+            case 2 -> Mono.empty(); // returning Mono.empty() is a better way of sending an empty signal than null.
+            default -> Mono.error(new RuntimeException("Not in the allowed range"));
+        };
+    }
+
+    @Test
+    public void mono_on_error_dropped_problem_test() {
+        int userId = 3;
+
+        // instead of using the default subscriber implementation, we are using a simple consumer implementation.
+        // we will get onErrorDropped as the error handler is missing. To actually fix the issue, provide an error handler
+        userRepository(userId)
+                .subscribe(System.out::println, err -> {});
     }
 }
