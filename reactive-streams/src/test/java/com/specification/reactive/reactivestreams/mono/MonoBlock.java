@@ -12,21 +12,23 @@ public class MonoBlock {
     @Test
     public void mono_block_test() {
 
-        getName();
+        getName(); // nothing happens until you subscribe
+        getName(); // nothing happens until you subscribe
+
         String name = getName()
                 .subscribeOn(Schedulers.boundedElastic())
                 .block();
         System.out.println(name);
-        getName();
 
-        RsUtil.sleepSeconds(4);
+        getName(); // nothing happens until you subscribe
+        getName(); // nothing happens until you subscribe
     }
 
     private static Mono<String> getName() {
         log.info("Entered getName method: ");
         return Mono.fromSupplier(() -> {
             log.info("Generating Name...");
-            RsUtil.sleepSeconds(2);
+            RsUtil.sleepSeconds(1);
             return RsUtil.faker().name().fullName();
         }).map(String::toUpperCase);
     }

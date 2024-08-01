@@ -109,15 +109,15 @@ public class MonoDefer {
     }
 
     public void monoJustInstantiation() {
-        Mono<String> stringMono = monoJust();
+        monoJust();
     }
 
     public void monoDeferInstantiation() {
-        Mono<String> stringMono = monoDefer();
+        monoDefer();
     }
 
     public void monoSupplierInstantiation() {
-        Mono<String> stringMono = monoSupplier();
+        monoSupplier();
     }
 
     private static String getName() {

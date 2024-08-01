@@ -15,9 +15,8 @@ public class MonoFromCallable {
         Callable<String> stringCallable = () -> getName();
 
         Mono<String> stringMono = Mono.fromCallable(stringCallable);
-        stringMono.subscribe(
-                RsUtil.onNext()
-        );
+
+        stringMono.subscribe(RsUtil.onNext());
     }
 
     private static String getName() {
