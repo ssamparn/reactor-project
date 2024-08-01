@@ -20,7 +20,7 @@ public class BaseSubscriberImplTest {
     @Test
     public void base_subscriber_impl_test_approach_2() {
         Flux.range(1, 5)
-            .subscribe(new BaseSubscriber<Integer>() {
+            .subscribe(new BaseSubscriber<>() {
                 @Override
                 protected void hookOnSubscribe(Subscription subscription) {
                     log.info("Subscribed");
@@ -29,7 +29,7 @@ public class BaseSubscriberImplTest {
 
                 @Override
                 protected void hookOnNext(Integer value) {
-                    log.info(String.valueOf(value));
+                    log.info("On Next: {}", value);
                     request(1);
                 }
 

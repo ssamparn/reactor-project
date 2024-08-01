@@ -15,7 +15,7 @@ public class BaseSubscriberImpl<T> extends BaseSubscriber<T> {
 
     @Override
     public void hookOnNext(T value) {
-        log.info((String) value);
+        log.info("On Next: {}", value);
         request(1);
     }
 
