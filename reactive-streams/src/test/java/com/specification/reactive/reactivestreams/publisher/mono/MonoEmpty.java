@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.mono;
+package com.specification.reactive.reactivestreams.publisher.mono;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;

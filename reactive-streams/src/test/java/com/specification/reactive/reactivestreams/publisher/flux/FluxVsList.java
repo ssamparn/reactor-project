@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.flux;
+package com.specification.reactive.reactivestreams.publisher.flux;
 
 import com.specification.reactive.reactivestreams.util.NameGeneratorUtil;
 import com.specification.reactive.reactivestreams.util.RsUtil;

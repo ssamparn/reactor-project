@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.flux;
+package com.specification.reactive.reactivestreams.publisher.flux;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

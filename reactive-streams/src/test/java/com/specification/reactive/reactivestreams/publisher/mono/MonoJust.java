@@ -1,4 +1,4 @@
-package com.specification.reactive.reactivestreams.mono;
+package com.specification.reactive.reactivestreams.publisher.mono;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
