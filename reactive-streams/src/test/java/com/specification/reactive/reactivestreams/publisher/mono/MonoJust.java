@@ -8,11 +8,13 @@ import reactor.test.StepVerifier;
 @Slf4j
 public class MonoJust {
 
-    /**
+    /* *
      * Mono is a special type of Publisher.
      * A Mono object represents a single or empty value.
      * This means it can only emit one value at most for the onNext() request and then terminates with the onComplete() signal.
      * In case of failure, it only emits a single onError() signal.
+     * That means, Mono emits 0 or 1 item, followed by an onComplete / onError signal.
+     * Note: Mono can emit 0 item as well, as it is not mandatory for a publisher to emit item.
      * */
 
     @Test
