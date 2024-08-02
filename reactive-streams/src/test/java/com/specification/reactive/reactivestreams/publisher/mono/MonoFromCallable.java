@@ -10,6 +10,30 @@ import java.util.concurrent.Callable;
 @Slf4j
 public class MonoFromCallable {
 
+    /* *
+     * Difference between Mono.fromCallable() and Mono.fromSupplier():
+     *
+     * Both Callable and Supplier are functional interfaces in java.util.concurrent and java.util.function packages respectively
+     * If you use Mono.fromCallable() it computes a result or throws an checked exception if unable to do so.
+     * But if you use Mono.fromSupplier(), then you get a result.
+     *
+     * Let's take a look at their method signature
+     * ------------------------------------
+     *  public interface Callable<V> {
+     *      V call() throws Exception;
+     *  }
+     * ------------------------------------
+     *  public interface Supplier<T> {
+     *      T get();
+     *  }
+     * ------------------------------------
+     *
+     * Use Mono.fromCallable() for a task that returns a result and may throw a checked exception (IO Exception). This is useful for tasks like reading and writing to files, where many kinds of IOExceptions can be thrown. Callable is also designed to be run on another thread (e.g: Executor Service).
+     * Use Mono.fromSupplier() for a task that is very unlikely to throw a checked exception.
+     *
+     * Note: Both Mono.fromCallable() & Mono.fromSupplier() provides a cold publisher.
+     * */
+
     @Test
     public void mono_from_Callable_test() {
         Callable<String> stringCallable = () -> getName();
