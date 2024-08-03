@@ -14,7 +14,7 @@ public class FluxFromStream {
 
     @Test
     public void flux_from_stream_test() {
-        List<String> stringList = Arrays.asList("Sam", "Harry", "Bapun", "Sashank");
+        List<String> stringList = Arrays.asList("Sam", "Harry", "John", "Samay");
         Stream<String> nameStream = stringList.stream();
 
         Flux.fromStream(nameStream)
@@ -24,7 +24,7 @@ public class FluxFromStream {
                     RsUtil.onComplete()
         );
 
-        // This will result in an error as a stream can only be processed once.
+        // This will result in an error once we try to subscribe to the stream publisher for the second time as a stream can only be processed once.
         // Error: Stream has already been operated upon or closed. So you should be using a supplier of stream like the below example.
 
         Flux.fromStream(nameStream)

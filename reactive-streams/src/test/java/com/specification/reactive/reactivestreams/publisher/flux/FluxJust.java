@@ -9,7 +9,7 @@ public class FluxJust {
 
     /* *
      * Flux is a standard Publisher that represents 0 to N asynchronous sequence values.
-     * This means that it can emit 0, 1 .... to N values, possibly infinite never ending values for onNext() requests, and then terminates with either an onComplete or an onError signal.
+     * This means that it can emit 0, 1 .... to N values, possibly infinite never ending stream of values for onNext() requests, and then terminates with either an onComplete or an onError signal.
      * */
 
     /* *
@@ -36,7 +36,7 @@ public class FluxJust {
 
     @Test
     public void flux_just_test() {
-        Flux<String> nameFlux = Flux.just("Sam", "Harry", "Bapun");
+        Flux<String> nameFlux = Flux.just("Sam", "Harry", "John");
 
         nameFlux.subscribe(
                 RsUtil.onNext(),
@@ -47,7 +47,7 @@ public class FluxJust {
         StepVerifier.create(nameFlux)
                 .expectNext("Sam")
                 .expectNext("Harry")
-                .expectNext("Bapun")
+                .expectNext("John")
                 .verifyComplete();
     }
 
@@ -60,6 +60,9 @@ public class FluxJust {
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );
+
+        StepVerifier.create(emptyFlux)
+                .verifyComplete();
     }
 
     @Test
@@ -71,6 +74,18 @@ public class FluxJust {
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );
+
+        StepVerifier.create(objectFlux)
+                .expectNext(1)
+                .expectNext(2)
+                .expectNext("Sam")
+                .expectNext("Harry")
+                .expectNext(3)
+                .expectNext("Bapun")
+                .expectNext("a")
+                .expectNextMatches(name -> name instanceof String)
+                .expectComplete()
+                .verify();
     }
 
     @Test

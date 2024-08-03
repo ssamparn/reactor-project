@@ -13,7 +13,7 @@ public class FluxFromArrayAndList {
 
     @Test
     public void flux_from_list_test() {
-        List<String> nameList = Arrays.asList("Sam", "Harry", "Bapun", "Sashank");
+        List<String> nameList = Arrays.asList("Sam", "Harry", "Bapun", "Samay");
 
         Flux.fromIterable(nameList)
                 .subscribe(
@@ -25,7 +25,7 @@ public class FluxFromArrayAndList {
 
     @Test
     public void flux_from_array_test() {
-        String[] nameArray = {"Sam", "Harry", "Bapun", "Sashank"};
+        String[] nameArray = {"Sam", "Harry", "Bapun", "Samay"};
 
         Flux.fromArray(nameArray).subscribe(
                 name -> log.info("Array Subscriber : {}", name),
