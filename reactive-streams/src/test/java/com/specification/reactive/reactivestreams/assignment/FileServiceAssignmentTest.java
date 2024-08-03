@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.assignment;
 
-import com.specification.reactive.reactivestreams.service.FileReaderService;
+import com.specification.reactive.reactivestreams.service.FileServiceImpl;
 import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -8,14 +8,14 @@ import reactor.core.publisher.Flux;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ReadFileAssignment {
+public class FileServiceAssignmentTest {
 
     @Test
     public void read_file_assignment() {
-        FileReaderService fileReaderService = new FileReaderService();
+        FileServiceImpl fileServiceImpl = new FileServiceImpl();
         Path path = Paths.get("src/test/resources/assignment/file03.txt");
 
-        Flux<String> lineFlux = fileReaderService.read(path);
+        Flux<String> lineFlux = fileServiceImpl.read(path);
 
         lineFlux
             .take(10)
