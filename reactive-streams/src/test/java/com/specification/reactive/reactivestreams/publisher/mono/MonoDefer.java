@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+/**
+ * Mono.defer(): To delay the publisher creation
+ * */
+
 @Slf4j
 public class MonoDefer {
 
@@ -19,8 +23,8 @@ public class MonoDefer {
     * With lazy evaluation, the process will be delayed until the value is really needed, hence the term - lazy evaluation.
     * */
     /* *
-    * Mono.defer(): We use defer method of Mono to delay the execution of a Mono publisher.
-    * We can create a cold publisher which can produce at most one value using defer method of the Mono.
+    * Mono.defer(): We use Mono.defer() to delay not only the execution but also the creation of a Mono publisher. So Publisher will be created if and only if it is subscribed to.
+    * We can create a cold mono publisher which can produce at most one value using defer method of the Mono.
     * Mono.defer() takes in a Supplier of Mono publisher and returns that Mono lazily when subscribed downstream.
     * */
 
@@ -75,54 +79,45 @@ public class MonoDefer {
         Mono.fromSupplier() : When consuming a simple value being returned from external (not a Mono)
     * */
 
-    public Mono<String> monoJust() {
-        return Mono.just(getName());
-    }
-
-    public Mono<String> monoDefer() {
-        return Mono.defer(() -> Mono.just(getName()));
-    }
-
-    public Mono<String> monoSupplier() {
-        return Mono.fromSupplier(() -> getName());
-    }
-
     public void monoJustSubscription() {
         Mono<String> stringMono = Mono.just(getName());
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
+
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
     }
 
     public void monoDeferSubscription() {
-        Mono<String> stringMono = monoDefer();
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
+        Mono<String> stringMono = Mono.defer(() -> Mono.just(getName()));
+
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
     }
 
     public void monoSupplierSubscription() {
-        Mono<String> stringMono = monoSupplier();
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
-        stringMono.subscribe(System.out::println);
+        Mono<String> stringMono = Mono.fromSupplier(() -> getName());
+
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
+        stringMono.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
     }
 
     public void monoJustInstantiation() {
-        monoJust();
+        Mono.just(getName());
     }
 
     public void monoDeferInstantiation() {
-        monoDefer();
+        Mono.defer(() -> Mono.just(getName()));
     }
 
     public void monoSupplierInstantiation() {
-        monoSupplier();
+        Mono.fromSupplier(() -> getName());
     }
 
     private static String getName() {
-        log.info("Publishing Names: "); // As you might have noticed. The result seems to be a bit odd. Why are the printed names exactly the same in the first case and why does the "Publishing Names: " has been even printed without subscription ?
-        // Basically, this is the main difference between a Mono.just() and the rest of the Mono creation methods we’ll compare here. Mono.just() is a hot publisher and the value has been captured at the instantiation time.
+        log.info("Producing Names: "); // As you might have noticed. The result seems to be a bit odd. Why are the printed names exactly the same in the first case and why does the "Producing Names: " has been even printed without subscription ?
+        // Basically, this is the main difference between a Mono.just() and the rest of the Mono creation methods. Mono.just() is a hot publisher and the value has been captured at the instantiation time.
         RsUtil.sleepMilliSeconds(500);
         return RsUtil.faker().name().fullName();
     }
