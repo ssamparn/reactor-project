@@ -1,5 +1,6 @@
 package com.specification.reactive.reactivestreams.publisher.flux;
 
+import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -17,7 +18,7 @@ public class FluxTest {
                 .concatWith(Flux.just("Test to see if Flux emits")) // Note: After an error is emitted from Flux, it will not emit anymore data. So this line will not be included in the onComplete() event.
                 .log();
 
-        springFlux.subscribe(System.out::println, (e) -> System.err.println(e), () -> System.out.println("Completed")); // The last Runnable will not run as well because of above reason.
+        springFlux.subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete()); // The last Runnable will not run as well because of above reason.
     }
 
     @Test

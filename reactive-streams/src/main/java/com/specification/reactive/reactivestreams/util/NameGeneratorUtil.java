@@ -2,20 +2,18 @@ package com.specification.reactive.reactivestreams.util;
 
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class NameGeneratorUtil {
 
-    public static List<String> getNamesViaList(int count) {
-        List<String> list = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            list.add(getName());
-        }
-        return list;
+    public static List<String> getNamesList(int count) {
+        return IntStream.rangeClosed(1, count)
+                .mapToObj(i -> getName())
+                .toList();
     }
 
-    public static Flux<String> getNamesViaFlux(int count) {
+    public static Flux<String> getNamesFlux(int count) {
         return Flux.range(1, count)
                 .map(i -> getName());
     }

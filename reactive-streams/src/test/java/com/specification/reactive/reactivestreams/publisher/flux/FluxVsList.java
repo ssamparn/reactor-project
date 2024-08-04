@@ -12,13 +12,16 @@ public class FluxVsList {
 
     @Test
     public void flux_vs_list_getting_names_via_list_test() {
-        List<String> names = NameGeneratorUtil.getNamesViaList(5);
-        log.info(String.valueOf(names)); // will take the entire 5 seconds for the list to be displayed
+        // will take 5 seconds completely for the list to be displayed
+        List<String> names = NameGeneratorUtil.getNamesList(5);
+        log.info(String.valueOf(names));
     }
 
     @Test
     public void flux_vs_list_getting_names_via_flux_test() {
-        NameGeneratorUtil.getNamesViaFlux(5)
-                .subscribe(RsUtil.onNext()); // Will not wait for 5 seconds for the flux to emit items. As and when the item is there, flux will emit it every second.
+        // Will not wait for 5 seconds for the flux to emit items. As and when the item is there, flux will emit it every second.
+        // So returning a Flux<String> instead of a List<String> make publisher responsible.
+        NameGeneratorUtil.getNamesFlux(5)
+                .subscribe(RsUtil.onNext());
     }
 }
