@@ -4,6 +4,9 @@ import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
+/**
+ * To create a flux & emit items programmatically
+ * */
 public class FluxCreateWithFluxSink {
 
     /* *
