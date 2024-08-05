@@ -1,4 +1,4 @@
-package com.nonblocking.http.client.reactorclient.util;
+package com.nonblocking.http.client.util;
 
 import lombok.extern.slf4j.Slf4j;
 

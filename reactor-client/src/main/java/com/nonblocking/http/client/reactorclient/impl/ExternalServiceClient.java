@@ -22,4 +22,12 @@ public class ExternalServiceClient extends AbstractHttpClient {
                 .responseContent()
                 .asString();
     }
+
+    public Flux<Integer> getStockPrices() {
+        return this.httpClient.get()
+                .uri("/demo02/stock/stream")
+                .responseContent()
+                .asString()
+                .map(Integer::valueOf);
+    }
 }
