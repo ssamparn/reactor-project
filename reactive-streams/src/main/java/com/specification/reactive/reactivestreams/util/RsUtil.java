@@ -13,15 +13,15 @@ public class RsUtil {
     private static final Faker FAKER = Faker.instance();
 
     public static Consumer<Object> onNext() {
-        return obj -> log.info("Received: {}", obj);
+        return obj -> log.info("Subscriber Received : {}", obj);
     }
 
     public static Consumer<Throwable> onError() {
-        return err -> log.info("Error message: {}", err.getMessage());
+        return err -> log.info("Error message during subscription: {}", err.getMessage());
     }
 
     public static Runnable onComplete() {
-        return () -> log.info("Completed");
+        return () -> log.info("Subscription Completed!");
     }
 
     public static Faker faker() {

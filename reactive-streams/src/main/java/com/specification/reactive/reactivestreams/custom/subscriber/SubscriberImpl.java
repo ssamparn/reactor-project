@@ -20,16 +20,16 @@ public class SubscriberImpl implements Subscriber<String> {
 
     @Override
     public void onNext(String email) {
-        log.info("received: {}", email);
+        log.info("Subscriber Received Event: {}", email);
     }
 
     @Override
     public void onError(Throwable throwable) {
-        log.error("error: {}", throwable.getMessage());
+        log.error("Error Occurred: {}", throwable.getMessage());
     }
 
     @Override
     public void onComplete() {
-        log.info("completed !!!");
+        log.info("Completed !!!");
     }
 }

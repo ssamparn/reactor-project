@@ -16,12 +16,10 @@ public class FluxAssignmentDemo {
 
     @Test
     public void flux_assignment_test() throws InterruptedException {
-
         CountDownLatch latch = new CountDownLatch(1);
 
         StockPricePublisher.getPrice()
-                .subscribe(new Subscriber<Integer>() {
-
+                .subscribe(new Subscriber<>() {
                     private Subscription subscription;
 
                     @Override
@@ -32,7 +30,7 @@ public class FluxAssignmentDemo {
 
                     @Override
                     public void onNext(Integer price) {
-                        log.info( "{} : Stock Price : {}", LocalDateTime.now(), price);
+                        log.info("{} : Stock Price : {}", LocalDateTime.now(), price);
                         if (price < 90 || price > 110) {
                             this.subscription.cancel();
                             latch.countDown();
@@ -69,17 +67,14 @@ public class FluxAssignmentDemo {
     // subscriber cancels - exit.
     @Test
     public void flux_generate_assignment_emit_country_names_till_canada_but_subscribe_max_10_using_synchronous_sink() {
-
-        Flux.generate(
-                () -> 1,
-                (counter, synchronousSink) -> {
-                    String country = RsUtil.faker().country().name();
-                    synchronousSink.next(country);
-                    if (country.equalsIgnoreCase("canada") || counter == 10) {
-                        synchronousSink.complete();
-                    }
-                    return counter + 1;
+        Flux.generate(() -> 1, (counter, synchronousSink) -> {
+                String country = RsUtil.faker().country().name();
+                synchronousSink.next(country);
+                if (country.equalsIgnoreCase("canada") || counter == 10) {
+                    synchronousSink.complete();
                 }
+                return counter + 1;
+            }
         )
         .subscribe(RsUtil.subscriber("Flux Country"));
     }

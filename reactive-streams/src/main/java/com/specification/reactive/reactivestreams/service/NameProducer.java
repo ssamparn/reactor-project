@@ -1,6 +1,7 @@
 package com.specification.reactive.reactivestreams.service;
 
 import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -8,21 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+// Since this class is going to be used in Flux.create(), which accepts a Consumer<FluxSink>,
+// we are implementing a Consumer<FluxSink<>> and will create an instance of this class and pass it into Flux.create().
+
+@Slf4j
 public class NameProducer implements Consumer<FluxSink<String>> {
 
-    private FluxSink<String> fluxSink;
+    private FluxSink<String> stringFluxSink;
 
     private List<String> cache = new ArrayList<>();
 
     @Override
     public void accept(FluxSink<String> stringFluxSink) {
-        this.fluxSink = stringFluxSink;
+        this.stringFluxSink = stringFluxSink;
     }
 
-    public void produce() {
+    public void emitName() {
         String name = RsUtil.faker().name().fullName();
         String thread = Thread.currentThread().getName();
-        this.fluxSink.next(thread + " : " + name);
+        this.stringFluxSink.next(thread + " : " + name);
     }
 
     public Flux<String> generateNames() {

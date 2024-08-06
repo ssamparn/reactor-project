@@ -13,7 +13,7 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
     }
 
     public DefaultSubscriber(String subscriberName) {
-        this.subscriberName = "Subscribed by " + subscriberName + " : ";
+        this.subscriberName = "Subscribed by Subscriber: " + subscriberName + ".";
     }
 
     @Override
@@ -28,11 +28,11 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onError(Throwable throwable) {
-        log.info("{} Error Thrown : {}", this.subscriberName, throwable.getMessage());
+        log.info("{} Error Thrown during subscription: {}", this.subscriberName, throwable.getMessage());
     }
 
     @Override
     public void onComplete() {
-        log.info("{} Completed ", this.subscriberName);
+        log.info("{} Subscription Completed ", this.subscriberName);
     }
 }

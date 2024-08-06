@@ -58,15 +58,28 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    public Flux<String> read(Path path) {
+    /* *
+     *  Flux.generate(
+     *      () -> someObjectInitialValue,   // invoked once
+     *      (someObject, synchronousSink) -> {
+     *          .....
+     *          .....
+     *          return someObject;
+     *      }
+     *      someObject -> close   // invoked once
+     *  )
+     */
+
+    public Flux<String> readFileWithMultipleLines(Path path) {
         return Flux.generate(
-                openReader(path),
+                openFileReader(path),
                 readWithBufferedReader(),
                 closeReader()
         );
     }
 
-    private Callable<BufferedReader> openReader(Path path) {
+    private Callable<BufferedReader> openFileReader(Path path) {
+        log.info("Opening the File");
         return () -> Files.newBufferedReader(path);
     }
 
@@ -74,6 +87,7 @@ public class FileServiceImpl implements FileService {
         return ((bufferedReader, stringSynchronousSink) -> {
             try {
                 String line = bufferedReader.readLine();
+                log.info("reading line: {}", line);
                 if (Objects.nonNull(line)) {
                     stringSynchronousSink.next(line);
                 } else {
@@ -89,6 +103,7 @@ public class FileServiceImpl implements FileService {
     private Consumer<BufferedReader> closeReader() {
         return bufferedReader -> {
             try {
+                log.info("Closing the File");
                 bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -15,11 +15,10 @@ public class FileServiceAssignmentTest {
         FileServiceImpl fileServiceImpl = new FileServiceImpl();
         Path path = Paths.get("src/test/resources/assignment/file03.txt");
 
-        Flux<String> lineFlux = fileServiceImpl.read(path);
+        Flux<String> lineFlux = fileServiceImpl.readFileWithMultipleLines(path);
 
         lineFlux
-            .take(10)
-            .subscribe(RsUtil.subscriber());
+            .subscribe(RsUtil.subscriber("File Reader Subscriber"));
     }
 
 }

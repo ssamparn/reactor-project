@@ -12,6 +12,7 @@ import org.reactivestreams.Subscription;
 @Slf4j
 public class PublisherImpl implements Publisher<String> {
 
+    // we subscribe to a publisher. so subscribe() is in publisher implementation
     @Override
     public void subscribe(Subscriber<? super String> subscriber) {
         Subscription subscription = new SubscriptionImpl(subscriber);

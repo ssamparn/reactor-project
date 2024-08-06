@@ -14,7 +14,7 @@ public class FluxPush {
         Flux.push(nameProducer)
                 .subscribe(RsUtil.subscriber());
 
-        Runnable runnable = nameProducer::produce;
+        Runnable runnable = nameProducer::emitName;
 
         for (int i = 0; i < 10; i++) {
             new Thread(runnable).start(); // Creating Flux with Flux.push() is not thread safe.

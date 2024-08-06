@@ -5,19 +5,25 @@ import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
+/* *
+ * This is an alternative way how we can use Flux.create(fluxSink) in an application.
+ * */
 public class FluxCreateRefactoring {
 
     @Test
     public void flux_creation_test() {
-        NameProducer nameProducer = new NameProducer();
+        NameProducer nameGenerator = new NameProducer();
 
-        Flux.create(nameProducer)
+        // publisher implementation
+        Flux.create(nameGenerator) // NameProducer implements a Consumer<FluxSink<String>>. That's why we are able to pass an instance into Flux.create().
                 .subscribe(RsUtil.subscriber());
 
-        Runnable runnable = nameProducer::produce;
+        // subscriber implementation
+        // This is a sample subscriber (consumer) written somewhere else in our application. we will invoke emitName() to emit names.
+        Runnable nameRunnable = () -> nameGenerator.emitName();
 
         for (int i = 0; i < 10; i++) {
-            new Thread(runnable).start(); // Creating Flux with Flux.create() is thread safe.
+            Thread.ofPlatform().start(nameRunnable); // Creating Flux with Flux.create() is thread safe.
         }
 
         RsUtil.sleepSeconds(2);
