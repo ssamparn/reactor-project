@@ -8,19 +8,24 @@ import java.time.Duration;
 
 public class TimeOutOperatorTest {
 
+    /**
+     * timeout():
+
+     *  Use case: We have a requirement that we should wait for 200ms and otherwise request will time out after 200ms.
+     * */
     @Test
     public void time_out_operator_test() {
         getOrderItems()
-                .timeout(Duration.ofMillis(200)) // we have a requirement that we should wait for 200ms and otherwise request will timeout after 200ms.
-                .subscribe(RsUtil.subscriber()); // so in this case we will see error: Error Thrown : Did not observe any item or terminal signal within 200ms
+                .timeout(Duration.ofMillis(200))
+                .subscribe(RsUtil.subscriber()); // we will see error: Error Thrown : Did not observe any item or terminal signal within 200ms
 
         RsUtil.sleepSeconds(1);
     }
 
-    // Assume getOrderItems is a simple order service which emits items every 50ms.
+    // Assume getOrderItems is a simple order service which emits items every second.
     private Flux<String> getOrderItems() {
         return Flux.range(1, 30)
-                .map(i -> "order: " + i)
+                .map(i -> "order from actual order service: " + i)
                 .delayElements(Duration.ofSeconds(1));
     }
 
@@ -35,7 +40,7 @@ public class TimeOutOperatorTest {
 
     private Flux<String> getOrderItemsFallback() {
         return Flux.range(1, 10)
-                .map(i -> "order: " + i)
+                .map(i -> "order from fallback implementation: " + i)
                 .delayElements(Duration.ofMillis(100));
     }
 }

@@ -9,9 +9,9 @@ import java.util.Objects;
 public class HandleOperatorTest {
 
     /* *
-     * handle(): map() + filter()
+     * handle(): It behaves like map() + filter()
      * The handle() is an instance method, meaning that it is chained on an existing source (as are the common operators). It is present in both Mono and Flux.
-     * It is close to generate, in the sense that it uses a SynchronousSink and only allows one-by-one emissions. However, handle can be used to generate an arbitrary value out of each source element, possibly skipping some elements.
+     * It is very close to Flux.generate(), in the sense that it uses a SynchronousSink and only allows one-by-one emissions. However, handle can be used to generate an arbitrary value out of each source element, possibly skipping some elements.
      * In this way, it can serve as a combination of map and filter.
      */
 
@@ -30,15 +30,17 @@ public class HandleOperatorTest {
 
     @Test
     public void emit_country_names_till_canada_with_handle_operator_test() {
-        Flux.generate(synchronousSink -> synchronousSink.next(RsUtil.faker().country().name()))
-            .map(Objects::toString)
-            .handle((country, synchronousSink) -> {
-                synchronousSink.next(country);
-                if (country.equalsIgnoreCase("canada")) {
-                    synchronousSink.complete(); // filter
-                }
-            })
-            .subscribe(RsUtil.subscriber());
+        Flux.<String>generate(synchronousSink -> {
+            String country = RsUtil.faker().country().name();
+            synchronousSink.next(country);
+        })
+        .handle((item, synchronousSink) -> {
+            synchronousSink.next(item);
+            if (item.equalsIgnoreCase("canada")) {
+                synchronousSink.complete(); // filter
+            }
+        })
+        .subscribe(RsUtil.subscriber("Country Subscriber"));
     }
 
     // Let’s consider an example.
@@ -64,5 +66,27 @@ public class HandleOperatorTest {
                     synchronousSink.next(letter);
                 }
             }).subscribe(RsUtil.subscriber());
+    }
+
+    /* Let's consider a weird requirement *
+     * 1 => -2
+     * 4 => do not do anything
+     * 7 => error
+     * everything else => send as it is
+     * */
+    @Test
+    public void handle_another_test() {
+        Flux.range(1, 10)
+//                .filter(num -> num != 7)
+                .handle(((num, synchronousSink) -> {
+                    switch (num) {
+                        case 1 -> synchronousSink.next(-2);
+                        case 4 -> {}
+                        case 7 -> synchronousSink.error(new RuntimeException("error"));
+                        default -> synchronousSink.next(num);
+                    }
+                }))
+                .cast(Integer.class)
+                .subscribe(RsUtil.subscriber("handle operator subscriber"));
     }
 }

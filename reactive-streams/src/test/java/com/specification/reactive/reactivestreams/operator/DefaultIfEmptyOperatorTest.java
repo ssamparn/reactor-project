@@ -7,9 +7,13 @@ import reactor.core.publisher.Flux;
 public class DefaultIfEmptyOperatorTest {
 
     /* *
-     * defaultIfEmpty(): defaultIfEmpty() is closely similar to switchIfEmpty(). It indicates the completed the sequence.
-     * It uses to provide a default unique value if this sequence is completed without any data.
-     * Another difference is switchIfEmpty() takes a Flux/Mono stream as input but defaultIfEmpty() takes a raw value.
+     * defaultIfEmpty(): Similar to error handling, defaultIfEmpty() provides solutions to handle empty values from publisher.
+     * It is closely similar to switchIfEmpty(). It indicates the completed the sequence.
+     * It is used to provide a default unique value if the reactive sequence is completed without any data.
+     *
+     * Difference between defaultIfEmpty() & switchIfEmpty() is, switchIfEmpty() takes in a publisher implementation (Flux/Mono) as input but defaultIfEmpty() takes in a raw value.
+     *
+     * V Imp Note: Behavior of defaultIfEmpty() while handling empty values is same as behavior of onErrorReturn() while handling errors.
      */
 
     @Test

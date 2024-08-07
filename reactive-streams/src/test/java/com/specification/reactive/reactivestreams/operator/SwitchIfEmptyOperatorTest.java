@@ -8,9 +8,17 @@ import reactor.core.publisher.Mono;
 public class SwitchIfEmptyOperatorTest {
 
     /**
-     * switchIfEmpty(): and need to handle some logic based on emptiness.
-     * switchIfEmpty() operator help us to do so. It switch to an alternative publisher if this sequence is completed without any data.
+     * switchIfEmpty(): Similar to error handling, switchIfEmpty() provides solutions to handle empty values from publisher.
+     * It needs to handle some logic based on emptiness.
+     * It switches to an alternative (fallback) publisher if the subscriber received an empty signal (reactive sequence is completed without any data) from the primary publisher.
+     *
+     * Difference between defaultIfEmpty() & switchIfEmpty() is, switchIfEmpty() takes in a publisher implementation (Flux/Mono) as input but defaultIfEmpty() takes in a raw value.
+     *
+     * V Imp Note: Behavior of switchIfEmpty() while handling empty values is same as behavior of onErrorResume() while handling errors.
+     *
+     * Use case: First query database, if the result is empty then get values from redis cache.
      * */
+
     @Test
     public void switch_if_empty_operator_test() {
         getOrderNumbers()
