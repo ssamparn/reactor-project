@@ -8,6 +8,20 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 
+/**
+ * Hot and Cold Publisher:
+ *
+ * Cold Publisher: Let's imagine we have a publisher P, and we have a subscriber S1 subscribing to that publisher. Now we can attach one more subscriber S2 to the same publisher P.
+ *                 Here both subscriber S1 and S2 are independent of each other. Meaning if S1 cancels, it will have no impact on S2. Publisher P will still emit events for subscriber S2.
+ *                 Publisher P emits items in 2 independent and completely different data streams for each subscriber.
+ *                 e.g: Netflix. If 2 users (subscribers) starts watching a show in Netflix (publisher) at the same time, they can watch the content independently, without affecting each other's subscription.
+ *                 This is a classic example of Cold Publisher.
+ *
+ * Hot Publisher: Before understanding what a hot publisher is, we are all aware of the reactive programming rule that, Nothing happens until you subscribe.
+ *                Well this rule does not stand valid for a hot publisher. You don't have to subscribe to a hot publisher in order for the publisher to emit items.
+ *                And we can have only one single data producer for all the subscribers. In some cases, we don't even need a subscriber to emit items. It will start emitting items on its own.
+ *                e.g: Television channel. Now a TV channel will keep on broadcasting the content (a live cricket match or a tv serial) irrespective of how many watchers (subscribers) are actually watching (subscribing) the content
+ * */
 @Slf4j
 public class HotColdReactiveStreamTest {
 
