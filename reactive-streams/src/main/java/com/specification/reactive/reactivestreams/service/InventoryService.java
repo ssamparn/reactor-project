@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /* *
- * Inventory Service: Consumes Order Streams emitted from the Order Service and Provides Quantity per order category
+ * Inventory Service: Consumes Order Streams emitted from the Order Service and provides "quantity" per order category
  *                    And more over Inventory Service will emit its data every 2 seconds.
  *
  *                    Original Inventory : Assume we have 500 quantities for each category.
@@ -21,8 +21,8 @@ public class InventoryService {
     private Map<String, Integer> inventory = new HashMap<>();
 
     public InventoryService() {
-        inventory.put("Kids", 100);
-        inventory.put("Automotive", 100);
+        inventory.put("Kids", 500);
+        inventory.put("Automotive", 500);
     }
 
     public Consumer<Order> subscribeOrderStream() {

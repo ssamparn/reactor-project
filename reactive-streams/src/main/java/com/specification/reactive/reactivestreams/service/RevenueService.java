@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /* *
- * Revenue Service: Consumes Order Streams emitted from the Order Service and provides Revenue per order category.
+ * Revenue Service: Consumes Order Streams emitted from the Order Service and provides "revenue" per order category.
  *                  And more over Revenue Service will emit its data every 2 seconds.
  * */
 public class RevenueService {
