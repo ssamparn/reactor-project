@@ -28,13 +28,13 @@ public class HotColdReactiveStreamTest {
     @Test
     public void flux_cold_publisher_test() throws InterruptedException {
         Flux<String> stringFlux = Flux.just("A", "B", "C", "D", "E", "F")
-                .delayElements(Duration.ofSeconds(1));
+                .delayElements(Duration.ofMillis(300));
 
         stringFlux.subscribe((element) -> System.out.println("Subscriber 1: " + element)); // Emits the value from the beginning
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 
         stringFlux.subscribe((element) -> System.out.println("Subscriber 2: " + element)); // Emits the value from the beginning
-        Thread.sleep(4000);
+        Thread.sleep(3000);
     }
 
     @Test
