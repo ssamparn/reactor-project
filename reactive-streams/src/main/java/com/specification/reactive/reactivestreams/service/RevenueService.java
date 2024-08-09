@@ -8,21 +8,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/* *
+ * Revenue Service: Consumes Order Streams emitted from the Order Service and provides Revenue per order category.
+ *                  And more over Revenue Service will emit its data every 2 seconds.
+ * */
 public class RevenueService {
 
-    private Map<String, Double> db = new HashMap<>();
+    private Map<String, Double> revenue = new HashMap<>();
 
     public RevenueService() {
-        db.put("Kids", 0.0);
-        db.put("Automotive", 0.0);
+        revenue.put("Kids", 0.0);
+        revenue.put("Automotive", 0.0);
     }
 
     public Consumer<Order> subscribeOrderStream() {
-        return p -> db.computeIfPresent(p.getCategory(), (k, v) -> v + p.getPrice());
+        return order -> revenue.computeIfPresent(order.getCategory(), (k, v) -> v + order.getPrice());
     }
 
     public Flux<String> revenueStream() {
         return Flux.interval(Duration.ofSeconds(2))
-                .map(i -> db.toString());
+                .map(i -> revenue.toString());
     }
 }

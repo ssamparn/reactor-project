@@ -6,6 +6,13 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * Order Service: Provides a Stream of Orders.
+ *                Order Stream will contain item, category, price (total price, it is not price per quantity) & quantity
+ *                Needs a minimum 2 subscribers to emit items.
+ *                Order Stream Message Format: "item:category:price:quantity"
+ *
+ * */
 public class OrderService {
 
     private Flux<Order> orderFlux;
