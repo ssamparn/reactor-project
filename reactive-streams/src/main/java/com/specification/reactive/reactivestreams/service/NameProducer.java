@@ -21,6 +21,7 @@ public class NameProducer implements Consumer<FluxSink<String>> {
 
     @Override
     public void accept(FluxSink<String> stringFluxSink) {
+        log.info("Instantiating a Flux Sink");
         this.stringFluxSink = stringFluxSink;
     }
 
