@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 /* *
- * By default, the current thread does all the execution
+ * By default, the current thread does all the execution. That's the default behavior.
+ * Default Behavior Of Reactor Execution Model: The same thread that performs a subscription will be used for the whole pipeline execution.
+ *
+ * While this approach
  * */
 @Slf4j
 public class DefaultThreadTest {
