@@ -1,4 +1,4 @@
-package com.nonblocking.http.client.assignment;
+package com.nonblocking.http.client.assignment.fluxpublisher;
 
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;

@@ -1,10 +1,9 @@
-package com.nonblocking.http.client.assignment;
+package com.nonblocking.http.client.assignment.exceptionhandling;
 
 import com.nonblocking.http.client.reactorclient.impl.ExternalServiceClient;
 import com.nonblocking.http.client.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

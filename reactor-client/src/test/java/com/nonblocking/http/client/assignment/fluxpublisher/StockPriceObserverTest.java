@@ -1,4 +1,4 @@
-package com.nonblocking.http.client.assignment;
+package com.nonblocking.http.client.assignment.fluxpublisher;
 
 import com.nonblocking.http.client.reactorclient.impl.ExternalServiceClient;
 import com.nonblocking.http.client.util.Util;
