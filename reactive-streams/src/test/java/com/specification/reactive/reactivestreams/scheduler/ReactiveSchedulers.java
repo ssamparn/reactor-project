@@ -36,5 +36,33 @@ public class ReactiveSchedulers {
      * ---------------------------------------
      * |    publishOn    |  for Downstream   |
      * ---------------------------------------
+     *
+     * If we know that some operations we want to perform on a Flux or Mono can be time-consuming, we probably don’t want to block the thread that started the execution.
+     * For this purpose, we can instruct the Reactor to use a different Scheduler.
+     *
+     * Schedulers.boundedElastic():
+     * -----------------------------
+     *    - It has a bounded elastic thread pool of workers.
+     *    - The number of threads = 10 * Number of CPU Cores
+     *    - The number of threads can grow based on the need.
+     *    - The number of threads can be much bigger than the number of CPU cores.
+     *    - Used mainly for making blocking I/O calls, Network or Time-Consuming calls.
+     *
+     * Schedulers.parallel():
+     * --------------------------
+     *    - It has a fixed pool of workers.
+     *    - The number of threads = Number of CPU cores.
+     *    - Useful for CPU intensive tasks.
+     *
+     * Schedulers.single():
+     * -----------------------
+     *    - Reuses the same thread for all callers.
+     *    - A single dedicated thread for one-off tasks.
+     *    - The number of threads = 1
+     *
+     * Schedulers.immediate():
+     * ------------------------
+     *    - Uses the current Thread
+     *    - The number of threads = 1
      * */
 }

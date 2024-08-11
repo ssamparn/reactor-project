@@ -57,13 +57,16 @@ public class SubscribeOnTest {
      *  So the current thread will create the reactive pipeline with all the operators.
      *  These operators are nothing but Decorated Publishers. Each one of them behaves as a producer and subscriber at the same time.
      *  When the current thread subscribes, the execution control goes from bottom to top. That is from subscriber to publisher. But the moment it sees a subscribeOn()
-     *  while going from bottom to top, what current thread will think that ...Ahh!! beyond this point it's not my job to execute and I will have to give this task to
-     *  the requested thread pool or scheduler (which ever thread pool developer configures).
+     *  while going from bottom to top (Subscriber --> Publisher), what current thread will think that ...Ahh!! beyond this point it's not my job to execute the task and I will have to give this task to
+     *  the requested thread pool or scheduler (which ever thread pool developer configured in subscribeOn()).
      *
      *  So it will simply off loads the task to the configured scheduler. Then the thread pool will start execution through the operator chains, reach to publisher and
      *  carry events downstream to the subscriber.
      * */
 
+    /* *
+     * Schedulers.boundedElastic()
+     * */
     @Test
     public void subscribeOn_scheduler_test() {
         Flux<Object> nameFlux = Flux.generate(fluxSink -> {
@@ -183,6 +186,10 @@ public class SubscribeOnTest {
         // So if you define multiple subscribeOn operators in a chain, it will use the first one. The one closest to the publisher.
     }
 
+    /* *
+     * Schedulers.immediate()
+     * */
+
     @Test
     public void subscribeOn_immediate_scheduler_main_test() {
         Flux<Object> objectFlux = Flux.create(fluxSink -> {
@@ -224,6 +231,10 @@ public class SubscribeOnTest {
         RsUtil.sleepSeconds(1);
     }
 
+    /* *
+     * Schedulers.single()
+     * */
+
     @Test
     public void subscribeOn_single_scheduler_test() {
         Flux<Object> objectFlux = Flux.create(fluxSink -> {
@@ -245,55 +256,47 @@ public class SubscribeOnTest {
         RsUtil.sleepSeconds(1);
     }
 
-
-    // If we know that some operations we want to perform on a Flux or Mono can be time-consuming, we probably don’t want to block the thread that started the execution.
-    // For this purpose, we can instruct the Reactor to use a different Scheduler.
-
-    // Schedulers.boundedElastic():
-    // It has a bounded elastic thread pool of workers.
-    // The number of threads can grow based on the need.
-    // The number of threads can be much bigger than the number of CPU cores.
-    // Used mainly for making blocking I/O calls, Network/Time-Consuming calls
-
-
-    // Schedulers.parallel():
-    // It has a fixed pool of workers.
-    // The number of threads is equivalent to the number of CPU cores.
-    // Useful for CPU intensive tasks.
-
-    // Schedulers.single():
-    // Reuses the same thread for all callers
-    // A single dedicated thread for one-off tasks.
-
-    // Schedulers.immediate():
-    // Uses the current Thread
-
-    // subscribeOn: for upstream
-    // publishOn: for downstream
-
+    /* *
+     * Schedulers.parallel():
+     *
+     *     Most often, developers assume that reactive Schedulers will perform parallel execution. But that's not true. All the operations are always executed sequentially.
+     *     Data is processed one by one - by a thread from the Thread Pool for a subscriber.
+     *     Even when we say subscribeOn(Schedulers.parallel()), tasks are not executed in parallel.
+     *     Schedulers.parallel() only means it is only a thread pool for CPU  intensive tasks. Does not mean parallel execution.
+     * */
     @Test
     public void subscribeOn_parallel_scheduler_test() {
-        Flux<Integer> integerFlux = Flux.range(1, 4)
-                .map(i -> {
-                    log.info("{}", String.format("First Map - (%s), Thread: %s", i, Thread.currentThread().getName()));
-                    return i;
-                })
-                .subscribeOn(Schedulers.parallel())
-                .map(i -> {
-                    log.info("{}", String.format("Second Map - (%s), Thread: %s", i, Thread.currentThread().getName()));
-                    return i;
-                })
-                .doFirst(() -> log.info("executed by main thread"));
+        Flux<Object> objectFlux = Flux.create(fluxSink -> {
+            for (int i = 1; i < 3; i++) {
+                log.info("generating: {}", i);
+                fluxSink.next(i);
+            }
+            fluxSink.complete();
+        });
 
-        integerFlux
-                .subscribe(RsUtil.subscriber());
+        objectFlux
+                .subscribeOn(Schedulers.parallel()) // thread pool switch will occur and the execution will continue in the Schedulers.parallel() thread pool. The rule applies => The one closest to the publisher will take precedence.
+                .doOnNext(value -> log.info("value: {}", value))
+                .doFirst(() -> log.info("first-1")) // first-1 will be executed by the bounded elastic thread pool
+                .subscribeOn(Schedulers.boundedElastic()) // Switch of thread pool and task off loading will occur as the thread pool configured is Schedulers.boundedElastic()
+                .doFirst(() -> log.info("first-2")) // first-2 will be executed by the main thread
+                .subscribe(v -> log.info("subscriber()"));
+
+        RsUtil.sleepSeconds(1);
+
     }
+
+    /* *
+     * V. Imp Note: Now with multiple items emitted, all items are emitted in the same thread.
+     * All the operations are always executed sequentially. Data is processed one by one via 1 thread in the ThreadPool for a Subscriber.
+     * Schedulers.parallel() is a thread pool for CPU tasks. It does not mean parallel execution.
+     * */
 
     @Test
     public void subscribe_on_with_multiple_items_test() {
         Flux<Object> flux = Flux.create(fluxSink -> {
             log.info("create");
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 10; i++) {
                 fluxSink.next(i);
             }
             fluxSink.complete();
@@ -305,16 +308,13 @@ public class SubscribeOnTest {
             .subscribe(value -> log.info("subscriber: {}", value));
 
         RsUtil.sleepSeconds(2);
-        // Now with multiple items emitted, all items are emitted in the same thread.
-        // All the operations are always executed in sequential. Data is processed one by one via 1 thread in the ThreadPool for a Subscriber.
-        // Schedulers.parallel() is a thread pool for CPU tasks. It does not mean parallel execution.
     }
 
     @Test
     public void subscribe_on_with_multiple_items_test2() {
         Flux<Object> flux = Flux.create(fluxSink -> {
                     log.info("create");
-                    for (int i = 0; i < 20; i++) {
+                    for (int i = 0; i < 10; i++) {
                         fluxSink.next(i);
                     }
                     fluxSink.complete();
