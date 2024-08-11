@@ -128,8 +128,8 @@ public class SubscribeOnTest {
     }
 
     /* *
-     * What if we have multiple subscribeOn operators in a chain?
-     * We can have multiple subscribeOn() in a chain. In that case the closest to the source or publisher will take precedence
+     * What if there are multiple subscribeOn operators in a chain?
+     * We can have multiple subscribeOn() operators in a chain. In that case, the closest to the source or publisher will take precedence.
      * */
 
     @Test
@@ -149,11 +149,11 @@ public class SubscribeOnTest {
                 .subscribe(value -> log.info("subscriber: {}", value));
 
         for (int i = 0; i < 2; i++) {
-            new Thread(runnable).start();
+            Thread.ofPlatform().start(runnable);
         }
 
         RsUtil.sleepSeconds(1);
-        // If you have multiple subscribeOn(), the one closest to the publisher will take precedence.
+        // We can conclude that if there is more than one subscribeOn(), the one closest to the publisher will take precedence.
     }
 
     @Test
