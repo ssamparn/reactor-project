@@ -11,8 +11,9 @@ import reactor.core.publisher.Flux;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 
+
 @Slf4j
-public class FluxAssignmentDemo {
+public class FluxAssignmentTest {
 
     @Test
     public void flux_assignment_test() throws InterruptedException {

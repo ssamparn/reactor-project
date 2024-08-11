@@ -4,7 +4,7 @@ import com.specification.reactive.reactivestreams.service.FileServiceImpl;
 import com.specification.reactive.reactivestreams.util.RsUtil;
 import org.junit.jupiter.api.Test;
 
-public class MonoAssignmentDemo {
+public class MonoAssignmentTest {
 
     private FileServiceImpl fileService = new FileServiceImpl();
     @Test

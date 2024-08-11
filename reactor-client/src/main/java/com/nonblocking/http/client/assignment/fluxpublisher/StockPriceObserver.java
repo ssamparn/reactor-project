@@ -4,6 +4,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/**
+ * The stock service will emit price changes every 500ms for 20 seconds.
+ * The price might change between 80-120.
+ *
+ *      Task:
+ *          - Create a subscriber with $1000 balance.
+ *          - Whenever the price drops below 90, buy a stock.
+ *          - When the price goes above 110,
+ *              - Sell all the stocks.
+ *              - Cancel the subscription.
+ *              - Print the profit you made.
+ * */
+
 @Slf4j
 public class StockPriceObserver implements Subscriber<Integer> {
 

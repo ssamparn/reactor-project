@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class HotAndColdPublisherAssignmentDemo {
+public class HotAndColdPublisherAssignmentTest {
 
     @Test
     public void hotAndColdPublisherAssignment() {

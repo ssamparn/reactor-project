@@ -164,7 +164,7 @@ public class PublishOnTest {
                 .publishOn(schedulerA)
                 .doOnNext(value -> log.info("value received: {}", value)) // Will be executed by the bounded elastic thread pool scheduler A.
                 .doFirst(() -> log.info("first-1")) // Run by the same thread which run first-1
-                .publishOn(schedulerB) // While subscription request goes from bottom to top, it will not have any impact. The publishOn does not switch the whole sequence to the provided thread pool while events flows from top to bottom because of Schedulers.immediate(). Means the same thread will continue the execution.
+                .publishOn(schedulerB) // While subscription request goes from bottom to top, it will not have any impact. The publishOn switches the whole sequence to a boundedElastic thread pool while events flows from top to bottom.
                 .doFirst(() -> log.info("first-2 ")); // Will be run by the thread which started the subscription, that is the Thread-0
 
         Runnable musicRunnable = () -> flux.subscribe(RsUtil.subscriber()); // The subscriber get executed on the thread pool provided in publishOn() closest to the subscriber that is scheduler B. That is the latest execution context.
