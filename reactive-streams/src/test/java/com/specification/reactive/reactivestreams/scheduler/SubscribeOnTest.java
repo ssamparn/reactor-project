@@ -262,7 +262,8 @@ public class SubscribeOnTest {
      *     Most often, developers assume that reactive Schedulers will perform parallel execution. But that's not true. All the operations are always executed sequentially.
      *     Data is processed one by one - by a thread from the Thread Pool for a subscriber.
      *     Even when we say subscribeOn(Schedulers.parallel()), tasks are not executed in parallel.
-     *     Schedulers.parallel() only means it is only a thread pool for CPU  intensive tasks. Does not mean parallel execution.
+     *     Schedulers.parallel() only means it is only a thread pool for CPU intensive tasks. Does not mean parallel execution.
+     *     Please check ParallelSchedulingTest for demo of parallel processing.
      * */
     @Test
     public void subscribeOn_parallel_scheduler_test() {
