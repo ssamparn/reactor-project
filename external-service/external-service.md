@@ -10,7 +10,7 @@ $ java -jar external-services.jar
 ## To change the port
 
 ```bash
-java -jar external-services.jar --server.port=8080
+$ java -jar external-services.jar --server.port=8080
 ```
 
 ## Swagger
