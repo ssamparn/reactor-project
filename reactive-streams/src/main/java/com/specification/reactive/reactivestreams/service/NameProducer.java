@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-// Since this class is going to be used in Flux.create(), which accepts a Consumer<FluxSink>,
-// we are implementing a Consumer<FluxSink<>> and will create an instance of this class and pass it into Flux.create().
+/* *
+ * Since this class is going to be used in Flux.create(), which accepts a Consumer<FluxSink>,
+ * we are implementing a Consumer<FluxSink<>> and will create an instance of this class and pass it into Flux.create().
+ * */
 
 @Slf4j
 public class NameProducer implements Consumer<FluxSink<String>> {
@@ -31,21 +33,23 @@ public class NameProducer implements Consumer<FluxSink<String>> {
         this.stringFluxSink.next(thread + " : " + name);
     }
 
+    /**
+     * This method is only to be used in Flux.startWith() demo
+     * */
     public Flux<String> generateNames() {
-        return Flux.generate(stringSynchronousSink -> {
-            System.out.println("Generated fresh");
-            RsUtil.sleepSeconds(1);
+        return Flux.<String>generate(sink -> {
+            log.info("Generated fresh names");
+            RsUtil.sleepMilliSeconds(500);
             String name = RsUtil.faker().name().fullName();
             cache.add(name);
-            stringSynchronousSink.next(name);
+            sink.next(name);
         })
-        .cast(String.class)
-        .startWith(getFromCache());
+        .startWith(getFromCache()); // First the subscriber will get events from the cache. If the condition does not satisfy, then new events (fresh names) will be emitted from the publisher.
     }
 
     private Flux<String> getFromCache() {
+        log.info("Getting names from cache");
         return Flux.fromIterable(cache);
-        // Arraylist is used as cache here.
-        // In real life scenarios, populate the cache with events with onNext() event call.
+        // Arraylist is used as cache here. But in real life scenarios, populate the cache with events by mutating the cache object with doOnNext() call.
     }
 }
