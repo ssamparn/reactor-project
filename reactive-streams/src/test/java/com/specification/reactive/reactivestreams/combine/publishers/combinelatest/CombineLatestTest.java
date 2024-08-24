@@ -6,10 +6,12 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+/**
+ * combineLatest(): This is a static method of Flux.
+ * combineLatest() will generate the events provided by the combination of the most recently emitted items.
+ * */
 public class CombineLatestTest {
 
-//  The Flux static method combineLatest will generate data provided by the combination of the most recently
-//  published value from each of the Publisher sources.
     @Test
     public void combine_latest_test() {
         Flux<String> combinedLatestFlux = Flux.combineLatest(getString(), getNumber(), (s, i) -> s + i);

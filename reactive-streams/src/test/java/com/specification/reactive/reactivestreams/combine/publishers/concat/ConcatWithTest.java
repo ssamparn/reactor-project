@@ -8,7 +8,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.List;
 
 /* *
  * concat() & concatWith(): concatWith() is exactly the opposite of startWith(). It calls multiple subscribers in a specific order (top to bottom).
@@ -32,36 +31,37 @@ import java.util.List;
  *     P3 = P1.concatWith(P2). Events will start emitting from P1 publisher first. After P1 emits all the events, P2 will start emitting (if required).
  *
  * Note 1: concat() and concatWith() are lazy subscriptions.
- * Note 2: The concatenation is achieved by sequentially subscribing to the first source then waiting for it to complete before subscribing to the next
- *         and so on until the last source completes. Any error interrupts the sequence immediately and is forwarded downstream to the subscriber.
+ * Note 2: The concatenation is achieved by sequentially subscribing to the first source then waiting for it to complete before subscribing to the next and so on,
+ *         until the last source completes. Any error interrupts the sequence immediately and is forwarded downstream to the subscriber & the event emission stops.
  * */
+
 @Slf4j
 public class ConcatWithTest {
 
     @Test
     public void concatWithSimpleTest() {
-        intProducer()
-                .concatWithValues(-2, -1, 0)
+        singleDigitIntProducer()
+                .concatWithValues(8, 9, 10)
                 .subscribe(RsUtil.subscriber());
         RsUtil.sleepSeconds(1);
     }
 
     @Test
     public void multipleConcatWithTest() {
-        intProducer()
-                .concatWith(intProducer2())
+        singleDigitIntProducer()
+                .concatWith(doubleDigitIntProducer())
                 .concatWithValues(10000)
                 .subscribe(RsUtil.subscriber());
         RsUtil.sleepSeconds(1);
     }
 
-    private static Flux<Integer> intProducer() {
+    private static Flux<Integer> singleDigitIntProducer() {
         return Flux.just(1, 2, 3, 4, 5, 6, 7)
                 .doOnSubscribe(i -> log.info("From Publisher 1 : {}", i))
                 .delayElements(Duration.ofMillis(10));
     }
 
-    private static Flux<Integer> intProducer2() {
+    private static Flux<Integer> doubleDigitIntProducer() {
         return Flux.just(10, 20, 30, 40, 50, 60, 70)
                 .doOnSubscribe(i -> log.info("From Publisher 2 : {}", i))
                 .delayElements(Duration.ofMillis(10));
