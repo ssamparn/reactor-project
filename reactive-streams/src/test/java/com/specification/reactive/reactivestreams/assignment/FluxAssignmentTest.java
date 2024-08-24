@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 
-
 @Slf4j
 public class FluxAssignmentTest {
 

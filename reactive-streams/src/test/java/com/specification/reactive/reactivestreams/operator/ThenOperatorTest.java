@@ -12,16 +12,16 @@ import java.util.List;
 /* *
  * then(), thenEmpty() and thenMany():
  *
- *   All the thenXXX methods on Mono have one semantic in common. They ignore the source onNext() signals and react on completion signals (onComplete and onError), continuing the sequence at this point with various options.
+ *   All the thenXXX methods on Mono have one semantic in common. They ignore the source onNext() signals and react on completion or error signals (onComplete and onError), continuing the sequence at this point with various options.
  *   As a consequence, this can change the generic type of the returned Mono.
- *      1. then() will just replay the source terminal signal, resulting in a Mono<Void> to indicate that this never signals any onNext.
+ *      1. then() will just replay the source terminal signal, resulting in a Mono<Void> to indicate that this never signals any onNext().
  *      2. thenEmpty() not only returns a Mono<Void>, but it takes a Mono<Void> as a parameter. It represents a concatenation of the source completion signal then the second, empty Mono completion signal. In other words, it completes when A then B have both completed sequentially, and doesn't emit data.
  *      3. thenMany() waits for the source to complete then plays all the signals from its Publisher<R> parameter, resulting in a Flux<R> that will "pause" until the source completes, then emit the many elements from the provided publisher before replaying its completion signal as well.
  * */
 
-/**
+/* *
  * then(): Use then() when you are not interested in the result of a producer / chain or multiple asynchronous calls to execute one by one!
- * e.g: You are inserting a bunch of records into DB. You just need to know if it is success o not. Not the intermediate results!
+ * e.g: You are inserting a bunch of records into DB. You just need to know if the operation is successful or not. Not the intermediate results!
  * */
 @Slf4j
 public class ThenOperatorTest {

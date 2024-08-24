@@ -21,15 +21,23 @@ public class OrderService {
         List<Order> orders1 = List.of(
                 new Order(1),
                 new Order(1),
+                new Order(1),
+                new Order(1),
+                new Order(1),
                 new Order(1)
         );
 
         List<Order> orders2 = List.of(
                 new Order(2),
+                new Order(2),
                 new Order(2)
         );
 
         List<Order> orders3 = List.of(
+                new Order(3),
+                new Order(3),
+                new Order(3),
+                new Order(3),
                 new Order(3),
                 new Order(3),
                 new Order(3),

@@ -13,7 +13,7 @@ public class ZipAssignmentTest {
 
     @Test
     public void zipAssignmentTest() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) { // for each loop there is a subscription (10 subscriptions). See FlatmapAssignmentTest.class to achieve the same result with a single subscription
             createProductInformation(i)
             .subscribe(product -> log.info("product received: {}", product),
                     err -> log.error("error occurred: {}", err.getMessage()),
