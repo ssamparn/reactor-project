@@ -64,7 +64,7 @@ public class MergeTest {
 
     @Test
     public void mergeFlightsTest() {
-        // Order of event emission will not be maintained.
+        // OrderStream of event emission will not be maintained.
         Flux.merge(
                 qatarFlightService.getFlights(),
                 emiratesFlightService.getFlights(),
@@ -79,7 +79,7 @@ public class MergeTest {
      * */
     @Test
     public void mergeWithFlightsTest() {
-        // Order of event emission will not be maintained.
+        // OrderStream of event emission will not be maintained.
         qatarFlightService.getFlights()
                 .mergeWith(emiratesFlightService.getFlights())
                 .mergeWith(americanFlightService.getFlights())
@@ -90,7 +90,7 @@ public class MergeTest {
 
     @Test
     public void concatFlightsTest() {
-        // Order of event emission will be maintained. So subscriber will first receive Qatar Flights, then Emirates flights and then American flights.
+        // OrderStream of event emission will be maintained. So subscriber will first receive Qatar Flights, then Emirates flights and then American flights.
         Flux.concat(
                 qatarFlightService.getFlights(),
                 emiratesFlightService.getFlights(),
@@ -102,7 +102,7 @@ public class MergeTest {
 
     @Test
     public void startWithFlightsTest() {
-        // Order of event emission will be maintained. So subscriber will first receive American Flights, then Emirates flights and then Qatar flights.
+        // OrderStream of event emission will be maintained. So subscriber will first receive American Flights, then Emirates flights and then Qatar flights.
         qatarFlightService.getFlights()
                 .startWith(emiratesFlightService.getFlights())
                 .startWith(americanFlightService.getFlights())

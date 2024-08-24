@@ -2,30 +2,51 @@ package com.specification.reactive.reactivestreams.service;
 
 import com.specification.reactive.reactivestreams.model.Order;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Order Service: Provides a Stream of Orders.
- *                Order Stream will contain item, category, price (total price, it is not price per quantity) & quantity
- *                Needs a minimum 2 subscribers to emit item
+/* *
+ * To be used in flatMap() demo.
+ * Imagine purchase order service as an application which has an endpoint to get all orders based on userId.
  * */
 public class OrderService {
 
-    private Flux<Order> orderFlux;
+    private static Map<Integer, List<Order>> mockDb = new HashMap<>(); // key of the map is userId.
 
-    public Flux<Order> getOrderStream() {
-        if (Objects.isNull(orderFlux)) {
-            orderFlux = createOrderStream();
-        }
-        return orderFlux;
+    static {
+        List<Order> orders1 = List.of(
+                new Order(1),
+                new Order(1),
+                new Order(1)
+        );
+
+        List<Order> orders2 = List.of(
+                new Order(2),
+                new Order(2)
+        );
+
+        List<Order> orders3 = List.of(
+                new Order(3),
+                new Order(3),
+                new Order(3),
+                new Order(3)
+        );
+
+        mockDb.put(1, orders1);
+        mockDb.put(2, orders2);
+        mockDb.put(3, orders3);
+
+        // e.g: mockDb = Map<userId, [order1, order2, order3]>
     }
 
-    private Flux<Order> createOrderStream() {
-        return Flux.interval(Duration.ofMillis(100))
-                .map(i -> new Order())
-                .publish()
-                .refCount(2);
+    public static Flux<Order> getUserOrders(int userId) {
+        return Flux.create((FluxSink<Order> purchaseOrderSynchronousSink) -> {
+            mockDb.get(userId).forEach(purchaseOrderSynchronousSink::next);
+            purchaseOrderSynchronousSink.complete();
+        }).delayElements(Duration.ofMillis(50));
     }
 }

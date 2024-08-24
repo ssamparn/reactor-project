@@ -1,17 +1,13 @@
 package com.specification.reactive.reactivestreams.model;
 
-import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
+@AllArgsConstructor
 public class User {
-    private int userId;
+    private Integer userId;
     private String userName;
-
-    public User(int userId) {
-        this.userId = userId;
-        this.userName = RsUtil.faker().name().fullName();
-    }
 }

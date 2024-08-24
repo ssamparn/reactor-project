@@ -1,6 +1,6 @@
 package com.specification.reactive.reactivestreams.service;
 
-import com.specification.reactive.reactivestreams.model.Order;
+import com.specification.reactive.reactivestreams.model.OrderStream;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /* *
- * Inventory Service: Consumes Order Streams emitted from the Order Service and provides "quantity" per order category
+ * Inventory Service: Consumes OrderStream Streams emitted from the OrderStream Service and provides "quantity" per order category
  *                    And more over Inventory Service will emit its data every 2 seconds.
  *
  *                    Original Inventory : Assume we have 500 quantities for each category.
@@ -25,8 +25,8 @@ public class InventoryService {
         inventory.put("Automotive", 500);
     }
 
-    public Consumer<Order> subscribeOrderStream() {
-        return order -> inventory.computeIfPresent(order.getCategory(), (k, v) -> v - order.getQuantity());
+    public Consumer<OrderStream> subscribeOrderStream() {
+        return orderStream -> inventory.computeIfPresent(orderStream.getCategory(), (k, v) -> v - orderStream.getQuantity());
     }
 
     public Flux<String> inventoryStream() {
