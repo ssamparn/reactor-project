@@ -1,6 +1,7 @@
 package com.specification.reactive.reactivestreams.combine.publishers.zip;
 
 import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,6 +27,7 @@ import java.time.Duration;
  *  - Like merge(), zip() will also subscribe to all the publishers at the same time.
  * */
 
+@Slf4j
 public class ZipTest {
 
     @Test
