@@ -8,21 +8,24 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
+/* *
+ * transform(): It is a handy operator to transform the stream of events. But why transform operator if we already have a map() ?
+ * Most of the engineers opt for a map operator as in when we encounter a scenario of transformation. For example, transform a person into an employee of an organisation.
+ *      Mono<Employee> employeeMono = Mono.just(new Person())
+ *          .map(person -> new Employee());
+ * map() synchronously transforms an item from one type to another type but how about if you want to transform a publisher of type X into a publisher of type Y (can be same type (X) also). Transform operator comes in handy in such cases.
+ *
+ * Note: We have a transform() operator on both Flux and Mono flavors
+ * */
+
 @Slf4j
 public class TransformOperatorTest {
-
-    /* *
-     * transform(): It is a handy operator to transform stream of events. But why transform operator if we already have a map() ?
-     * Most of the engineers opt for a map operator as in when we encounter a scenario of transformation. For example, transform a person into an employee of an organisation.
-     *      Mono<Employee> employeeMono = Mono.just(new Person())
-     *          .map(person -> new Employee());
-     * map() synchronously transforms an item from one type to another type but how about if you want to transform a publisher of type X into a publisher of type Y (can be same type (X) also). Transform operator comes in handy in such cases.
-     * */
 
     @Test
     public void transform_operator_simple_test() {
@@ -31,14 +34,12 @@ public class TransformOperatorTest {
                 .subscribe(RsUtil.subscriber());
     }
 
-    private final Function<Mono<String>, Mono<Integer>> lengthTransformer =
-            stringMono -> stringMono
-                    .map(String::length);
+    private final Function<Mono<String>, Mono<Integer>> lengthTransformer = stringMono -> stringMono.map(String::length);
 
     @Test
     public void transform_operator_test() {
         getPerson()
-//                .transform(applyFilterAndMapToUpperCaseWithFunction())
+                //.transform(applyFilterAndMapToUpperCaseWithFunction())
                 .transform(applyFilterAndMapToUpperCaseWithFunctionWithUnaryOperator())
                 .subscribe(RsUtil.subscriber());
     }
@@ -55,7 +56,7 @@ public class TransformOperatorTest {
                 .doOnDiscard(Person.class, personDiscarded -> log.info("Discarded persons : {}", personDiscarded)); // discarded persons will have age lesser than 25.
     }
 
-    /**
+    /* *
      * We can use a unary operator here as we have a function with same input and output type.
      * public interface UnaryOperator<T> extends Function<T, T> {
      *
@@ -68,8 +69,8 @@ public class TransformOperatorTest {
                 .doOnDiscard(Person.class, personDiscarded -> log.info("Discarded persons : {}", personDiscarded)); // discarded persons will have age lesser than 25.
     }
 
-    /**
-     * The transform operator lets you encapsulate a piece of an operator chain into a function.
+    /* *
+     * The transform() operator lets you encapsulate a piece of an operator chain into a function.
      * That function is applied to an original operator chain at assembly time to augment it with the encapsulated operators.
      * Doing so applies the same operations to all the subscribers of a sequence and is basically equivalent to chaining the operators directly.
      * */
@@ -87,14 +88,27 @@ public class TransformOperatorTest {
             .doOnDiscard(String.class, itemDiscarded -> log.info("Discarded items : {}", itemDiscarded));
 
     /* *
-     * transformDeferred(): The transformDeferred() operator is similar to transform and also lets you encapsulate operators in a function.
-     * The major difference is that this function is applied to the original sequence on a per-subscriber basis.
-     * It means that the function can actually produce a different operator chain for each subscription (by maintaining some state)
+     * V. Imp Note: Here after transforming we still can not get a Flux<String>. Since we provided a Mono, we will get a Mono back.
+     * */
+    @Test
+    public void transformMonoListPublisher_to_FluxTypePublisher() {
+        Mono.just(List.of("one", "two", "three", "four"))
+                .transform(transformMonoToFlux) // It's a Mono<String>. Not a Flux<String>.
+                .subscribe(RsUtil.subscriber());
+    }
+
+    private final Function<Mono<List<String>>, Flux<String>> transformMonoToFlux =
+            stringList -> stringList.flatMapMany(Flux::fromIterable);
+
+    /* *
+     * transformDeferred(): The transformDeferred() operator is similar to transform() and also lets you encapsulate operators in a function just like transform().
+     * The major difference is that this function is applied to the original sequence on a PER-SUBSCRIBER basis.
+     * It means that the function can actually produce a different operator chain for EACH SUBSCRIPTION (by maintaining some state)
      * */
 
     @Test
     public void testBehaviorOfAtomicInteger() {
-        AtomicInteger ai = new AtomicInteger();
+        AtomicInteger ai = new AtomicInteger(); // atomic integer starts with 0.
         log.info("integer: {}", ai);
         log.info("integer incrementAndGet: {}", ai.incrementAndGet());
         log.info("integer incrementAndGet: {}", ai.incrementAndGet());
@@ -109,10 +123,10 @@ public class TransformOperatorTest {
         Function<Flux<String>, Flux<String>> filterAndMapTransformDeferred = stringFlux -> {
             if (ai.incrementAndGet() == 1) {
                 return stringFlux.filter(color -> !color.equals("green"))
-                        .map(String::toUpperCase);
+                        .map(String::toUpperCase); // ["BLUE", "ORANGE", "PURPLE"]
             }
             else return stringFlux.filter(color -> !color.equals("purple"))
-                        .map(String::toUpperCase);
+                        .map(String::toUpperCase); // ["BLUE", "GREEN", "ORANGE"]
         };
 
         Flux<String> composedFlux = Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
@@ -121,6 +135,6 @@ public class TransformOperatorTest {
 
         composedFlux.subscribe(RsUtil.subscriber("Subscriber 1")); // ai = 1, hence [BLUE, ORANGE, PURPLE] will be received.
         composedFlux.subscribe(RsUtil.subscriber("Subscriber 2")); // ai = 2 in the next iteration, hence [BLUE, GREEN, ORANGE] will be received.
-        composedFlux.subscribe(RsUtil.subscriber("Subscriber 3")); // ai = 2 in the next iteration as well, hence [BLUE, GREEN, ORANGE] will be received.
+        composedFlux.subscribe(RsUtil.subscriber("Subscriber 3")); // ai = 3 in the next iteration as well, hence [BLUE, GREEN, ORANGE] will be received.
     }
 }
