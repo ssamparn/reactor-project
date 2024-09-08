@@ -14,8 +14,8 @@ public class OrderStream {
 
     public OrderStream() {
         this.item = RsUtil.faker().commerce().productName();
-        this.price = Double.parseDouble(RsUtil.faker().commerce().price());
         this.category = RsUtil.faker().commerce().department();
+        this.price = Double.parseDouble(RsUtil.faker().commerce().price());
         this.quantity = RsUtil.faker().random().nextInt(1,10);
     }
 }

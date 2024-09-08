@@ -106,8 +106,7 @@ public class FluxMonoTransformTest {
 
         Flux<String> stringFlux = Flux.fromIterable(nameList);
 
-        stringFlux
-                .map(String::toUpperCase);
+        stringFlux.map(String::toUpperCase);
 
         StepVerifier.create(stringFlux)
                 .expectNext("Adam", "Anna", "Jack", "Jenny")
@@ -186,7 +185,7 @@ public class FluxMonoTransformTest {
         Flux<String> stringFlux = Flux.fromIterable(nameList)
                 .window(3)
                 .flatMap(element -> element.map(TestUtil::convertToList).subscribeOn(parallel()))
-                .flatMap(element -> Flux.fromIterable(element))
+                .flatMap(Flux::fromIterable)
                 .log();
 
         StepVerifier.create(stringFlux)
