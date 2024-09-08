@@ -23,6 +23,7 @@ public class GroupByAssignmentTest {
     @Test
     public void group_assignment_test() {
         Flux.interval(Duration.ofMillis(5))
+                .take(200)
                 .map(i -> new Order())
                 .filter(OrderProcessingService.canProcessOrder())
                 .groupBy(Order::getCategory)
