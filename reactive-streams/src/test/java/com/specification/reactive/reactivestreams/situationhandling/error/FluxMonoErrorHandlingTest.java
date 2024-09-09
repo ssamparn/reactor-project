@@ -30,7 +30,7 @@ public class FluxMonoErrorHandlingTest {
     @Test
     public void flux_publisher_returns_error_with_OnErrorResume_test() {
         Flux<String> stringFlux = Flux.just("A", "B", "C")
-                .concatWith(Flux.error(new RuntimeException("Exception Occured")))
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
                 .concatWith(Flux.just("D"))
                 .onErrorResume(e -> {
                     log.info("Exception is: {}", e.getMessage());
