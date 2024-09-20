@@ -1,11 +1,15 @@
 package com.nonblocking.http.client.reactorclient.impl;
 
 import com.nonblocking.http.client.reactorclient.AbstractHttpClient;
+import com.nonblocking.http.client.reactorclient.exception.ClientError;
+import com.nonblocking.http.client.reactorclient.exception.ServerError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.netty.ByteBufFlux;
+import reactor.netty.http.client.HttpClientResponse;
 
 @Slf4j
 @Component
@@ -154,5 +158,47 @@ public class ExternalServiceClient extends AbstractHttpClient {
                 .responseContent()
                 .asString()
                 .next();
+    }
+
+    /* *
+     * For demo of repeat and retry we are going to get some error signal from publisher.
+     * The problem is reactor netty does not know whether it is a 400 Bad Request or 500 Internal Server Error. As it is a very low level tool.
+     * It sees everything as byte buffer. Now it is our responsibility to interpret the error response as a 400 Bad Request or 500 Internal Server Error
+     * in the absence of spring framework.
+     * */
+
+    /* *
+     * Country Name Service
+     * GET http://localhost:7070/demo06/country
+     * Provides a random country name. Response time 100ms.
+     * */
+    public Mono<String> getCountryNameForRepeat() {
+        return this.httpClient.get()
+                .uri("/demo06/country")
+                .response(((httpClientResponse, byteBufFlux) -> toResponse(httpClientResponse, byteBufFlux)))
+                .next();
+    }
+
+    /* *
+     * Product Service
+     * GET http://localhost:7070/demo06/product/{productId}
+     * Provides the product name for the given product id.
+     * Product id: 1 - 400 Bad Request,
+     * Product id: 2 - Random 500 Internal Server Error.
+     * */
+    public Mono<String> getProductNameForRetry(int productId) {
+        return this.httpClient.get()
+                .uri("/demo06/product/" + productId)
+                .response(((httpClientResponse, byteBufFlux) -> toResponse(httpClientResponse, byteBufFlux)))
+                .next();
+    }
+
+    private Flux<String> toResponse(HttpClientResponse httpClientResponse, ByteBufFlux byteBufFlux) {
+        return switch (httpClientResponse.status().code()) {
+            case 200 -> byteBufFlux.asString();
+            case 400 -> Flux.error(new ClientError());
+            case 500 -> Flux.error(new ServerError());
+            default -> throw new IllegalStateException("Unexpected value: " + httpClientResponse.status().code());
+        };
     }
 }
