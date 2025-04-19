@@ -28,7 +28,7 @@ public class MonoFromSupplier {
     }
 
     private static String getName() {
-        log.info("Publishing Names: "); // Imagine this is a time consuming operation
+        log.info("Publishing Names: "); // Imagine this is a time-consuming operation
         RsUtil.sleepMilliSeconds(500);
         return RsUtil.faker().name().fullName();
     }
