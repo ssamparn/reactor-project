@@ -76,7 +76,7 @@ public class MonoDefer {
     * Most of the time, we will lean toward them when dealing with external libraries, or another part of the code that we do not have an influence on.
     * To put it simple, our choice will be:
         Mono.defer() : When dealing with another library, method or whatever else returning a Mono instance.
-        Mono.fromSupplier() : When consuming a simple value being returned from external (not a Mono)
+        Mono.fromSupplier() : When consuming a simple value being returned from external service (not a Mono)
     * */
 
     public void monoJustSubscription() {

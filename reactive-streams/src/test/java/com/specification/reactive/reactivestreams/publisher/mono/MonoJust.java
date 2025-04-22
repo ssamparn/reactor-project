@@ -15,7 +15,7 @@ public class MonoJust {
      * A Mono object represents a single(1) or empty(0) value.
      * This means it can only emit one value at most for the onNext() request and then terminates with the onComplete() signal.
      * In case of failure, it only emits a single onError() signal.
-     * That means, Mono emits 0 or 1 item, followed by an onComplete / onError signal.
+     * That means, Mono emits 0 or 1 item, followed by an onComplete() / onError() signal.
      * Note: Mono can emit 0 item as well, as it is not mandatory for a publisher to emit item.
      * */
 
@@ -27,9 +27,11 @@ public class MonoJust {
      * In reactive programming, anything can be a publisher and subscriber. We have to visualize well.
      * e.g: To read or query the database, database is the publisher & we (client application) is the subscriber.
      *      but to insert or update record into the database, database is the subscriber and client app will be the publisher.
-     * You will have to visualize like this. In R2DBC, we have save(). It accepts a Publisher.
-     * save (Publisher<T> data). We can not pass data here directly. We have to pass a publisher. Hence, we are passing a Mono<T> here.
+     * You will have to visualize like this. In R2DBC, we have a save(). It accepts a Publisher. e.g: save (Publisher<T> data).
+     * We can not pass data here directly. We have to pass a publisher. Hence, we are passing a Mono<T> here.
      * save (Mono.just("some-data"))
+     * So when you have the data already in the memory, and for some reason you will have to create a publisher quickly using that data,
+     * you can simply use the Mono.just() to make it as a publisher.
      * */
 
     @Test

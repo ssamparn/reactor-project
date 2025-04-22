@@ -1,9 +1,11 @@
 package com.specification.reactive.reactivestreams.publisher.mono;
 
 import com.specification.reactive.reactivestreams.util.RsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 public class MonoEmptyOrError {
 
     /* *
@@ -36,6 +38,6 @@ public class MonoEmptyOrError {
         // instead of using the default subscriber implementation, we are using a simple consumer implementation.
         // we will get onErrorDropped as the error handler is missing. To actually fix the issue, provide an error handler
         userRepository(userId)
-                .subscribe(System.out::println, err -> {});
+                .subscribe(System.out::println, err -> log.info("Error message during subscription: {}", err.getMessage()));
     }
 }

@@ -37,12 +37,15 @@ public class MonoFromSupplier {
     public void mono_from_supplier_sum_test() {
         List<Integer> integers = List.of(1, 2, 3, 4, 5);
 
+        Mono.just(sum(integers));
+
         Mono.fromSupplier(() -> sum(integers))
                 .subscribe(RsUtil.onNext());
     }
 
     private int sum(List<Integer> list) {
         log.info("finding the sum of {}", list);
+        RsUtil.sleepSeconds(1);
         return list.stream().mapToInt(Integer::intValue).sum();
     }
 
