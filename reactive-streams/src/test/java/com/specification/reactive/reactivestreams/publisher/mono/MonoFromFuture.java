@@ -18,7 +18,6 @@ public class MonoFromFuture {
     public void mono_from_future_hot_publisher_test() {
         Mono.fromFuture(getName()) // hot publisher
                 .subscribe(RsUtil.onNext(), RsUtil.onError(), RsUtil.onComplete());
-
         RsUtil.sleepSeconds(1); // blocking the thread as CompletableFuture uses a separate thread pool (common fork join pool)
     }
 

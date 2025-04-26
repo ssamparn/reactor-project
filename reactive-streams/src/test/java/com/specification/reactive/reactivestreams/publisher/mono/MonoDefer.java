@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 public class MonoDefer {
 
     /* *
-    * Before we understand what does Mono.defer() does, we have to understand, eager and lazy evaluation, Hot & Cold Publishers.
+    * Before we understand what Mono.defer() does, we have to understand, eager and lazy evaluation, Hot & Cold Publishers.
     * In Project Reactor all Publishers (like Monos or Fluxes) are considered either one of them.
     * Cold publishers, generate new data for each subscription (consider it a bit similar to lazy evaluation),
     * whereas hot publishers are independent of subscribers and will produce data anyway (similarity to eagerness).
