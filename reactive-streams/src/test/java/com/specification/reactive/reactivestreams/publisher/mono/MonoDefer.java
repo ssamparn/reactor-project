@@ -121,4 +121,16 @@ public class MonoDefer {
         RsUtil.sleepMilliSeconds(500);
         return RsUtil.faker().name().fullName();
     }
+
+    /**
+     * Mono.defer() use cases:
+     *  1. Conditional Execution: You can use Mono.defer() to conditionally create a Mono based on certain criteria. For example, you might want to create different Monos depending on the state of the application or the context of the subscriber
+     *  2. Dynamic Data Fetching: Imagine you need to fetch data from a database only when the Mono is subscribed to
+     *  3. Lazy Evaluation: Mono.defer() allows you to create a Mono only when it is subscribed to, rather than at the time of declaration. This is useful when the Mono's creation involves expensive computations or side effects that should only occur upon subscription
+     *  4. Contextual Evaluation: You might want to create a Mono that depends on the security context, such as fetching roles or permissions for the current user
+     *  5. Retry Mechanism: Suppose you have a method that fetches data from a remote service, and you want to retry the operation up to three times in case of failure.
+     *  6. Complex Chains: Creating complex chains with Mono.defer() can help manage intricate workflows and dependencies in reactive programming.
+     *     e.g: Suppose you need to perform a series of operations sequentially, with error handling at each step
+     *  7. Handling Expensive Computations: You can use Mono.defer() to delay expensive computations until subscription.
+     * */
 }

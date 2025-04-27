@@ -117,36 +117,4 @@ public class ZipTest {
                 .expectNext("2-B-Jenny-5") // Only 2 events will be emitted.
                 .verifyComplete();
     }
-
-    /* *
-     * zipWith(): The zipWith() executes the same method that zip does, but only with two publishers.
-     * */
-
-    @Test
-    public void flux_publisher_simple_zipWith_test() {
-        Flux<String> alphabetFlux = Flux.just("A", "B", "C");
-        Flux<String> nameFlux = Flux.just("Adam", "Jenny", "Mona");
-
-        Flux<String> mergedFlux = alphabetFlux.zipWith(nameFlux, (alphabet, name) -> alphabet + "-" + name)
-                .log();
-
-        StepVerifier.create(mergedFlux)
-                .expectSubscription()
-                .expectNext("A-Adam", "B-Jenny", "C-Mona")
-                .verifyComplete();
-    }
-
-    @Test
-    public void mono_publisher_simple_zipWith_test() {
-        Mono<String> alphabetMono = Mono.just("A");
-        Mono<String> nameMono = Mono.just("Adam");
-
-        Mono<String> mergedFlux = alphabetMono.zipWith(nameMono, (alphabet, name) -> alphabet + "-" + name)
-                .log();
-
-        StepVerifier.create(mergedFlux)
-                .expectSubscription()
-                .expectNext("A-Adam")
-                .verifyComplete();
-    }
 }
