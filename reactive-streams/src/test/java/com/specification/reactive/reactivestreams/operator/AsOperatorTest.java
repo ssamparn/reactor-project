@@ -12,6 +12,7 @@ public class AsOperatorTest {
      * It is used to:
      *   1. Convert a Flux (a stream of 0 to N elements) to a Mono (a stream of 0 or 1 element).
      *   2. Convert a Mono to a Flux.
+     *   3. Convert both Mono and Flux into another reactive type using a custom transformer function.
      *   3. Adapt a Publisher to a different reactive library (e.g., RxJava).
      *   4. Convert a Publisher to a non-reactive stream (e.g., an Iterable).
      * */

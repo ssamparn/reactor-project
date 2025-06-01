@@ -23,7 +23,8 @@ public class MonoDefer {
     * With lazy evaluation, the process will be delayed until the value is really needed, hence the term - lazy evaluation.
     * */
     /* *
-    * Mono.defer(): We use Mono.defer() to delay not only the execution but also the creation of a Mono publisher. So Publisher will be created if and only if it is subscribed to.
+    * Mono.defer(): We use Mono.defer() to delay not only the execution but also the creation of a Mono until a subscriber actually subscribes.
+    * So Publisher will be created if and only if it is subscribed to.
     * We can create a cold mono publisher which can produce at most one value using defer method of the Mono.
     * Mono.defer() takes in a Supplier of Mono publisher and returns that Mono lazily when subscribed downstream.
     * */
@@ -70,8 +71,8 @@ public class MonoDefer {
     }
 
     /* *
-    * Similarity with Mono.defer() and Mono.supplier():
-    * We can clearly spot that Mono.supplier() and Mono.defer() execution worked exactly the same.
+    * Similarity with Mono.defer() and Mono.fromSupplier():
+    * We can clearly spot that Mono.fromSupplier() and Mono.defer() execution worked exactly the same.
     * As a word of explanation - both methods serve us to delay (defer) the moment of capturing the value.
     * Most of the time, we will lean toward them when dealing with external libraries, or another part of the code that we do not have an influence on.
     * To put it simple, our choice will be:

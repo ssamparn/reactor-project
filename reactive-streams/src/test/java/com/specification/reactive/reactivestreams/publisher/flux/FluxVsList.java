@@ -19,8 +19,8 @@ public class FluxVsList {
 
     @Test
     public void flux_vs_list_getting_names_via_flux_test() {
-        // Will not wait for 5 seconds for the flux to emit items. As and when the item is there, flux will emit it every second.
-        // So returning a Flux<String> instead of a List<String> make publisher responsible.
+        // will not wait or block for 5 seconds for the flux to emit items. As and when the item is there, flux will emit it every second.
+        // So returning a Flux<String> instead of a List<String> make publisher responsive.
         NameGeneratorUtil.getNamesFlux(5)
                 .subscribe(RsUtil.onNext());
     }

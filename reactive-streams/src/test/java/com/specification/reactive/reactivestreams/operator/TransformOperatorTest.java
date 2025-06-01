@@ -4,6 +4,7 @@ import com.specification.reactive.reactivestreams.model.Person;
 import com.specification.reactive.reactivestreams.util.RsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +16,9 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /* *
- * transform(): It is a handy operator to transform the stream of events. But why transform operator if we already have a map() ?
+ * transform(): In Project Reactor, the transform() operator is a powerful method that allows you to encapsulate reusable transformation logic for a Flux or Mono.
+ * It takes in a function that receives a Publisher (like a Flux or Mono) and returns a transformed Publisher (again a transformed Flux or Mono)
+ * It is a handy operator to transform the stream of events. But why transform operator if we already have a map() ?
  * Most of the engineers opt for a map operator as in when we encounter a scenario of transformation. For example, transform a person into an employee of an organisation.
  *      Mono<Employee> employeeMono = Mono.just(new Person())
  *          .map(person -> new Employee());
@@ -77,15 +80,49 @@ public class TransformOperatorTest {
     @Test
     public void transform_operator_another_test() {
         Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
-                .doOnNext((item) -> log.info("items: {}", item))
+                .doOnNext(item -> log.info("items: {}", item))
                 .transform(filterAndMapTransform)
                 .subscribe(RsUtil.subscriber());
     }
 
-    private final Function<Flux<String>, Flux<String>> filterAndMapTransform = stringFlux -> stringFlux
+    private final UnaryOperator<Flux<String>> filterAndMapTransform = stringFlux -> stringFlux
             .filter(color -> !color.equals("orange"))
             .map(String::toUpperCase)
             .doOnDiscard(String.class, itemDiscarded -> log.info("Discarded items : {}", itemDiscarded));
+
+
+    record Customer(int id, String name) {}
+    record PurchaseOrder(String productName, int price, int quantity) {}
+    boolean isDebugEnabled = true;
+
+    private static Flux<Customer> getCustomers() {
+        return Flux.range(1, 3)
+                .map(i -> new Customer(i, RsUtil.faker().name().firstName()));
+    }
+
+    private static Flux<PurchaseOrder> getPurchaseOrders() {
+        return Flux.range(1, 5)
+                .map(i -> new PurchaseOrder(RsUtil.faker().commerce().productName(), i, i * 10));
+    }
+
+    @Test
+    public void add_debugger_with_transform_operator() {
+        getCustomers()
+                .transform(isDebugEnabled ? addDebugger() : Function.identity())
+                .subscribe(RsUtil.subscriber());
+
+        getPurchaseOrders()
+                .transform(addDebugger())
+                .subscribe(RsUtil.subscriber());
+    }
+
+    private <T> UnaryOperator<Flux<T>> addDebugger() {
+        return flux -> flux
+                .doOnNext(item -> log.info("items: {}", item))
+                .doOnComplete(() -> log.info("completed"))
+                .doOnError(error -> log.error("error: {}", error.getMessage()));
+    }
+
 
     /* *
      * V. Imp Note: Here after transforming we still can not get a Flux<String>. Since we provided a Mono, we will get a Mono back.

@@ -18,15 +18,15 @@ public class MonoFromCallable {
      * But if you use Mono.fromSupplier(), then you get a result. You can only get a result or a run time exception but not checked exception.
      *
      * Let's take a look at their method signature
-     * ------------------------------------
+     * -------------------------------------------
      *  public interface Callable<V> {
      *      V call() throws Exception;
      *  }
-     * ------------------------------------
+     * -------------------------------------------
      *  public interface Supplier<T> {
      *      T get();
      *  }
-     * ------------------------------------
+     * -------------------------------------------
      *
      * Use Mono.fromCallable() for a task that returns a result and may throw a checked exception (IO Exception). This is useful for tasks like reading and writing to files, where many kinds of checked exceptions (IOExceptions) can be thrown. Callable is also designed to be run on another thread (e.g: Executor Service).
      * Use Mono.fromSupplier() for a task that is very unlikely to throw a checked exception. So if you use Mono.fromSupplier() to wrap a method or task which throws checked exceptions instead of Mono.fromCallable(), then you have to handle the exception with a try-catch block. Whereas with Mono.fromCallable() handling exception is not required.

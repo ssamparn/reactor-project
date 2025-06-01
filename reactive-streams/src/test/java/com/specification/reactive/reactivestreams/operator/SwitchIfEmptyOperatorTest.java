@@ -35,17 +35,17 @@ public class SwitchIfEmptyOperatorTest {
                 .subscribe(RsUtil.subscriber());
     }
 
-    // cache
+    // sample cache
     private static Flux<Integer> getOrderNumbers() {
         return Flux.range(1, 10);
     }
 
-    // db
+    // sample db
     private static Mono<Integer> fallBackMonoPublisher() {
         return Mono.fromSupplier(() -> 20);
     }
 
-    // db
+    // sample db
     private static Flux<Integer> fallBackFluxPublisher() {
         return Flux.just(12, 14, 16, 18, 20);
     }

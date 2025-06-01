@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * Used in Flux Assignment.
  * The stock service will emit price changes every 500ms for 20 seconds.
  * The price might change between 80-120.
  *

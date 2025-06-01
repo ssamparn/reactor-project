@@ -12,6 +12,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public class MonoDeferContextual {
 
+    /* *
+     * https://spring.io/blog/2023/03/28/context-propagation-with-project-reactor-1-the-basics
+     * */
+
     static final ThreadLocal<Long> CORRELATION_ID = new ThreadLocal<>();
 
     static long correlationId() {

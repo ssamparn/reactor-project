@@ -25,7 +25,7 @@ public class MonoEmpty {
     /* *
     * Differences between Mono.empty() vs Mono<Void>: A Mono<T> is a specialized Publisher<T> that emits at most one item of type T.
     * Similarly the generic type Mono<T> represents Void type for Mono<Void>.
-    * You can use an empty Mono<Void> to represent no-value asynchronous processes that only have the concept of completion (similar to a Runnable).
+    * You can use an empty Mono<Void> to represent a no-value asynchronous process that only have the concept of completion (similar to a Runnable).
     * The Mono<Void> is a special case where Void is a class that you can never instantiate.
     *
     * Since there’s no such thing as an instance of Void, the Mono can never emit a value before its completion signal.

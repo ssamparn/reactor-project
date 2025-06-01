@@ -10,8 +10,9 @@ public class TimeOutOperatorTest {
 
     /**
      * timeout():
-
      *  Use case: We have a requirement that we should wait for 200ms and otherwise request will time out after 200ms.
+     *
+     *  V.Imp Note: We can have multiple timeouts. The closest one to the subscriber will take effect for the subscriber.
      * */
     @Test
     public void time_out_operator_test() {

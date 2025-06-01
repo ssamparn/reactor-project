@@ -5,31 +5,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
-/* *
+/**
  * To create a flux & emit items programmatically
  * */
 
 @Slf4j
 public class FluxGenerateWithSynchronousSink {
 
-    /* *
-    * Flux.generate(): The generate() method of the Flux accepts a consumer of SynchronousSink provides a simple and straightforward programmatic approach to creating a Flux.
-    * The generate method calculates and emits the values on demand.
-    * When it is useful?
-    *  - It is preferred to use in cases where it is too expensive to calculate elements that may not be used downstream.
-    *  - It can also be used if the emitted events are influenced by the state of the application.
-    * Based on its name, a SynchronousSink instance works synchronously. However, we cannot call the SynchronousSink object’s next method more than once per generator call.
-    *
-    * It invokes the SynchronousSink lambda expression again and again based on subscription request/demand/requirement.
-    * It can emit only 1 item at a time.
-    * Will stop when synchronousSink.complete() is invoked.
-    * Will stop when synchronousSink.error() is invoked.
-    * Will stop if subscription gets cancelled.
-    * */
-
-    /* *
+    /**
+     * Flux.generate(): The generate() method of the Flux accepts a consumer of SynchronousSink provides a simple and straightforward programmatic approach to creating a Flux.
+     * The generate method calculates and emits values on demand.
+     * When it is useful?
+     *  - It is preferred to use in cases where it is too expensive to calculate elements that may not be used downstream.
+     *  - It can also be used if the emitted events are influenced by the state of the application.
+     * Based on its name, a SynchronousSink instance works synchronously. However, we cannot call the SynchronousSink object’s next method more than once per generator call.
+     *
+     * It invokes the SynchronousSink lambda expression again and again based on subscription request/demand/requirement.
+     * It can emit only 1 item at a time.
+     * Will stop when synchronousSink.complete() is invoked.
+     * Will stop when synchronousSink.error() is invoked.
+     * Will stop if subscription gets cancelled.
+     *
      * Difference between Flux.create() and Flux.generate():
-     *  - In Flux.create(), we had the the control of for loop & we emitted items in loop.
+     *  - In Flux.create(), we had the control of for loop & we emitted items in loop.
      *  - In Flux.generate(), the reactor is in control of infinite loop (Long.MAX_VALUE), and it will keep on emitting items synchronously until subscription is cancelled or completed() or error() are invoked.
      * */
 
@@ -37,7 +35,7 @@ public class FluxGenerateWithSynchronousSink {
     public void flux_generate_simple_test() {
         Flux.generate(synchronousSink -> {
             log.info("Emitting Events");
-            synchronousSink.next(RsUtil.faker().country().name()); // This will keep on emitting items if the take() is not there.
+            synchronousSink.next(RsUtil.faker().country().name()); // This results in an infinite for loop & will keep on emitting items if the take() is not there.
         })
         .take(10)
         .subscribe(RsUtil.subscriber());
@@ -148,6 +146,4 @@ public class FluxGenerateWithSynchronousSink {
             return state + 1;
         }).subscribe(RsUtil.subscriber());
     }
-
-
 }

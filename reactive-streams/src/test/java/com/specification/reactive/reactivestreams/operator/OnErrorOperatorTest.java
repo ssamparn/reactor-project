@@ -7,20 +7,23 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Handle error in a reactive pipeline
+ * */
 @Slf4j
 public class OnErrorOperatorTest {
 
-    /* *
+    /**
      * onError() operator: When working with the Reactive Streams, if an error occurs while the Publisher is emitting events,
-     * the entire flow will be interrupted, and the onError signal will be sent to the subscriber.
-     * And no other signals will be sent after the onError.
+     * the entire flow will be interrupted, and the error signal will be sent to the subscriber.
+     * And no other signals will be sent after the error signal.
      * */
 
     @Test
     public void on_error_simple_demo_test() {
         Flux.just(2, 7, 10)
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
-                .concatWith(Mono.just(12)) // Here 12 will never be emitted as it was supposed to be subscribed after the error occurred.
+                .concatWith(Mono.just(12)) // Here 12 will never be emitted as it is subscribed after the error occurred.
                 .subscribe(RsUtil.subscriber());
     }
 
@@ -41,9 +44,13 @@ public class OnErrorOperatorTest {
      *                         the element that caused the exception will be dropped, and the Publisher will continue emitting the remaining elements.
      *                         Use case: This can be really helpful while pushing erroneous events to a kafka dlq.
      *
-     *      onErrorMap():
+     *      onErrorMap(): It is helpful to transform one type of error / exception into another type of exception. This is useful when you want to
+     *                      1. Wrap low-level exceptions into custom exception. e.g: translate technical exceptions into domain-specific ones.
+     *                      2. Add context to errors. e.g: to log or enrich error messages
+     *                      3. Standardize error types across your reactive pipeline / application
      *
-     *      doOnError():
+     *      doOnError(): In Project Reactor, the doOnError() operator is used to perform side effects when an error occurs in a reactive stream.
+     *                   It’s typically used for logging, metrics, or cleanup, but it does not modify the error or stop it from propagating.
      *
      *  Note 1: The exception handling operators in Project Reactor are defined in both Mono and Flux classes.
      *  Note 2: We can combine multiple onError operators in both Mono and Flux classes.
@@ -66,7 +73,7 @@ public class OnErrorOperatorTest {
     @Test
     public void on_error_return_placement_test() {
         Flux.just(1, 2, 3, 4, 0, 21)
-                .onErrorReturn(Integer.MAX_VALUE) // will not work here. exception will still be thrown.
+                .onErrorReturn(Integer.MAX_VALUE) // will not work here. exception will still be thrown as placement of onErrorReturn() is important.
                 .map(i -> 100 / i)
                 .subscribe(RsUtil.subscriber());
     }
@@ -115,7 +122,7 @@ public class OnErrorOperatorTest {
         Flux.range(1, 10)
                 .map(i -> i == 5 ? 5 / 0 : i)
                 .onErrorReturn(ArithmeticException.class, -1) // -1 will be emitted as the exception thrown is of type ArithmeticException
-                .onErrorReturn(IllegalArgumentException.class ,-2) // -2 will not be emitted as the exception thrown is of type ArithmeticException
+                .onErrorReturn(IllegalArgumentException.class ,-2) // -2 will not be emitted as the exception thrown is not of type IllegalArgumentException
                 .subscribe(RsUtil.subscriber());
     }
 
@@ -129,7 +136,6 @@ public class OnErrorOperatorTest {
     public void error_handling_with_on_error_resume_test() {
         Flux.just(2, 7, 10)
                 .concatWith(Flux.error(new RuntimeException("Exception occured")))
-                .concatWith(Mono.just(12))
                 .onErrorResume(ex -> Mono.just(12))
                 .subscribe(RsUtil.subscriber());
     }
@@ -145,14 +151,13 @@ public class OnErrorOperatorTest {
     @Test
     public void on_error_resume_test() {
         Flux.range(1, 10)
-                .log()
                 .map(i -> i == 5 ? 5 / 0 : i)
-                .onErrorResume(e -> fallBack()) // the pipeline stops after the error and a cancel() call is made.
+                .onErrorResume(ArithmeticException.class, e -> fallBack()) // the pipeline stops after the error and a cancel() call is made.
                 // Here we are not using the exception object. We are simply ignoring it and return a value from fallback().
                 .subscribe(RsUtil.subscriber());
     }
 
-    // Note: Both the type of tests (with map tests and concatenating Flux.error onto the publisher produces different behavior)
+    // Note: Both the type of tests (with map tests and concatenating Flux.error onto the publisher produces different behavior
 
     /* *
      * onErrorComplete(): publisher (e.g a rest service) emits completion signal in case of any error. So the actual error or exception is not known (to the subscriber) and is hidden (from the subscriber).
@@ -175,7 +180,8 @@ public class OnErrorOperatorTest {
         Flux.range(1, 10)
                 .map(i -> i == 5 ? 5 / 0 : i)
                 .onErrorContinue((err, obj) -> {
-
+                    log.error("Exception caught: {}", err.getMessage());
+                    log.error("The element that caused the exception is: {}", obj);
                 }) // the pipeline gets continued even after the error. for i = 5, the produced value infinite will be dropped from the sequence and the pipeline will get continued as it is.
                 .subscribe(RsUtil.subscriber());
     }
@@ -218,12 +224,16 @@ public class OnErrorOperatorTest {
                 })
                 .subscribe(RsUtil.subscriber());
     }
+
     private static Mono<Integer> fallBack() {
         return Mono.fromSupplier(() -> RsUtil.faker().random().nextInt(100, 200));
     }
 
-    // doOnError(): doOnError() is an equivalent of onErrorMap().
-    // In some scenarios, we may want the error to propagate and just want to log stuff up so that we know where it failed. This is where doOnError( ) can help us.  It’ll catch, perform side-effect operation and rethrow the exception.
+    /**
+     * doOnError(): doOnError() is an equivalent of onErrorMap().
+     * In some scenarios, we may want the error to propagate and just want to log stuff up so that we know where it failed. This is where doOnError() can help us.
+     * It’ll catch, perform side effect operation and rethrow the exception.
+     * */
     @Test
     public void do_on_error_callback_operator_test() {
         Flux.just(2, 7, 10, 8, 12, 22, 24)
@@ -235,6 +245,5 @@ public class OnErrorOperatorTest {
                 })
                 .doOnError(ex -> log.error("Exception caught: {}", ex.getMessage()))
                 .subscribe(RsUtil.subscriber());
-
     }
 }

@@ -9,9 +9,12 @@ import java.util.Objects;
 public class HandleOperatorTest {
 
     /* *
-     * handle(): It behaves like map() + filter()
-     * The handle() is an instance method, meaning that it is chained on an existing source (as are the common operators). It is present in both Mono and Flux.
-     * It is very close to Flux.generate(), in the sense that it uses a SynchronousSink and only allows one-by-one emissions. However, handle can be used to generate an arbitrary value out of each source element, possibly skipping some elements.
+     * handle(): It behaves like map() + filter(). It is a powerful operator on Flux and Mono that allows you to combine filtering and mapping logic in a single step.
+     * It’s often used when you need conditional emission or custom transformation of elements.
+     *
+     * The handle() is an instance method, meaning that it is chained on an existing source (Flux or Mono), which is present in both Mono and Flux.
+     * It is very close to Flux.generate(), in the sense that it (handle() operator) uses a SynchronousSink and only allows one-by-one emissions.
+     * However, handle can be used to generate an arbitrary value out of each source element, possibly skipping some elements.
      * In this way, it can serve as a combination of map and filter.
      */
 

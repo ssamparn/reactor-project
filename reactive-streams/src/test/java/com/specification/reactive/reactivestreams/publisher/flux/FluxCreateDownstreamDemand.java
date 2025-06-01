@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 public class FluxCreateDownstreamDemand {
 
     private SubscriberImpl subscriber = new SubscriberImpl();
+
     @Test
     public void flux_create_downstream_produce_early_test() {
         // fluxSink considers every emitted item as object, so we have to type cast.
@@ -38,7 +39,7 @@ public class FluxCreateDownstreamDemand {
          * And after cancelling the subscription, subscriber obviously has not received any item but again publisher still emits all the items upfront.
          * Now you might think this is bad. Now good or bad depends on the business requirement.
          *
-         * Sometimes, we think we have to be lazy as much as possible. In most of the cases that is true, but in some cases doing work (publisher emitting all the items upfront)  might be good.
+         * Sometimes, we think we have to be lazy as much as possible. In most of the cases that is true, but in some cases doing work (publisher emitting all the items upfront) might be good.
          * e.g: Preparing food once in the morning in bulk quantity and eating throughout the day might be efficient than preparing food when you get hungry multiple times during the day. In that case this behavior is helpful.
          *
          * In short, with Flux.create() we get a hot publisher. All the items emitted by Flux.create() gets stored in a queue & subscriber can get it whenever it needs.
@@ -47,15 +48,15 @@ public class FluxCreateDownstreamDemand {
          *
          * */
 
-        // Uncomment below code block and comment above subscription cancel
-        // RsUtil.sleepSeconds(1);
-        // subscriber.getSubscription().request(2);
-
-        // RsUtil.sleepSeconds(1);
-        // subscriber.getSubscription().request(2);
-
-        // RsUtil.sleepSeconds(1);
-        // subscriber.getSubscription().cancel();
+        // Uncomment below code block and comment the above subscription cancel i.e: subscriber.getSubscription().cancel();
+//         RsUtil.sleepSeconds(1);
+//         subscriber.getSubscription().request(2);
+//
+//         RsUtil.sleepSeconds(1);
+//         subscriber.getSubscription().request(2);
+//
+//         RsUtil.sleepSeconds(1);
+//         subscriber.getSubscription().cancel();
 
         // RsUtil.sleepSeconds(1);
         // subscriber.getSubscription().request(2);
@@ -64,16 +65,16 @@ public class FluxCreateDownstreamDemand {
     }
 
     /**
-     * With on demand subscription, the publisher will not emit all the items upfront.
+     * With onDemand subscription by the subscriber, the publisher will not emit all the items upfront.
      * It will be on demand of subscriber.
      */
     @Test
-    public void flux_create_downstream_on_demand_test() {
+    public void flux_create_downstream_produce_on_demand_test() {
         // fluxSink considers every emitted item as object, so we have to type cast.
 
         // publisher implementation
         Flux.<String>create(fluxSink -> {
-            fluxSink.onRequest(request -> {
+            fluxSink.onRequest(request -> { // when the subscriber requests for events, at that time this onRequest() callback gets invoked.
                 for (int i = 0; i < request && !fluxSink.isCancelled(); i++) {
                     String name = RsUtil.faker().name().firstName();
                     log.info("Generated Name: {}", name);

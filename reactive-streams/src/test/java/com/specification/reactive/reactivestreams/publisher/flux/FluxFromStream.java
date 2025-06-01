@@ -17,9 +17,10 @@ public class FluxFromStream {
         List<String> stringList = Arrays.asList("Sam", "Harry", "John", "Samay");
         Stream<String> nameStream = stringList.stream();
 
+        // subscribing to the flux first time
         Flux.fromStream(nameStream)
                 .subscribe(
-                    name -> log.info("Stream Subscriber : {}", name),
+                    name -> log.info("Stream Subscriber 1 : {}", name),
                     RsUtil.onError(),
                     RsUtil.onComplete()
         );
@@ -27,9 +28,10 @@ public class FluxFromStream {
         // This will result in an error once we try to subscribe to the stream publisher for the second time as a stream can only be processed once.
         // Error: Stream has already been operated upon or closed. So you should be using a supplier of stream like the below example.
 
+        // subscribing to the flux second time
         Flux.fromStream(nameStream)
                 .subscribe(
-                    name -> log.info("Stream Subscriber : {}", name),
+                    name -> log.info("Stream Subscriber 2 : {}", name),
                     RsUtil.onError(),
                     RsUtil.onComplete()
         );
@@ -41,7 +43,7 @@ public class FluxFromStream {
         Stream<String> nameStream = stringList.stream();
 
         Flux.fromStream(() -> nameStream).subscribe(
-                name -> log.info("Stream Subscriber : {}", name),
+                name -> log.info("Stream Subscriber 1 : {}", name),
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );
@@ -49,7 +51,7 @@ public class FluxFromStream {
         // This will result in an error as a stream can only be processed once.
         // Error: Stream has already been operated upon or closed. So you should be using a supplier of stream like the below example.
         Flux.fromStream(() -> nameStream).subscribe(
-                name -> log.info("Stream Subscriber : {}", name),
+                name -> log.info("Stream Subscriber 2 : {}", name),
                 RsUtil.onError(),
                 RsUtil.onComplete()
         );
@@ -61,14 +63,14 @@ public class FluxFromStream {
 
         Flux.fromStream(nameList::stream)
                 .subscribe(
-                    name -> log.info("Stream Subscriber : {}", name),
+                    name -> log.info("Stream Subscriber 1 : {}", name),
                     RsUtil.onError(),
                     RsUtil.onComplete()
         );
 
         Flux.fromStream(nameList::stream)
                 .subscribe(
-                    name -> log.info("Stream Subscriber : {}", name),
+                    name -> log.info("Stream Subscriber 2 : {}", name),
                     RsUtil.onError(),
                     RsUtil.onComplete()
         );

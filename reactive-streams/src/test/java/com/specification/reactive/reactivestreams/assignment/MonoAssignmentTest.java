@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 public class MonoAssignmentTest {
 
     private FileServiceImpl fileService = new FileServiceImpl();
+
     @Test
     public void mono_assignment() {
         fileService.read("file01.txt")

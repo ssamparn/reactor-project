@@ -26,7 +26,7 @@ public class FluxJust {
      *    Mono:
      *      - No Stream
      *      - No Backpressure
-     *      - A light weight publisher
+     *      - A lightweight publisher
      *      - Good for simple Request -> Response style of communication
      *   Flux:
      *      - Stream of Messages

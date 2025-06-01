@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * Assignment:
+ * Assignment of Operators Section:
  *      - We have 4 product id's - 1, 2, 3, 4
  *      - Get the product name using product service. (primary service)
  *      - Timeout 2 seconds - Call Fallback for timeout service (fallback service returns product name) to get the product name.

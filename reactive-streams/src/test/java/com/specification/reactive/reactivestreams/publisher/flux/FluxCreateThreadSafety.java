@@ -22,7 +22,7 @@ public class FluxCreateThreadSafety {
         threadSafeBehaviorDemo();
     }
 
-    // demo a thread safety behavior flux sink: fluxSink is thread safe.
+    // demo a thread safety behavior of fluxSink: fluxSink is thread safe.
     private static void threadSafeBehaviorDemo() {
         List<String> names = new ArrayList<>();
 

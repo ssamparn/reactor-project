@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /* *
- * Since this class is going to be used in Flux.create(), which accepts a Consumer<FluxSink>,
+ * Since this class is going to be used in Flux.create() demo, which accepts a Consumer<FluxSink>,
  * we are implementing a Consumer<FluxSink<>> and will create an instance of this class and pass it into Flux.create().
  * */
 

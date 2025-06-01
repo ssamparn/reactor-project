@@ -8,6 +8,9 @@ import reactor.core.publisher.Flux;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Used in Flux.generate() section assignment
+ * */
 public class FileServiceAssignmentTest {
 
     @Test

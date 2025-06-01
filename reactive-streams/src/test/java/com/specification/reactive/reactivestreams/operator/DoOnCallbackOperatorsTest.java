@@ -27,7 +27,7 @@ public class DoOnCallbackOperatorsTest {
 
     @Test
     public void do_callback_operator_complete_test() {
-        Flux.create(fluxSink -> {
+        Flux.<Integer>create(fluxSink -> {
             log.info("Inside flux creation");
             for (int i = 1; i <= 5; i++) {
                 fluxSink.next(i);
@@ -62,7 +62,7 @@ public class DoOnCallbackOperatorsTest {
 
     @Test
     public void do_callback_operator_error_test() {
-        Flux.create(fluxSink -> {
+        Flux.<Integer>create(fluxSink -> {
             log.info("Inside flux creation");
             for (int i = 1; i <= 5; i++) {
                 fluxSink.next(i);
