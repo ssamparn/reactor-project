@@ -4,8 +4,10 @@ import com.github.javafaker.Faker;
 import com.specification.reactive.reactivestreams.subscriber.DefaultSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
+import reactor.core.publisher.Flux;
 
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 @Slf4j
 public class RsUtil {
@@ -50,5 +52,20 @@ public class RsUtil {
 
     public static <T> Subscriber<T> subscriber(String subscriberName) {
         return new DefaultSubscriber<>(subscriberName);
+    }
+
+    public static <T> UnaryOperator<Flux<T>> addDebugger() {
+        return flux -> flux
+                .doOnNext(item -> log.info("items: {}", item))
+                .doOnComplete(() -> log.info("completed"))
+                .doOnError(error -> log.error("error: {}", error.getMessage()));
+    }
+
+    public static <T> UnaryOperator<Flux<T>> addDebugger(String subscriberName) {
+        return flux -> flux
+                .doOnSubscribe(item -> log.info("subscribing to: {}", subscriberName))
+                .doOnComplete(() -> log.info("{} completed", subscriberName))
+                .doOnError(error -> log.error("error: {}", error.getMessage()))
+                .doOnCancel(() -> log.info("cancelling subscription {}", subscriberName));
     }
 }

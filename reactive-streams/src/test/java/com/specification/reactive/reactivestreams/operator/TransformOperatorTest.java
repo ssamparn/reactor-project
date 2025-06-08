@@ -4,7 +4,6 @@ import com.specification.reactive.reactivestreams.model.Person;
 import com.specification.reactive.reactivestreams.util.RsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,6 +13,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+
+import static com.specification.reactive.reactivestreams.util.RsUtil.addDebugger;
 
 /* *
  * transform(): In Project Reactor, the transform() operator is a powerful method that allows you to encapsulate reusable transformation logic for a Flux or Mono.
@@ -115,14 +116,6 @@ public class TransformOperatorTest {
                 .transform(addDebugger())
                 .subscribe(RsUtil.subscriber());
     }
-
-    private <T> UnaryOperator<Flux<T>> addDebugger() {
-        return flux -> flux
-                .doOnNext(item -> log.info("items: {}", item))
-                .doOnComplete(() -> log.info("completed"))
-                .doOnError(error -> log.error("error: {}", error.getMessage()));
-    }
-
 
     /* *
      * V. Imp Note: Here after transforming we still can not get a Flux<String>. Since we provided a Mono, we will get a Mono back.

@@ -11,6 +11,8 @@ import java.time.Duration;
 
 /* *
  * concat() & concatWith(): concatWith() is exactly the opposite of startWith(). It calls multiple subscribers in a specific order (top to bottom).
+ * The concatWith() operator is used to append one reactive stream to another. It ensures that the first stream completes before the second begins, maintaining strict sequence and order.
+ *
  * Let's imagine we have 2 publishers returning type T. That means two Flux<T>.
  * Using concat() or concatWith() we can connect these 2 publishers as one single publisher and expose as one single publisher. Now subscriber can subscribe to these 2 publishers as if they are one.
  * From subscriber point of view, it is subscribing to a publisher Flux<T>.

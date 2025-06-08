@@ -10,8 +10,10 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 /* *
- * zip(): The static method zip() agglutinates multiple publishers together.
- * It waits for all the publishers to emit events and combines these elements into an output value (constructed by the provided combinator function).
+ * zip(): In Project Reactor, the zip() operator is used to combine multiple publishers by pairing their elements one-by-one.
+ * It waits for all sources to emit before combining their values into a tuple (or using a custom combinator function). The static method zip() agglutinates multiple publishers together.
+ *
+ * It waits for all the publishers to emit events and combines these elements into an output value (constructed by the provided combinator function or tuple).
  * The operator will continue doing so until any of the publishers completes. Until & unless one of the publisher does not emit any item, the execution will stop.
  * That means if one of the publisher emits an empty signal without emitting any events, the subscriber will receive a complete signal even if other publishers emit items.
  * So it's an ALL or NOTHING operation & all publishers will have to emit at least an item for it to work.
@@ -21,27 +23,33 @@ import java.time.Duration;
  * i.e: countOf(zippedFlux) = minOf(events of A, events of B, events of C)
  *
  * Difference between merge() and zip():
- * merge() operator on the other hand it's not like zip(). Which ever publisher emit events, subscriber will receive it. And in merge(), there is no combinator function. So no assembly required.
+ *  - merge() operator on the other hand it's not like zip(). Which ever publisher emit events, subscriber will receive it.
+ *  - merge() does not have a combinator function. So no assembly possible.
  *
  * Similarity between merge() and zip():
  *  - Like merge(), zip() will also subscribe to all the publishers at the same time.
+ *
+ * V.Imp Note:
+ *   1. zip() waits for all sources / publishers to emit before combining.
+ *   2. If one stream is shorter, the zipped stream ends when the shortest one completes.
+ *   3. For combining latest values instead of synchronized ones, use combineLatest().
  * */
 
 @Slf4j
 public class ZipTest {
 
+    record Car (String carBody, String carEngine, String carTyres) {
+
+    }
+
     @Test
     public void zip_car_count_test() {
         Flux.zip(getCarBody(), getCarEngine(), getCarTyres())
                 .count()
-                .subscribe(RsUtil.subscriber("Create Cars"));
+                .subscribe(RsUtil.subscriber("Cars created"));
         // Here only 2 cars can be created, as there are only 2 engines available.
 
         RsUtil.sleepSeconds(2);
-    }
-
-    record Car (String carBody, String carEngine, String carTyres) {
-
     }
 
     @Test

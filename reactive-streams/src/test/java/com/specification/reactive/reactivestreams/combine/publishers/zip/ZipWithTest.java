@@ -13,7 +13,7 @@ public class ZipWithTest {
      * zipWith(): The zipWith() executes the same method that zip does, but only with two publishers.
      *
      * Mono.zipWith() use cases:
-     *  1. Combining Results from Two Asynchronous Operations. When you have two independent asynchronous operations and you want to combine their results, Mono.zipWith() can be handy.
+     *  1. Combining Results from Two Asynchronous Operations. When you have two independent asynchronous operations, and you want to combine their results, Mono.zipWith() can be handy.
      *  2. Error Handling: You can use Mono.zipWith() to combine a successful result with an error handling mechanism. If one Mono fails, you can still proceed with the other.
      *  3. Parallel Processing: When you need to perform multiple operations in parallel and combine their results, Mono.zipWith() is useful.
      *  4. Combining Different Types: You can combine Mono instances of different types into a single Mono that emits a composite object.

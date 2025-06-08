@@ -29,9 +29,16 @@ import org.junit.jupiter.api.Test;
 public class FlatMapOperatorTest {
 
     /* *
+     * So far we have been talking about startWith(), concat(), concatWith(), merge(), zip(), etc. These are all great operators, but if you notice right here, these are all working well for independent publishers.
+     * For example, if you take merge(), we called the get Emirates flights, Qatar flights & American Flights. So these are like 3 independent I/O requests.
+     * This is how we have used and we used merge() to merge the results. Similarly, if you check the zip assignment, we send one request for review, one request for price.
+     * Then we combine the results of two independent parallel requests.
+     *
+     * But what about dependent sequential calls ?? In some cases we will have to make sequential calls. So these operators will not be helpful. So is there anything we can do for sequential calls which are dependent.
+     *
      * flatMap(): In some cases we have to make sequential calls which are dependent on each other. e.g: The response of one publisher is used while subscribing to another publisher.
-     * e.g: Given
-     *          User Service (Microservice -1)
+     * e.g: Let's consider, we have 3 microservices.
+     *          User Service (Microservice -1) has 2 endpoints.
      *              - get all users
      *              - get userId for the given username
      *          Payment Service (Microservice -2)
@@ -55,7 +62,7 @@ public class FlatMapOperatorTest {
         String jake = "jake";
 
         UserService.getUserId(mike)
-                .flatMap(PaymentService::getUserBalance)
+                .flatMap(PaymentService::getUserBalance) // flatMap() subscribes to the inner publisher.
                 .subscribe(RsUtil.subscriber());
         RsUtil.sleepSeconds(2);
     }
@@ -71,8 +78,8 @@ public class FlatMapOperatorTest {
         String mike = "mike";
         String jake = "jake";
 
-        UserService.getUserId(jake)
-                .flatMapMany(OrderService::getUserOrders)
+        UserService.getUserId(sam)
+                .flatMapMany(OrderService::getUserOrders)  // flatMapMany() subscribes to the inner publisher. we can not use flatMap() here as getUserOrders() returns Flux type.
                 .subscribe(RsUtil.subscriber());
 
         RsUtil.sleepSeconds(2);
@@ -112,4 +119,9 @@ public class FlatMapOperatorTest {
          // RsUtil.sleepSeconds(2);
     }
 
+    /* *
+     * 1. mono.mono subscription: use flatMap()
+     * 2. mono.flux subscription: use flatMapMany()
+     * 3. flux.flux subscription: use flatMap()
+     * */
 }

@@ -20,7 +20,7 @@ import java.util.List;
  * */
 
 /* *
- * then(): Use then() when you are not interested in the result of a producer / chain or multiple asynchronous calls to execute one by one!
+ * then(): Use then() when you are not interested in the result of a producer / chain or multiple asynchronous calls to execute one by one! You just care about the completion signal or error signal if any.
  * e.g: You are inserting a bunch of records into DB. You just need to know if the operation is successful or not. Not the intermediate results!
  * */
 @Slf4j
@@ -37,7 +37,8 @@ public class ThenOperatorTest {
     }
 
     /**
-     * then() is also useful when we want to execute multiple publishers in a specific order
+     * then() is also useful when we want to execute multiple publishers in a specific order.
+     * i.e: when we need to have sequential execution of asynchronous tasks.
      * */
     @Test
     public void thenOperatorWithMultiplePublisherTest() {

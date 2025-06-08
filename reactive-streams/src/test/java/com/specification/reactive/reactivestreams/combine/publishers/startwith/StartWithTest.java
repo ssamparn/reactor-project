@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /* *
- * startWith(): startsWith() calls multiple subscribers in a specific order (bottom to top).
+ * startWith(): startWith() calls multiple subscribers in a specific order (bottom to top).
  * Let's imagine we have 2 publishers returning type T. That means two Flux<T>.
  * Using startWith() we can connect these 2 publishers as one single publisher and expose as one single publisher. Now subscriber can subscribe to these 2 publishers as if they are one.
  * From subscriber point of view, it is subscribing to a publisher Flux<T>.
@@ -25,8 +25,10 @@ import java.time.Duration;
  *          +
  *     P2: Flux<T>
  *
- *     P3 = P1.startsWith(P2). Events will start emitting from P2 publisher first. After P2 emits all the events, P1 will start emitting (if required).
+ *     P3 = P1.startWith(P2). Events will start emitting from P2 publisher first. After P2 emits all the events, P1 will start emitting (if required).
  *
+ * So basically, the startWith() operator is used to prepend data to a reactive sequence. It’s available on both Flux and Mono.
+ * And it’s particularly useful when you want to emit some initial values before the main sequence starts emitting.
  * V Imp Note: Publisher preceding startWith() will emit events in a separate thread pool.
  * */
 
@@ -123,7 +125,7 @@ public class StartWithTest {
         // Subscriber - 4
         nameProducer
                 .generateNames()
-                .filter(name -> name.startsWith("B")) // If any of the previously emitted item starts with Z, then it will be retrieved from the cache otherwise new name will be generated fresh until it encounters a name starts with "B
+                .filter(name -> name.startsWith("B")) // If any of the previously emitted item starts with Z, then it will be retrieved from the cache otherwise new name will be generated fresh until it encounters a name starts with "B"
                 .take(1)
                 .subscribe(RsUtil.subscriber("Subscriber-4"));
     }

@@ -15,13 +15,19 @@ import reactor.test.scheduler.VirtualTimeScheduler;
 import java.time.Duration;
 
 /* *
- * merge(): Imagine we have 3 publishers. P1, P2, P3. Each emits events of type T. Flux<T>. We also have a subscriber S wants to subscribe to all 3 publishers.
+ * merge(): In Project Reactor, merge() and mergeWith() are used to combine multiple publishers (like Flux or Mono)
+ * so that their emissions are interleaved as they arrive — without waiting for one to complete before the next starts.
+ *
+ * Imagine we have 3 publishers. P1, P2, P3. Each emits events of type T. Flux<T>. We also have a subscriber S wants to subscribe to all 3 publishers.
  * Instead of subscribing to all these 3 publishers one after another sequentially (like we saw in startWith(): where subscription happens bottom to top sequentially & concatWith(): where subscription happens top to bottom sequentially),
  * We can merge or combine all 3 publishers into one single publisher, and the subscriber can subscribe to the merged publisher. When subscriber subscribes to this merged publisher, all 3 publishers are subscribed at the same time.
  * In which order the subscriber will receive events is not guaranteed. The publisher which emits events first, subscriber will receive it. If subscriber wants to cancel, all 3 publisher will receive the cancellation signal.
  *
  * V Imp Note: 1. The merge function executes the merging of the data from Publisher sequences contained in an array into an interleaved merged sequence.
  *             2. concat and concatWith() are lazy subscription as opposed to merge() or mergeWith() in which the sources are subscribed eagerly.
+ *             3. merge() is non-blocking and concurrent.
+ *             4. If order matters, use startWith() or concatWith() instead.
+ *             5. If you want to delay errors until all sources are complete, use mergeDelayError().
  * */
 
 @Slf4j
@@ -59,12 +65,12 @@ public class MergeTest {
 
     /**
      * Just compare the flight search results of merge(), concat() and startWith() operators.
-     * In concat(), concatWith() or startWith() the results will be sequential as they subscribe to publishers lazily whereas in merge the results depends on whichever publisher emits the events first.
+     * In concat(), concatWith() or startWith() the results will be sequential as they subscribe to publishers lazily, whereas in merge the results depends on whichever publisher emits the events first.
      * */
 
     @Test
     public void mergeFlightsTest() {
-        // OrderStream of event emission will not be maintained.
+        // stream of event emission will not be maintained & will not be in a sequence.
         Flux.merge(
                 qatarFlightService.getFlights(),
                 emiratesFlightService.getFlights(),
@@ -97,7 +103,7 @@ public class MergeTest {
                 americanFlightService.getFlights()
         ).subscribe(RsUtil.subscriber());
 
-        RsUtil.sleepSeconds(7);
+        RsUtil.sleepSeconds(10);
     }
 
     @Test
@@ -185,7 +191,7 @@ public class MergeTest {
 
     /* *
      *  mergeSequential(): The mergeSequential() merges events from publisher sequences provided in an array into an ordered merged sequence.
-     *  Now you might be thinking this behavior is exactly like startsWith() or concatWith().But unlike concat() or concatWith(), publishers are subscribed eagerly.
+     *  Now you might be thinking this behavior is exactly like startsWith() or concatWith(). But unlike concat() or concatWith(), publishers are subscribed eagerly.
      *  Also, unlike merge, their emitted values are merged into the final sequence in subscription order of the publisher.
      * */
 
