@@ -27,8 +27,23 @@ public class VirtualTimeTest {
 
         StepVerifier.withVirtualTime(longFlux::log)
                 .expectSubscription()
-                .thenAwait(Duration.ofSeconds(3))
+                .thenAwait(Duration.ofSeconds(3)) // this means, producer will act how it's supposed to act after 3 seconds.
                 .expectNext(0L, 1L, 2L)
+                .verifyComplete();
+    }
+
+    @Test
+    void flux_publisher_expect_no_event_virtualTime_test() {
+        VirtualTimeScheduler.getOrSet();
+
+        Flux<Integer> integerFlux = Flux.range(1, 5)
+                        .delayElements(Duration.ofSeconds(10));
+
+        StepVerifier.withVirtualTime(integerFlux::log)
+                .expectSubscription()
+                .expectNoEvent(Duration.ofSeconds(9))
+                .thenAwait(Duration.ofSeconds(50)) // this means, producer will act how it's supposed to act after 3 seconds.
+                .expectNext(1, 2, 3, 4, 5)
                 .verifyComplete();
     }
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
 import reactor.util.context.Context;
 
 import java.util.UUID;
@@ -151,5 +153,28 @@ public class ContextTest {
                 })
                 .cast(String.class)
                 .subscribeOn(Schedulers.parallel());
+    }
+
+    @Test
+    public void welcome_message_test() {
+        StepVerifierOptions testOptions = StepVerifierOptions.create()
+                .scenarioName("welcome-message-test-with-context")
+                .withInitialContext(Context.of("user", "sam"));
+
+        StepVerifier.create(getWelcomeMessage(), testOptions)
+                .expectNext("Welcome %s".formatted("sam"))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void welcome_message_error_condition_test() {
+        StepVerifierOptions testOptions = StepVerifierOptions.create()
+                .scenarioName("welcome-message-test-with-error-context")
+                .withInitialContext(Context.empty());
+
+        StepVerifier.create(getWelcomeMessage(), testOptions)
+                .expectErrorMessage("Unauthenticated")
+                .verify();
     }
 }

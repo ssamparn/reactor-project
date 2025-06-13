@@ -1,5 +1,7 @@
 package com.nonblocking.http.client.reactorclient.impl;
 
+import com.nonblocking.http.client.assignment.context.RateLimiter;
+import com.nonblocking.http.client.assignment.context.UserService;
 import com.nonblocking.http.client.reactorclient.AbstractHttpClient;
 import com.nonblocking.http.client.reactorclient.exception.ClientError;
 import com.nonblocking.http.client.reactorclient.exception.ServerError;
@@ -190,6 +192,21 @@ public class ExternalServiceClient extends AbstractHttpClient {
         return this.httpClient.get()
                 .uri("/demo06/product/" + productId)
                 .response(((httpClientResponse, byteBufFlux) -> toResponse(httpClientResponse, byteBufFlux)))
+                .next();
+    }
+
+    /* *
+     * Book Service
+     * GET http://localhost:7070/demo07/book
+     * Gives a random book name.
+     * */
+    public Mono<String> getBook() {
+        return this.httpClient.get()
+                .uri("/demo07/book")
+                .responseContent()
+                .asString()
+                .startWith(RateLimiter.limitCalls())
+                .contextWrite(UserService.userCategoryContext())
                 .next();
     }
 
