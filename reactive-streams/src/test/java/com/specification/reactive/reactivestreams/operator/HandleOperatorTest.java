@@ -46,10 +46,11 @@ public class HandleOperatorTest {
         .subscribe(RsUtil.subscriber("Country Subscriber"));
     }
 
-    // Let’s consider an example.
-    // The reactive streams specification disallows null values in a sequence.
-    // What if you want to perform a map operation, but you want to use a preexisting method as the map function, and that method sometimes returns null?
-
+    /**
+     * Let’s consider an example.
+     * The reactive streams specification disallows null values in a sequence.
+     * What if you want to perform a map operation, but you want to use a preexisting method as the map function, and that method sometimes returns null?
+     * */
     public String alphabet(int letterNumber) {
         if (letterNumber < 1 || letterNumber > 26) {
             return null;
@@ -59,7 +60,6 @@ public class HandleOperatorTest {
     }
 
     // We can then use handle to remove any nulls.
-
     @Test
     public void handle_operator_filter_null_values() {
         Flux.just(-1, 30, 13, 9, 20)
