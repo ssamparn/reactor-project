@@ -47,4 +47,50 @@ public class ZipWithTest {
                 .expectNext("A-Adam")
                 .verifyComplete();
     }
+
+    /**
+     * Mono.zip(Mono<Boolean>, Mono<Boolean>, Boolean::logicalAnd):
+     * Combines the two Mono<Boolean> values.
+     * Applies Boolean::logicalAnd to their results.
+     * Emits a single Boolean value (true only if both are true)
+     * */
+    @Test
+    public void conditional_execution() {
+        Mono<Boolean> isTrue = Mono.just(true);
+        Mono<Boolean> isFalse = Mono.just(false);
+
+        Mono<String> failureResult = Mono.zip(isTrue, isFalse, Boolean::logicalAnd)
+                .flatMap(canExecute -> {
+                    if (canExecute) {
+                        return restApiCall();
+                    } else {
+                        return Mono.just("Condition not met, skipping API call.");
+                    }
+                });
+
+        StepVerifier.create(failureResult)
+                .expectSubscription()
+                .expectNext("Condition not met, skipping API call.")
+                .verifyComplete();
+
+
+        Mono<String> successResult = Mono.zip(isTrue, isTrue, Boolean::logicalAnd)
+                .flatMap(canExecute -> {
+                    if (canExecute) {
+                        return restApiCall();
+                    } else {
+                        return Mono.just("Condition not met, skipping API call.");
+                    }
+                });
+
+        StepVerifier.create(successResult)
+                .expectSubscription()
+                .expectNext("Rest Api call executed!")
+                .verifyComplete();
+    }
+
+    private Mono<String> restApiCall() {
+        // Simulate a REST API call
+        return Mono.just("Rest Api call executed!");
+    }
 }
